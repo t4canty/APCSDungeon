@@ -2,22 +2,23 @@ package driver;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import JSONCrafter.JSONwriter;
 
 /*
  * This is the janiest of janky solutions in implementing a jframe, and it runs horribly - 
@@ -33,6 +34,7 @@ public class Driver extends JPanel implements ActionListener {
 	JPanel st; //Stat frame
 	JButton ok;
 	JScrollPane scroll;
+	String Old;
 
 	public Driver() {
 		try {
@@ -68,8 +70,8 @@ public class Driver extends JPanel implements ActionListener {
 		bg.add(Player);
 		bg.add(Enemy);
 		bg.add(NPC);
-		
-		
+
+
 		launchEditor = new JButton("Launch Editor");
 		launchEditor.addActionListener(this);
 		launchEditor.setActionCommand("LaunchEditor");
@@ -97,7 +99,7 @@ public class Driver extends JPanel implements ActionListener {
 		for(JTextInput t : frames) { //Name buttons
 			f.add(t.getFrame());
 		}
-		
+
 		f.add(NPC);
 		f.add(Object);
 		f.add(Enemy);
@@ -125,10 +127,16 @@ public class Driver extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		super.paintComponents(g);
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(!ok.isEnabled()) {
+			if(!frames.get(0).getText().equals(Old))
+				ok.setEnabled(true);
+		}
+
 		if(e.getActionCommand() != null) {
-			if(e.getActionCommand().equals("LaunchEditor")) {XMLDriver x = new XMLDriver();}
+			if(e.getActionCommand().equals("LaunchEditor")) {new XMLDriver();}
 			else if(e.getActionCommand().equals("addDrop")) {
 				System.out.println("Before add:" + StatBlock.size());
 				StatBlock.add(new JTextInput("Drop"));
@@ -138,16 +146,67 @@ public class Driver extends JPanel implements ActionListener {
 
 			}
 			else if (e.getActionCommand().equals("write")){
-				//jsonIo
-				for(JTextInput j : frames)
-					System.out.println(j.getText());
-				for(JTextInput j : StatBlock) {
-					if(j.getFrame().isVisible()) {System.out.println(j.getText());}
+				switch(id){
+				case 0:
+					try {
+						new JSONwriter(frames.get(0).getText(), Integer.parseInt(frames.get(1).getText()), Integer.parseInt(frames.get(2).getText()), id);
+						System.out.println("Done.");
+						ok.setEnabled(false);
+						Old = frames.get(0).getText();
+						System.out.println(Old);
+					} catch (NumberFormatException | FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case 1:
+					try {
+						ArrayList<Integer> n = new ArrayList<Integer>();
+						for(int i = 1; i < StatBlock.size(); i++) {
+							n.add(Integer.parseInt(StatBlock.get(i).getText()));
+						}
+						new JSONwriter(frames.get(0).getText(), Integer.parseInt(frames.get(1).getText()), Integer.parseInt(frames.get(2).getText()), id,
+								Integer.parseInt(StatBlock.get(0).getText()), Integer.parseInt(StatBlock.get(1).getText()), n);
+						System.out.println("Done.");
+						ok.setEnabled(false);
+						Old = frames.get(0).getText();
+						System.out.println(Old);
+					} catch (NumberFormatException | FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case 2:
+					try {
+						ArrayList<Integer> n = new ArrayList<Integer>();
+						for(int i = 1; i < StatBlock.size(); i++) {
+							n.add(Integer.parseInt(StatBlock.get(i).getText()));
+						}
+						new JSONwriter(frames.get(0).getText(), Integer.parseInt(frames.get(1).getText()), Integer.parseInt(frames.get(2).getText()), id,
+								Integer.parseInt(StatBlock.get(0).getText()), Integer.parseInt(StatBlock.get(1).getText()), n);
+						System.out.println("Done.");
+						ok.setEnabled(false);
+						Old = frames.get(0).getText();
+						System.out.println(Old);
+					} catch (NumberFormatException | FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case 3:
+					try {
+						new JSONwriter(frames.get(0).getText(), Integer.parseInt(frames.get(1).getText()), Integer.parseInt(frames.get(2).getText()), id, null);
+						System.out.println("Done.");
+						ok.setEnabled(false);
+						Old = frames.get(0).getText();
+						System.out.println(Old);
+					} catch (NumberFormatException | FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-				System.out.println(id);
 			}
 		}
-
 		if(id == 2 || id == 1) {
 			scroll.setVisible(true);
 			addDrop.setVisible(true);
