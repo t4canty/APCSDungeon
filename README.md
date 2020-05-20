@@ -1,5 +1,5 @@
 # GameEngine
-Designed to make programming games with jpanel, specifically games with npcs and a world to move in, by creating json/xml files that represent game objects.
+Designed to make programming games with jpanel, specifically games with npcs and a world to move in, much easier by creating json/xml files that represent game objects.
 
 ## Features
   - Dedicated json/xml writers
