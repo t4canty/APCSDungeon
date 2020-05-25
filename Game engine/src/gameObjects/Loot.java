@@ -1,6 +1,8 @@
 package gameObjects;
 
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.File;
 
 public class Loot {
 	private int Damage;
@@ -22,11 +24,23 @@ public class Loot {
 		this.Name = Name;
 	}
 	private Image getSpriteFromJar() {
-		return null;
-		//todo
+		
 	}
 	private Image getSpriteFromFolder() {
-		return null;
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		switch(id) {
+		case 0: //badGun
+			toolkit.getImage("badgun.png");
+			break;
+		case 1: //betterGun
+			toolkit.getImage("badgun.png");
+		case 2: //federalReserve
+			toolkit.getImage("badgun.png");
+		case 3: //ElPresidente
+			toolkit.getImage("badgun.png");
+		case 4: //ToiletPaper
+			toolkit.getImage("badgun.png");
+		}
 		//todo
 	}
 	public int getId() {return id;}
