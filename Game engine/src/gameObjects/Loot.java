@@ -31,6 +31,7 @@ public class Loot {
 			Sprite = getSpriteFromFolder();
 	}
 	private Image getSpriteFromJar() {
+<<<<<<< HEAD
 		try {
 			switch(id) {
 
@@ -49,6 +50,9 @@ public class Loot {
 			e.printStackTrace();
 			return null;
 		}
+=======
+		//TODO
+>>>>>>> refs/remotes/origin/master
 		return null;
 	}
 	private Image getSpriteFromFolder() {
@@ -57,16 +61,37 @@ public class Loot {
 		case 0: //badGun
 			return toolkit.getImage("badgun.png");
 		case 1: //betterGun
+<<<<<<< HEAD
 			return toolkit.getImage("betterGun.png");
+=======
+			return toolkit.getImage("badgun.png");
+>>>>>>> refs/remotes/origin/master
 		case 2: //federalReserve
+<<<<<<< HEAD
 			return toolkit.getImage("federalReserve.png");
+=======
+			return toolkit.getImage("badgun.png");
+>>>>>>> refs/remotes/origin/master
 		case 3: //ElPresidente
+<<<<<<< HEAD
 			return toolkit.getImage("ElPresidente.png");
+=======
+			return toolkit.getImage("badgun.png");
+>>>>>>> refs/remotes/origin/master
 		case 4: //ToiletPaper
+<<<<<<< HEAD
 			return toolkit.getImage("ToiletPaper.png");
+=======
+			return toolkit.getImage("badgun.png");
+>>>>>>> refs/remotes/origin/master
 		}
+<<<<<<< HEAD
 		return null;
 		//todo
+=======
+		//TODO
+		return null;
+>>>>>>> refs/remotes/origin/master
 	}
 	public int getId() {return id;}
 	public Image getSprite() {return Sprite;}
