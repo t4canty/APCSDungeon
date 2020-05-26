@@ -27,5 +27,10 @@ public class Projectile extends GameObject {
 	@Override
 	public void paint(Graphics g) {
 	}
-	
+	public void setSize(Dimension size) {
+		rBox = new Rectangle(size);
+	}
+	public void setSprite(Image Sprite) {
+		this.idleSprite = Sprite;
+	}
 }
