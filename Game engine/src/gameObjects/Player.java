@@ -18,7 +18,7 @@ public class Player extends GameObject{
 	private double gunAngle;
 	public boolean isShooting;
 	private long lastBulletShot = 0; //system time when last bullet was shot, used for cooldown
-	private ArrayList<Loot> inventory = new ArrayList<Loot>();
+	ArrayList<Loot> inventory = new ArrayList<Loot>();
 	/**
 	 * Player constructor with x and y inputs;
 	 * @param x
@@ -47,6 +47,8 @@ public class Player extends GameObject{
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
 		activeGun = new Loot(1, 0, "Bad Gun", super.isJar);
+		inventory.add(activeGun);
+		inventory.add(activeGun);
 		inventory.add(activeGun);
 	}
 	/**
@@ -133,13 +135,18 @@ public class Player extends GameObject{
 		this.x = x;
 		this.y = y;
 	}
-	
 	public void updateGunAngle(int mouseX, int mouseY) {
 		//double riseRun = (mouseY - y) * 1.0 / (mouseX - x);
 		gunAngle = Math.atan2(mouseY - rBox.getCenterY(), mouseX - rBox.getCenterX());
 		
 	}
-	
+	public void setActiveItem(Loot item) {activeGun = item;}
+	public Loot getActiveItem() {return activeGun;}
+	public void add(Loot l) {inventory.add(l);}
+	public Loot get(int i) {return inventory.get(i);}
+	public ArrayList<Loot> getInventory(){
+		return inventory;
+	}
 	public void checkCollision(ArrayList<GameObject> entities) {
 		
 	}
