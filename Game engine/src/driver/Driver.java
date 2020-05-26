@@ -95,6 +95,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(playerRight) player.move(1);
 		if(playerDown) player.move(2);
 		if(playerLeft) player.move(3);
+		if(playerInteract) { 
+			new Inventory(); 
+			playerInteract = false;
+		}
 		
 		player.checkCollision(currentRoom.getEntities());
 	}
