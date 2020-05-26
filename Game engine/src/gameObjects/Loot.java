@@ -3,13 +3,23 @@ package gameObjects;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
-
+/**
+ * 
+ * Created May 26, 2020
+ * @author t4canty
+ * @author TJ178
+ * Class designed to represent all loot objects in the game, holding things like damage, sprites, types of projectiles, etc.
+ *
+ */
 public class Loot {
+	//========Variables========//
 	private int Damage;
 	private int id;
 	private Image Sprite;
 	private String Name;
 	private int cooldown;
+	
+	//========Constructor========//
 	/**
 	 * Each loot object represents a gun in the game, with a different sprite and name to display in the Inventory.
 	 * @param cooldown
@@ -31,10 +41,11 @@ public class Loot {
 		else
 			Sprite = getSpriteFromFolder();
 	}
+	
+	//========Methods========//
 	private Image getSpriteFromJar() {
 		try {
-			switch(id) {
-
+			switch(id) {																	//Uses the id to read the sprite from the jar.
 			case 0: //badGun
 				return ImageIO.read(getClass().getResourceAsStream("img/badgun.png"));
 			case 1: //betterGun
@@ -50,12 +61,11 @@ public class Loot {
 			e.printStackTrace();
 			return null;
 		}
-		//TODO
 		return null;
 	}
 	private Image getSpriteFromFolder() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		switch(id){
+		switch(id){																			//Uses id to read sprite from folder using Toolkit.
 		case 0:
 			return toolkit.getImage("img/badgun.png");
 		case 1: //betterGun
@@ -69,6 +79,8 @@ public class Loot {
 		}
 		return null;
 	}
+	
+	//========Getters/Setters========//
 	public int getId() {return id;}
 	public Image getSprite() {return Sprite;}
 	public String getName() {return Name;}

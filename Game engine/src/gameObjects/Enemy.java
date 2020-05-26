@@ -5,7 +5,16 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+/**
+ * 
+ * Created May 26, 2020
+ * @author t4canty
+ * @author TJ178
+ * Class for Enemy Objects, including fields such as health, item drops, and position - as well as necessary paint methods and bg methods.
+ * Inherits health, position, hitbox, and sprites from GameObject parent.  
+ */
 public class Enemy extends GameObject{
+	//========Variables========//
 	private enum dropList{
 		BADGUN,
 		BETTERGUN,
@@ -14,6 +23,8 @@ public class Enemy extends GameObject{
 		TOILETPAPER
 	}
 	private dropList drop;
+	
+	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
 	 * @param x
@@ -42,14 +53,11 @@ public class Enemy extends GameObject{
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
 	}
-
+	//========Getters/setters========//
+	public dropList getDrop() {return drop;}
+	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-
+		//TODO
 	}
-	
-	public void damage(int hp) {
-		this.hp -= hp;
-	}
-
 }

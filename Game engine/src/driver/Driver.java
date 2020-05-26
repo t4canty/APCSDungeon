@@ -35,6 +35,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Player player;
 	private Room currentRoom;
 	
+	//Hey Timmy think you can add some comments to your code when you get the chance
+	//just to cut down on spaghetti
+	
 	//keybindings - {up, right, down, left, interact, reload}
 	private final char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
 	
@@ -94,10 +97,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 		
-		if(playerUp) player.move(0);
-		if(playerRight) player.move(1);
-		if(playerDown) player.move(2);
-		if(playerLeft) player.move(3);
+		if(playerUp) player.move(player.UP);
+		if(playerRight) player.move(player.RIGHT);
+		if(playerDown) player.move(player.DOWN);
+		if(playerLeft) player.move(player.LEFT);
 		if(playerInteract) { 
 			new Inventory(player.getInventory(), player); 
 			playerInteract = false;

@@ -8,17 +8,26 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * Created May 26, 2020
+ * @author t4canty
+ * @author TJ178
+ *
+ */
 public class Player extends GameObject{
-	private Loot activeGun;
-	
+	//========Variables========//
+	private Loot activeGun;																		//Currently held gun.
 	private int minX = 0;
 	private int minY = 0;
-	private int maxX;
+	private int maxX;																			
 	private int maxY;
 	private double gunAngle;
 	public boolean isShooting;
-	private long lastBulletShot = 0; //system time when last bullet was shot, used for cooldown
-	ArrayList<Loot> inventory = new ArrayList<Loot>();
+	private long lastBulletShot = 0; 															//system time when last bullet was shot, used for cooldown
+	ArrayList<Loot> inventory = new ArrayList<Loot>();											//List of guns currently in the player's inventory
+	
+	//========Constructors========//
 	/**
 	 * Player constructor with x and y inputs;
 	 * @param x
@@ -46,9 +55,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);
-		inventory.add(activeGun);
-		inventory.add(activeGun);
+		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);									//Starting gun
 		inventory.add(activeGun);
 	}
 	/**
@@ -85,22 +92,80 @@ public class Player extends GameObject{
 		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
+		/**
+		 * 
+		 * Player constructor with x and y inputs;
+		 * @param x
+		 * Starting X position for the player on the jframe
+		 * @param y
+		 * Starting Y position for the player on the jframe
+		 * @param size
+		 * Size of the player object
+		 * @param Sprite1
+		 * Full path to the idle sprite
+		 * @param Sprite2
+		 * Full path to the move sprite
+		 * @param Sprite3
+		 * Full path to the hurt sprite
+		 * @param Sprite
+		 * Full path to Attack Sprite
+		 * @param debug
+		 * Sets debug flag
+		 * 
+		 */
+		public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+			this(x, y, size, Sprite1, Sprite2, Sprite3, Sprite4);
+			this.debug = debug;
+		}
+		/**
+		 * Player constructor
+		 * @param x
+		 * Starting X position for the player on the jframe
+		 * @param y
+		 * Starting Y position for the player on the jframe
+		 * @param size
+		 * Size of the player object
+		 * @param x
+		 * Starting X position for the player on the jframe
+		 * @param y
+		 * Starting Y position for the player on the jframe
+		 * @param size
+		 * Size of the player object
+		 * @param Sprite1
+		 * Full path to the idle sprite
+		 * @param Sprite2
+		 * Full path to the move sprite
+		 * @param Sprite3
+		 * Full path to the hurt sprite
+		 * @param Sprite4 full path to Attack Sprite
+		 * @param debug
+		 * Sets debug flag
+		 */
+		public Player(Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+			this(size, Sprite1, Sprite2, Sprite3, Sprite4);
+			this.debug = debug;
+		}
+	
+	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-		rBox.x = x;
-		rBox.y = y;
-		
-		Graphics2D g2d = (Graphics2D) g; //neccessary for drawing gifs
+		rBox.x = x;																					//set hitbox to curremnt y
+		rBox.y = y;																					//Set hitbox to current x
+		Graphics2D g2d = (Graphics2D) g; 															//neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
 		g2d.drawImage(idleSprite, x, y, null);
-		g2d.draw(rBox);
+		if(debug) g2d.draw(rBox);
 		
 		if(isShooting) g2d.setColor(Color.RED);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
-		g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
+		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 	}
-	
+	/**
+	 * Method to determine if cooldown is over
+	 * @return
+	 * returns true or false if enough time has passed. 
+	 */
 	public boolean canShootBullet() {
 		if(System.currentTimeMillis() - lastBulletShot > activeGun.getCooldown()) {
 			lastBulletShot = System.currentTimeMillis();
@@ -108,50 +173,63 @@ public class Player extends GameObject{
 		}
 		return false;
 	}
-	
-	
+	/**
+	 * Movement method.
+	 * @param dir
+	 * Determines the direction of the movemnt.
+	 */
 	public void move(int dir) {
 		switch(dir) {
-		case 0:
+		case UP:
 			y -= 10;
 			break;
-		case 1:
+		case RIGHT:
 			x += 10;
 			break;
-		case 2:
+		case DOWN:
 			y += 10;
 			break;
-		case 3:
+		case LEFT:
 			x -= 10;
 			break;
 		}
-		
-		if(y < minY) y = minY;
+		if(y < minY) y = minY;																			//Collision on the bounds of the room
 		if(y > maxY) y = maxY;
 		if(x < minX) x = minX;
 		if(x > maxX) x = maxX;
 	}
-	
+	/**
+	 * Teleport player to given x/y coordinates. 
+	 * @param x
+	 * @param y
+	 */
 	public void moveTo(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
+	/**
+	 * Update method to determine the angle of the gun
+	 * @param mouseX
+	 * @param mouseY
+	 */
 	public void updateGunAngle(int mouseX, int mouseY) {
 		//double riseRun = (mouseY - y) * 1.0 / (mouseX - x);
 		gunAngle = Math.atan2(mouseY - rBox.getCenterY(), mouseX - rBox.getCenterX());
 		
 	}
-	public void setActiveItem(Loot item) {activeGun = item;}
-	public Loot getActiveItem() {return activeGun;}
-	public void add(Loot l) {inventory.add(l);}
-	public Loot get(int i) {return inventory.get(i);}
-	public ArrayList<Loot> getInventory(){
-		return inventory;
-	}
+	/**
+	 * Method to check all currently colliding entities.
+	 * @param entities
+	 */
 	public void checkCollision(ArrayList<GameObject> entities) {
-		
+		//TODO
 	}
 	
+	/**
+	 * Sets collision bounds for the JFrame.
+	 * @param bounds
+	 * Bounds read from a room object. 
+	 */
 	public void updateBounds(int[] bounds) {
 		minY = bounds[0];
 		maxX = bounds[1] - rBox.width;
@@ -159,13 +237,11 @@ public class Player extends GameObject{
 		minX = bounds[3];
 	}
 	
-	
-	public int getX() { return x; }
-	public int getY() { return y; }
-	public int getCenterX() { return x + rBox.width/2;}
-	public int getCenterY() { return y + rBox.height/2;};
+	//========Getters/Setters========//
+	public void add(Loot l) {inventory.add(l);}
+	public Loot get(int i) {return inventory.get(i);}
+	public ArrayList<Loot> getInventory(){return inventory;}
 	public double getGunAngle() { return gunAngle; }
 	public Loot getActiveGun() { return activeGun; }
 	public void setActiveGun(Loot g) {activeGun = g; }
-
 }

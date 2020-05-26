@@ -6,11 +6,21 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 
+/**
+ * Class for different types of projectiles available - determined by id.
+ * Created May 26, 2020
+ * @author t4canty
+ * @author TJ178
+ *
+ */
 public class Projectile extends GameObject {
+	//========Variables========//
 	private int velocityX = 0;
 	private int velocityY = 0;
 	private int damage = 0;
 	private boolean isEnemyFire = false;
+	
+	//========Constructor========//
 	/**
 	 * Projectile to be drawn on screen
 	 * @param x
@@ -29,7 +39,6 @@ public class Projectile extends GameObject {
 		this.isEnemyFire = isEnemy;
 		this.x = x;
 		this.y = y;
-		
 		this.velocityX = (int)(velocity * Math.cos(angle));
 		this.velocityY = (int)(velocity * Math.sin(angle));
 		hp = -1;
@@ -38,6 +47,8 @@ public class Projectile extends GameObject {
 		rBox.y = y;
 		this.idleSprite = sprite;
 	}
+	
+	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
 		x += velocityX;
@@ -49,13 +60,10 @@ public class Projectile extends GameObject {
 		g2d.draw(rBox);
 		
 	}
-	public void setSize(Dimension size) {
-		rBox = new Rectangle(size);
-	}
-	public void setSprite(Image Sprite) {
-		this.idleSprite = Sprite;
-	}
 	
+	//========Getters/Setters========//
+	public void setSize(Dimension size) {rBox = new Rectangle(size);}
+	public void setSprite(Image Sprite) {this.idleSprite = Sprite;}
 	public boolean isEnemyFire() {return isEnemyFire;}
 	public int getDamage() {return damage;}
 }
