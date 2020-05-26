@@ -14,6 +14,7 @@ public class Player extends GameObject{
 	private int minY = 0;
 	private int maxX;
 	private int maxY;
+	private double gunAngle;
 	private ArrayList<Loot> inventory = new ArrayList<Loot>();
 	/**
 	 * Player constructor with x and y inputs;
@@ -85,6 +86,10 @@ public class Player extends GameObject{
 		Graphics2D g2d = (Graphics2D) g; //neccessary for drawing gifs
 		g2d.drawImage(idleSprite, x, y, null);
 		g2d.draw(rBox);
+		
+		
+		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
+		g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 	}
 	
 	
@@ -113,6 +118,12 @@ public class Player extends GameObject{
 	public void moveTo(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void updateGunAngle(int mouseX, int mouseY) {
+		//double riseRun = (mouseY - y) * 1.0 / (mouseX - x);
+		gunAngle = Math.atan2(mouseY - rBox.getCenterY(), mouseX - rBox.getCenterX());
+		
 	}
 	
 	public void checkCollision(ArrayList<GameObject> entities) {

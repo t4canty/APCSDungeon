@@ -96,6 +96,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(playerDown) player.move(2);
 		if(playerLeft) player.move(3);
 		
+		player.updateGunAngle(mouseX, mouseY);
 		player.checkCollision(currentRoom.getEntities());
 	}
 	
@@ -106,7 +107,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.paint(g);
 	}
 	
-	private void changeKeyBinding(String oldkey, String newkey) {
+	private void changeKeyBinding(char oldkey, char newkey) {
+		for(int i = 0; i < keybindings.length; i++) {
+			if(keybindings[i] == oldkey) {
+				keybindings[i] = newkey;
+				break;
+			}
+		}
+		
 		/*inputmap.put(KeyStroke.getKeyStroke(newkey), inputmap.get(KeyStroke.getKeyStroke(oldkey)));
 		inputmap.remove(KeyStroke.getKeyStroke(oldkey));*/
 	}
@@ -162,6 +170,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerInteract = false;
 	private boolean playerReload = false;
 	
+	private boolean isShooting = false;
+	private int mouseX = 0;
+	private int mouseY = 0;
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -212,12 +224,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//start shooting
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			isShooting = true;
+		}
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		//stop shooting
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			isShooting = false;
+		}
 		
 	}
 	
@@ -229,7 +245,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		//change where player weapon is aiming
-		
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 	
 	

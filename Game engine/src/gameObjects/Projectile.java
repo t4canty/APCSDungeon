@@ -26,7 +26,6 @@ public class Projectile extends GameObject {
 	}
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(idleSprite, x, y, null);		
 	}
 	
 }
