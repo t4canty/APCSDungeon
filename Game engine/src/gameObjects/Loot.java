@@ -2,9 +2,6 @@ package gameObjects;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 public class Loot {
@@ -31,7 +28,6 @@ public class Loot {
 			Sprite = getSpriteFromFolder();
 	}
 	private Image getSpriteFromJar() {
-<<<<<<< HEAD
 		try {
 			switch(id) {
 
@@ -50,48 +46,22 @@ public class Loot {
 			e.printStackTrace();
 			return null;
 		}
-=======
 		//TODO
->>>>>>> refs/remotes/origin/master
 		return null;
 	}
 	private Image getSpriteFromFolder() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		switch(id) {
-		case 0: //badGun
-			return toolkit.getImage("badgun.png");
+		switch(id){
 		case 1: //betterGun
-<<<<<<< HEAD
 			return toolkit.getImage("betterGun.png");
-=======
-			return toolkit.getImage("badgun.png");
->>>>>>> refs/remotes/origin/master
 		case 2: //federalReserve
-<<<<<<< HEAD
 			return toolkit.getImage("federalReserve.png");
-=======
-			return toolkit.getImage("badgun.png");
->>>>>>> refs/remotes/origin/master
 		case 3: //ElPresidente
-<<<<<<< HEAD
 			return toolkit.getImage("ElPresidente.png");
-=======
-			return toolkit.getImage("badgun.png");
->>>>>>> refs/remotes/origin/master
 		case 4: //ToiletPaper
-<<<<<<< HEAD
 			return toolkit.getImage("ToiletPaper.png");
-=======
-			return toolkit.getImage("badgun.png");
->>>>>>> refs/remotes/origin/master
 		}
-<<<<<<< HEAD
 		return null;
-		//todo
-=======
-		//TODO
-		return null;
->>>>>>> refs/remotes/origin/master
 	}
 	public int getId() {return id;}
 	public Image getSprite() {return Sprite;}
