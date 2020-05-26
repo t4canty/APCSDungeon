@@ -34,6 +34,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Timer t;
 	private Player player;
 	private Room currentRoom;
+	private boolean debug;
 	
 	//Hey Timmy think you can add some comments to your code when you get the chance
 	//just to cut down on spaghetti
@@ -50,6 +51,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 */
 	public Driver(Dimension bounds, String title, boolean debug) {
 		this.bounds = bounds;
+		this.debug = debug;
 		f = new JFrame();
 		f.setTitle(title);
 		f.setSize(bounds);
@@ -109,7 +111,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.updateGunAngle(mouseX, mouseY);
 		player.checkCollision(currentRoom.getEntities());
 		
-		if(player.isShooting && player.canShootBullet()) {
+		boolean canShoot = player.isShooting && player.canShootBullet();
+		//System.out.println("In Driver: CanShoot:" + canShoot);
+		if(canShoot) {
 			currentRoom.getEntities().add(new Projectile(player.getActiveGun().getDamage(), false, player.getCenterX(), player.getCenterY(), 20, player.getGunAngle(), new Dimension(25, 25), null, 0));
 		}
 	}

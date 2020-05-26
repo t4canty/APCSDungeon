@@ -53,7 +53,10 @@ public class Inventory extends JFrame implements ActionListener {
 			JRadioButton tmp = new JRadioButton(l.getName());
 			tmp.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent arg0) {player.setActiveGun(l);} //Each button sets the active weapon to their corresponding weapon
+				public void actionPerformed(ActionEvent arg0) {
+					player.setActiveGun(l);
+					System.out.println("tick");
+					} //Each button sets the active weapon to their corresponding weapon
 			});
 			i.add(tmp);
 			inventoryB.add(tmp);

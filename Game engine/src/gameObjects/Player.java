@@ -55,7 +55,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);									//Starting gun
+		activeGun = new Loot(100, 300, 0, "Bad Gun", super.isJar);									//Starting gun
 		inventory.add(activeGun);
 	}
 	/**
@@ -89,7 +89,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);
+		activeGun = new Loot(100, 300, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 		/**
@@ -155,7 +155,6 @@ public class Player extends GameObject{
 		g2d.setColor(Color.BLACK);
 		g2d.drawImage(idleSprite, x, y, null);
 		if(debug) g2d.draw(rBox);
-		
 		if(isShooting) g2d.setColor(Color.RED);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
@@ -167,8 +166,11 @@ public class Player extends GameObject{
 	 * returns true or false if enough time has passed. 
 	 */
 	public boolean canShootBullet() {
+		//if(debug) System.out.println("Current time to next shot:" + (System.currentTimeMillis() - lastBulletShot) + " IsShooting:" + isShooting);
 		if(System.currentTimeMillis() - lastBulletShot > activeGun.getCooldown()) {
 			lastBulletShot = System.currentTimeMillis();
+			if(debug) System.out.println("True: Current time is now:" + lastBulletShot);
+			if(debug) System.out.println("Current Cooldown Time:" + activeGun.getCooldown());
 			return true;
 		}
 		return false;
