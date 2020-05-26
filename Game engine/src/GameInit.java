@@ -11,6 +11,6 @@ public class GameInit {
 		if(debug) System.out.println("Created Jframe");
 	}
 	public static void main(String[] args) {
-		GameInit gameInit = new GameInit(null, "test", true, new Dimension(1000, 1000));
+		GameInit gameInit = new GameInit(null, "test", true, new Dimension(800, 800));
 	}
 }
