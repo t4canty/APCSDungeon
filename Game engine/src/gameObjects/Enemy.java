@@ -47,5 +47,9 @@ public class Enemy extends GameObject{
 	public void paint(Graphics g) {
 
 	}
+	
+	public void damage(int hp) {
+		this.hp -= hp;
+	}
 
 }
