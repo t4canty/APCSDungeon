@@ -29,6 +29,7 @@ public abstract class GameObject {
 	public boolean isJar = false;
 	
 	public abstract void paint(Graphics g);
+	
 	public void getImagesFromFolder(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		this.idleSprite = toolkit.getImage(idleSprite);
@@ -38,6 +39,7 @@ public abstract class GameObject {
 		if(idleSprite == null)
 			throw new IOException();
 	}
+	
 	public void getImagesFromJar(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
 		if(getClass().getResourceAsStream(idleSprite) == null) {
 			System.err.println("Error, getClass is null");
@@ -46,5 +48,13 @@ public abstract class GameObject {
 		this.moveSprite = ImageIO.read(getClass().getResourceAsStream(moveSprite));
 		this.hurtSprite = ImageIO.read(getClass().getResourceAsStream(hurtSprite));
 		this.attackSprite = ImageIO.read(getClass().getResourceAsStream(attackSprite));
+	}
+	
+	public Rectangle getHitbox() {
+		return rBox;
+	}
+	
+	public boolean isColliding(Rectangle r) {
+		return rBox.contains(r);
 	}
 }

@@ -5,10 +5,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player extends GameObject{
 	private Loot activeGun;
 	private Loot[] inventory;
+	
+	private int minX = 0;
+	private int minY = 0;
+	private int maxX;
+	private int maxY;
 	/**
 	 * Player constructor with x and y inputs;
 	 * @param x
@@ -69,8 +75,51 @@ public class Player extends GameObject{
 	}
 	@Override
 	public void paint(Graphics g) {
+		rBox.x = x;
+		rBox.y = y;
+		
 		Graphics2D g2d = (Graphics2D) g; //neccessary for drawing gifs
 		g2d.drawImage(idleSprite, x, y, null);
+		g2d.draw(rBox);
+	}
+	
+	
+	public void move(int dir) {
+		switch(dir) {
+		case 0:
+			y -= 10;
+			break;
+		case 1:
+			x += 10;
+			break;
+		case 2:
+			y += 10;
+			break;
+		case 3:
+			x -= 10;
+			break;
+		}
+		
+		if(y < minY) y = minY;
+		if(y > maxY) y = maxY;
+		if(x < minX) x = minX;
+		if(x > maxX) x = maxX;
+	}
+	
+	public void moveTo(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void checkCollision(ArrayList<GameObject> entities) {
+		
+	}
+	
+	public void updateBounds(int[] bounds) {
+		minY = bounds[0];
+		maxX = bounds[1] - rBox.width;
+		maxY = bounds[2] - rBox.height;
+		minX = bounds[3];
 	}
 
 }
