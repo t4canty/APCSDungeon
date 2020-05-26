@@ -48,7 +48,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * @param title
 	 * Title of the window
 	 */
-	public Driver(Dimension bounds, String title) {
+	public Driver(Dimension bounds, String title, boolean debug) {
 		this.bounds = bounds;
 		f = new JFrame();
 		f.setTitle(title);
@@ -75,7 +75,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		
 		try {
-			player = new Player(100, 100, new Dimension(50,50), "", "", "", "");
+			player = new Player(100, 100, new Dimension(50,50), "", "", "", "", debug);
 			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			player.setActiveGun(new Loot(10, 300, 0, "badgun", false));

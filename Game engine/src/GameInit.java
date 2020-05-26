@@ -10,7 +10,7 @@ public class GameInit {
 	private Driver jDriver;
 	//========Constructor========//
 	public GameInit(Path filePath, String title, boolean debug, Dimension bounds) {
-		jDriver = new Driver(bounds, title);
+		jDriver = new Driver(bounds, title, debug);
 		if(debug) System.out.println("Created Jframe");
 	}
 	//========Main========//
