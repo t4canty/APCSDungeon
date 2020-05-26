@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Player extends GameObject{
 	//========Variables========//
-	private Loot activeGun;																		//Currently held gun.
+	private Gun activeGun;																		//Currently held gun.
 	private int minX = 0;
 	private int minY = 0;
 	private int maxX;																			
@@ -25,7 +25,7 @@ public class Player extends GameObject{
 	private double gunAngle;
 	public boolean isShooting;
 	private long lastBulletShot = 0; 															//system time when last bullet was shot, used for cooldown
-	ArrayList<Loot> inventory = new ArrayList<Loot>();											//List of guns currently in the player's inventory
+	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	
 	//========Constructors========//
 	/**
@@ -55,7 +55,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(100, 300, 0, "Bad Gun", super.isJar);									//Starting gun
+		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);									//Starting gun
 		inventory.add(activeGun);
 	}
 	/**
@@ -89,7 +89,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(100, 300, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 		/**
@@ -240,10 +240,10 @@ public class Player extends GameObject{
 	}
 	
 	//========Getters/Setters========//
-	public void add(Loot l) {inventory.add(l);}
-	public Loot get(int i) {return inventory.get(i);}
-	public ArrayList<Loot> getInventory(){return inventory;}
+	public void add(Gun l) {inventory.add(l);}
+	public Gun get(int i) {return inventory.get(i);}
+	public ArrayList<Gun> getInventory(){return inventory;}
 	public double getGunAngle() { return gunAngle; }
-	public Loot getActiveGun() { return activeGun; }
-	public void setActiveGun(Loot g) {activeGun = g; }
+	public Gun getActiveGun() { return activeGun; }
+	public void setActiveGun(Gun g) {activeGun = g; }
 }

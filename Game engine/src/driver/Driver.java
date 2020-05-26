@@ -23,7 +23,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import gameObjects.GameObject;
-import gameObjects.Loot;
+import gameObjects.Gun;
 import gameObjects.Player;
 import gameObjects.Projectile;
 import gameObjects.Room;
@@ -80,7 +80,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			player = new Player(100, 100, new Dimension(50,50), "", "", "", "", debug);
 			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
-			player.setActiveGun(new Loot(10, 300, 0, "badgun", false));
+			player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
