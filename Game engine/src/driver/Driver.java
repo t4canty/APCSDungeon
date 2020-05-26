@@ -24,6 +24,7 @@ import javax.swing.Timer;
 
 import gameObjects.GameObject;
 import gameObjects.Player;
+import gameObjects.Projectile;
 import gameObjects.Room;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
@@ -100,17 +101,30 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			playerInteract = false;
 		}
 		
+		player.updateGunAngle(mouseX, mouseY);
 		player.checkCollision(currentRoom.getEntities());
+		
+		if(player.isShooting && player.canShootBullet()) {
+			currentRoom.getEntities().add(new Projectile(player.getX(), player.getY(), (int)( 50 * Math.cos(player.getGunAngle())), (int)(50 * Math.sin(player.getGunAngle())), null, 0, new Dimension(25, 25)));
+		}
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		//player.paint(g);
 		currentRoom.paint(g);
+		currentRoom.paintEntities(g);
 		player.paint(g);
 	}
 	
-	private void changeKeyBinding(String oldkey, String newkey) {
+	private void changeKeyBinding(char oldkey, char newkey) {
+		for(int i = 0; i < keybindings.length; i++) {
+			if(keybindings[i] == oldkey) {
+				keybindings[i] = newkey;
+				break;
+			}
+		}
+		
 		/*inputmap.put(KeyStroke.getKeyStroke(newkey), inputmap.get(KeyStroke.getKeyStroke(oldkey)));
 		inputmap.remove(KeyStroke.getKeyStroke(oldkey));*/
 	}
@@ -166,6 +180,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerInteract = false;
 	private boolean playerReload = false;
 	
+	private int mouseX = 0;
+	private int mouseY = 0;
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -216,24 +233,32 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//start shooting
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			player.isShooting = true;
+		}
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		//stop shooting
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			player.isShooting = false;
+		}
 		
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		//change where player weapon is aiming & shooting
+		mouseX = e.getX();
+		mouseY = e.getY();
+		player.isShooting = true;
 		
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		//change where player weapon is aiming
-		
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 	
 	

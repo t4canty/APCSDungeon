@@ -1,5 +1,6 @@
 package gameObjects;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +15,9 @@ public class Player extends GameObject{
 	private int minY = 0;
 	private int maxX;
 	private int maxY;
+	private double gunAngle;
+	public boolean isShooting;
+	private long lastBulletShot = 0; //system time when last bullet was shot, used for cooldown
 	private ArrayList<Loot> inventory = new ArrayList<Loot>();
 	/**
 	 * Player constructor with x and y inputs;
@@ -29,7 +33,9 @@ public class Player extends GameObject{
 	 * Full path to the move sprite
 	 * @param Sprite3
 	 * Full path to the hurt sprite
-	 * @param Sprite4 full path to Attack Sprite
+	 * @param Sprite
+	 * Full path to Attack Sprite
+	 * 
 	 */
 	public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
 		this.x = x;
@@ -83,8 +89,21 @@ public class Player extends GameObject{
 		rBox.y = y;
 		
 		Graphics2D g2d = (Graphics2D) g; //neccessary for drawing gifs
+		g2d.setColor(Color.BLACK);
 		g2d.drawImage(idleSprite, x, y, null);
 		g2d.draw(rBox);
+		
+		if(isShooting) g2d.setColor(Color.RED);
+		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
+		g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
+	}
+	
+	public boolean canShootBullet() {
+		if(System.currentTimeMillis() - lastBulletShot > activeGun.getCooldown()) {
+			lastBulletShot = System.currentTimeMillis();
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -115,6 +134,12 @@ public class Player extends GameObject{
 		this.y = y;
 	}
 	
+	public void updateGunAngle(int mouseX, int mouseY) {
+		//double riseRun = (mouseY - y) * 1.0 / (mouseX - x);
+		gunAngle = Math.atan2(mouseY - rBox.getCenterY(), mouseX - rBox.getCenterX());
+		
+	}
+	
 	public void checkCollision(ArrayList<GameObject> entities) {
 		
 	}
@@ -125,5 +150,10 @@ public class Player extends GameObject{
 		maxY = bounds[2] - rBox.height;
 		minX = bounds[3];
 	}
+	
+	
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public double getGunAngle() { return gunAngle; }
 
 }
