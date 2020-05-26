@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class Player extends GameObject{
 	private Loot activeGun;
-	private Loot[] inventory;
 	
 	private int minX = 0;
 	private int minY = 0;
 	private int maxX;
 	private int maxY;
+	private ArrayList<Loot> inventory = new ArrayList<Loot>();
 	/**
 	 * Player constructor with x and y inputs;
 	 * @param x
@@ -40,6 +40,8 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		activeGun = new Loot(1, 0, "Bad Gun", super.isJar);
+		inventory.add(activeGun);
 	}
 	/**
 	 * Player constructor
@@ -72,6 +74,8 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		activeGun = new Loot(1, 0, "Bad Gun", super.isJar);
+		inventory.add(activeGun);
 	}
 	@Override
 	public void paint(Graphics g) {
