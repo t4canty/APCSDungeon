@@ -24,6 +24,7 @@ import javax.swing.Timer;
 
 import gameObjects.GameObject;
 import gameObjects.Player;
+import gameObjects.Projectile;
 import gameObjects.Room;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
@@ -98,12 +99,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		player.updateGunAngle(mouseX, mouseY);
 		player.checkCollision(currentRoom.getEntities());
+		
+		if(player.isShooting && player.canShootBullet()) {
+			currentRoom.getEntities().add(new Projectile(player.getX(), player.getY(), (int)( 50 * Math.cos(player.getGunAngle())), (int)(50 * Math.sin(player.getGunAngle())), null, 0, new Dimension(25, 25)));
+		}
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		//player.paint(g);
 		currentRoom.paint(g);
+		currentRoom.paintEntities(g);
 		player.paint(g);
 	}
 	
@@ -170,7 +176,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerInteract = false;
 	private boolean playerReload = false;
 	
-	private boolean isShooting = false;
 	private int mouseX = 0;
 	private int mouseY = 0;
 	
@@ -225,14 +230,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
-			isShooting = true;
+			player.isShooting = true;
 		}
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
-			isShooting = false;
+			player.isShooting = false;
 		}
 		
 	}
@@ -240,6 +245,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		//change where player weapon is aiming & shooting
+		mouseX = e.getX();
+		mouseY = e.getY();
+		player.isShooting = true;
 		
 	}
 	@Override

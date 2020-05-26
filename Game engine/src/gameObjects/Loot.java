@@ -9,6 +9,7 @@ public class Loot {
 	private int id;
 	private Image Sprite;
 	private String Name;
+	private int cooldown;
 	/**
 	 * Each loot object represents a gun in the game, with a different sprite and name to display in the Inventory.
 	 * @param Damage
@@ -17,6 +18,8 @@ public class Loot {
 	 * The id of the gun - used to determine what kind of bullet to shoot in the projectile class.
 	 * @param Name
 	 * Name of the gun.
+	 * @param cooldown
+	 * Cooldown time (ms) until gun can shoot again
 	 */
 	public Loot(int Damage, int id, String Name, boolean IsJar) {
 		this.Damage = Damage;
@@ -67,4 +70,5 @@ public class Loot {
 	public Image getSprite() {return Sprite;}
 	public String getName() {return Name;}
 	public int getDamage() {return Damage;}
+	public int getCooldown() {return cooldown;}
 }

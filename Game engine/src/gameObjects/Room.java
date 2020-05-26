@@ -47,6 +47,13 @@ public class Room {
 		g.drawImage(backgroundSprite, 0, 0, null);
 	}
 	
+	public void paintEntities(Graphics g) {
+		for(GameObject i : entities) {
+			i.paint(g);
+		}
+	}
+	
+	
 	public void setRightRoom(Room r) {
 		rightRoom = r;
 	}
