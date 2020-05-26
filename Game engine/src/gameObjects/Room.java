@@ -48,12 +48,12 @@ public class Room {
 	}
 	
 	public void paintEntities(Graphics g) {
+		collision();
+		
 		for(int i = 0; i < entities.size(); i++) {
 			GameObject o = entities.get(i);
 			o.paint(g);
 		}
-		
-		collision();
 	}
 	
 	
@@ -61,6 +61,15 @@ public class Room {
 		for(int i = 0; i < entities.size(); i++) {
 			GameObject temp = entities.get(i);
 			for(int j = 0; j < entities.size(); j++) {
+				
+				if(temp instanceof Projectile) {
+					if(temp.getHitbox().getX() > rightBound || temp.getHitbox().getX() < leftBound || temp.getHitbox().getY() > bottomBound || temp.getHitbox().getY() < topBound) {
+						entities.remove(i);
+						i--;
+						break;
+					}
+				}
+				
 				if(j != i) {
 					GameObject temp2 = entities.get(j);
 					if(temp instanceof Projectile && !((Projectile) temp).isEnemyFire() && temp2 instanceof Enemy){

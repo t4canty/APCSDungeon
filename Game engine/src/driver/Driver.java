@@ -73,7 +73,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		try {
 			player = new Player(100, 100, new Dimension(50,50), "", "", "", "");
-			currentRoom = new Room(new Rectangle(100, 100, 900, 900), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
+			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			player.setActiveGun(new Loot(10, 300, 0, "badgun", false));
 		} catch (IOException e) {
@@ -107,7 +107,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.checkCollision(currentRoom.getEntities());
 		
 		if(player.isShooting && player.canShootBullet()) {
-			currentRoom.getEntities().add(new Projectile(player.getActiveGun().getDamage(), false, player.getCenterX(), player.getCenterY(), (int)( 50 * Math.cos(player.getGunAngle())), (int)(50 * Math.sin(player.getGunAngle())), new Dimension(25, 25), null, 0));
+			currentRoom.getEntities().add(new Projectile(player.getActiveGun().getDamage(), false, player.getCenterX(), player.getCenterY(), 20, player.getGunAngle(), new Dimension(25, 25), null, 0));
 		}
 	}
 	
