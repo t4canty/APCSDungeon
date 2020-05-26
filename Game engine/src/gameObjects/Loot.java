@@ -12,17 +12,18 @@ public class Loot {
 	private int cooldown;
 	/**
 	 * Each loot object represents a gun in the game, with a different sprite and name to display in the Inventory.
+	 * @param cooldown
+	 * Cooldown time (ms) until gun can shoot again
 	 * @param Damage
 	 * Self explanatory.
 	 * @param id
 	 * The id of the gun - used to determine what kind of bullet to shoot in the projectile class.
 	 * @param Name
 	 * Name of the gun.
-	 * @param cooldown
-	 * Cooldown time (ms) until gun can shoot again
 	 */
-	public Loot(int Damage, int id, String Name, boolean IsJar) {
+	public Loot(int Damage, int cooldown, int id, String Name, boolean IsJar) {
 		this.Damage = Damage;
+		this.cooldown = cooldown;
 		this.id = id;
 		this.Name = Name;
 		if(IsJar)
@@ -35,7 +36,7 @@ public class Loot {
 			switch(id) {
 
 			case 0: //badGun
-				return ImageIO.read(getClass().getResourceAsStream("badgun.png"));
+				return ImageIO.read(getClass().getResourceAsStream("img/badgun.png"));
 			case 1: //betterGun
 				return ImageIO.read(getClass().getResourceAsStream("betterGun.png"));
 			case 2: //federalReserve
@@ -55,6 +56,8 @@ public class Loot {
 	private Image getSpriteFromFolder() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		switch(id){
+		case 0:
+			return toolkit.getImage("img/badgun.png");
 		case 1: //betterGun
 			return toolkit.getImage("betterGun.png");
 		case 2: //federalReserve

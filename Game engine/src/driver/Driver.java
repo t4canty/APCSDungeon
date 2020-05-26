@@ -23,6 +23,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import gameObjects.GameObject;
+import gameObjects.Loot;
 import gameObjects.Player;
 import gameObjects.Projectile;
 import gameObjects.Room;
@@ -74,6 +75,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			player = new Player(100, 100, new Dimension(50,50), "", "", "", "");
 			currentRoom = new Room(new Rectangle(100, 100, 900, 900), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
+			player.setActiveGun(new Loot(10, 300, 0, "badgun", false));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,7 +103,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.checkCollision(currentRoom.getEntities());
 		
 		if(player.isShooting && player.canShootBullet()) {
-			currentRoom.getEntities().add(new Projectile(player.getX(), player.getY(), (int)( 50 * Math.cos(player.getGunAngle())), (int)(50 * Math.sin(player.getGunAngle())), null, 0, new Dimension(25, 25)));
+			currentRoom.getEntities().add(new Projectile(player.getActiveGun().getDamage(), false, player.getCenterX(), player.getCenterY(), (int)( 50 * Math.cos(player.getGunAngle())), (int)(50 * Math.sin(player.getGunAngle())), new Dimension(25, 25), null, 0));
 		}
 	}
 	

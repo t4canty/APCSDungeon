@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 public class Projectile extends GameObject {
 	private int velocityX = 0;
 	private int velocityY = 0;
+	private int damage = 0;
+	private boolean isEnemyFire = false;
 	/**
 	 * Projectile to be drawn on screen
 	 * @param x
@@ -19,8 +21,12 @@ public class Projectile extends GameObject {
 	 * @param id
 	 * Id of what kind of bullet to shoot - returned from a loot object
 	 * @param size
+	 * determines whether the projectile hurts enemies or the player
+	 * @param isEnemy
 	 */
-	public Projectile(int x, int y, int velocityX, int velocityY, Image sprite, int id, Dimension size) {
+	public Projectile(int damage, boolean isEnemy, int x, int y, int velocityX, int velocityY, Dimension size, Image sprite, int id) {
+		this.damage = damage;
+		this.isEnemyFire = isEnemy;
 		this.x = x;
 		this.y = y;
 		this.velocityX = velocityX;
@@ -46,4 +52,7 @@ public class Projectile extends GameObject {
 	public void setSprite(Image Sprite) {
 		this.idleSprite = Sprite;
 	}
+	
+	public boolean isEnemyFire() {return isEnemyFire;}
+	public int getDamage() {return damage;}
 }

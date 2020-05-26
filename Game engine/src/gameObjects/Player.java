@@ -46,7 +46,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(1, 0, "Bad Gun", super.isJar);
+		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 	/**
@@ -80,7 +80,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Loot(1, 0, "Bad Gun", super.isJar);
+		activeGun = new Loot(100, 1, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 	@Override
@@ -95,6 +95,7 @@ public class Player extends GameObject{
 		
 		if(isShooting) g2d.setColor(Color.RED);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
+		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
 		g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 	}
 	
@@ -154,6 +155,10 @@ public class Player extends GameObject{
 	
 	public int getX() { return x; }
 	public int getY() { return y; }
+	public int getCenterX() { return x + rBox.width/2;}
+	public int getCenterY() { return y + rBox.height/2;};
 	public double getGunAngle() { return gunAngle; }
+	public Loot getActiveGun() { return activeGun; }
+	public void setActiveGun(Loot g) {activeGun = g; }
 
 }
