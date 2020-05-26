@@ -26,14 +26,16 @@ import gameObjects.GameObject;
 import gameObjects.Player;
 import gameObjects.Room;
 
-public class Driver extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
+public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
 	private Dimension bounds;
 	private JFrame f;
 	private Timer t;
-	InputMap inputmap;		//all inputs for keyboard bindings
-	ActionMap actionmap;	//actions assigned to individual key bindings
-	Player player;
-	Room currentRoom;
+	private Player player;
+	private Room currentRoom;
+	
+	//keybindings - {up, right, down, left, interact, reload}
+	private final char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
+	
 	/**
 	 * Driver object allows for a set size to be passed in, allowing for a method to create the jframe and resize it in a settings method.
 	 * @param bounds
@@ -50,26 +52,21 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 		f.setBackground(Color.black);
 		f.add(this);
 		
-		inputmap = this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
-		actionmap = this.getActionMap();
+		//inputmap = this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+		//actionmap = this.getActionMap();
+		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
 		
 		
 		//set key bindings to default things
-		inputmap.put(KeyStroke.getKeyStroke("W"), "move up");
+		/*inputmap.put(KeyStroke.getKeyStroke("W"), "move up");
 		inputmap.put(KeyStroke.getKeyStroke("A"), "move left");
 		inputmap.put(KeyStroke.getKeyStroke("S"), "move down");
 		inputmap.put(KeyStroke.getKeyStroke("D"), "move right");
 		inputmap.put(KeyStroke.getKeyStroke("E"), "interact");
 		inputmap.put(KeyStroke.getKeyStroke("R"), "reload");
-		
-		actionmap.put("move up", new PlayerAction(0));
-		actionmap.put("move left", new PlayerAction(1));
-		actionmap.put("move down", new PlayerAction(2));
-		actionmap.put("move right", new PlayerAction(3));
-		actionmap.put("interact", new PlayerAction(4));
-		actionmap.put("reload", new PlayerAction(5));
+		*/
 		
 		
 		try {
@@ -93,6 +90,12 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
+		
+		if(playerUp) player.move(0);
+		if(playerRight) player.move(1);
+		if(playerDown) player.move(2);
+		if(playerLeft) player.move(3);
+		
 		player.checkCollision(currentRoom.getEntities());
 	}
 	
@@ -104,12 +107,12 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	}
 	
 	private void changeKeyBinding(String oldkey, String newkey) {
-		inputmap.put(KeyStroke.getKeyStroke(newkey), inputmap.get(KeyStroke.getKeyStroke(oldkey)));
-		inputmap.remove(KeyStroke.getKeyStroke(oldkey));
+		/*inputmap.put(KeyStroke.getKeyStroke(newkey), inputmap.get(KeyStroke.getKeyStroke(oldkey)));
+		inputmap.remove(KeyStroke.getKeyStroke(oldkey));*/
 	}
 	
 	///Actions that are bound to keys
-	private class PlayerAction extends AbstractAction{
+	/*private class PlayerAction extends AbstractAction{
 		
 		private int action = -1;
 		
@@ -147,11 +150,65 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 			}
 			
 		}
-	}
+	}*/
 	
 	
 	
 	/////// Mouse and Keyboard inputs / variables
+	private boolean playerUp = false;
+	private boolean playerRight = false;
+	private boolean playerDown = false;
+	private boolean playerLeft = false;
+	private boolean playerInteract = false;
+	private boolean playerReload = false;
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		char temp = e.getKeyChar();
+		
+		if(temp == keybindings[0]) {
+			playerUp = true;
+			
+		}else if(temp == keybindings[1]) {
+			playerRight = true;
+			
+		}else if(temp == keybindings[2]) {
+			playerDown = true;
+			
+		}else if(temp == keybindings[3]) {
+			playerLeft = true;
+			
+		}else if(temp == keybindings[4]) {
+			playerInteract = true;
+			
+		}else if(temp == keybindings[5]) {
+			playerReload = true;
+		}
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		char temp = e.getKeyChar();
+		
+		if(temp == keybindings[0]) {
+			playerUp = false;
+			
+		}else if(temp == keybindings[1]) {
+			playerRight = false;
+			
+		}else if(temp == keybindings[2]) {
+			playerDown = false;
+			
+		}else if(temp == keybindings[3]) {
+			playerLeft = false;
+			
+		}else if(temp == keybindings[4]) {
+			playerInteract = false;
+			
+		}else if(temp == keybindings[5]) {
+			playerReload = false;
+		}
+		
+	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -190,6 +247,11 @@ public class Driver extends JPanel implements ActionListener, MouseListener, Mou
 	@Override
 	public void mouseExited(MouseEvent e) {
 		//stop tracking mouse
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

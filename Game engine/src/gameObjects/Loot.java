@@ -24,24 +24,25 @@ public class Loot {
 		this.Name = Name;
 	}
 	private Image getSpriteFromJar() {
-		
+		//TODO
+		return null;
 	}
 	private Image getSpriteFromFolder() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		switch(id) {
 		case 0: //badGun
-			toolkit.getImage("badgun.png");
-			break;
+			return toolkit.getImage("badgun.png");
 		case 1: //betterGun
-			toolkit.getImage("badgun.png");
+			return toolkit.getImage("badgun.png");
 		case 2: //federalReserve
-			toolkit.getImage("badgun.png");
+			return toolkit.getImage("badgun.png");
 		case 3: //ElPresidente
-			toolkit.getImage("badgun.png");
+			return toolkit.getImage("badgun.png");
 		case 4: //ToiletPaper
-			toolkit.getImage("badgun.png");
+			return toolkit.getImage("badgun.png");
 		}
-		//todo
+		//TODO
+		return null;
 	}
 	public int getId() {return id;}
 	public Image getSprite() {return Sprite;}
