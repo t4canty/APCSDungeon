@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import gameObjects.Loot;
+import gameObjects.Gun;
 import gameObjects.Player;
 
 
@@ -39,7 +39,7 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	 * @param player
 	 * The player object. 
 	 */
-	public Inventory(ArrayList<Loot> items, Player player) {
+	public Inventory(ArrayList<Gun> items, Player player) {
 		//========Variables========//
 		JPanel i = new JPanel();
 		JLabel Title = new JLabel("Inventory", SwingConstants.CENTER);
@@ -51,7 +51,7 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} 		 //Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e1) {e1.printStackTrace();}
 		
-		for(Loot l : items) {															 //Loop through the inventory and create a JRadioButton for each
+		for(Gun l : items) {															 //Loop through the inventory and create a JRadioButton for each
 			JRadioButton tmp = new JRadioButton(l.getName());
 			tmp.addActionListener(new ActionListener() {
 				@Override

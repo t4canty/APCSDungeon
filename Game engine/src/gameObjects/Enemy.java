@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * 
@@ -15,15 +16,7 @@ import java.io.IOException;
  */
 public class Enemy extends GameObject{
 	//========Variables========//
-	private enum dropList{
-		BADGUN,
-		BETTERGUN,
-		FEDERALRESERVE,
-		ELPRESIDENTE,
-		TOILETPAPER
-	}
-	private dropList drop;
-	
+	private Loot drop;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -43,7 +36,7 @@ public class Enemy extends GameObject{
 	 * Full path to the hurt sprite
 	 * @param Sprite4 full path to Attack Sprite
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, dropList drop , String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
+	public Enemy(int x, int y, int hp, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
@@ -52,12 +45,36 @@ public class Enemy extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		computeDrop();
 	}
 	//========Getters/setters========//
-	public dropList getDrop() {return drop;}
+	public Loot getDrop() {return drop;}
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
 		//TODO
+	}
+	private void computeDrop() {
+		int rand = new Random().nextInt(6);
+		switch (rand) {
+		case 0:																//BadGun
+			drop = new Gun(1, 300, 0, "Bad Gun", isJar);
+			break;
+		case 1:																//BetterGun
+			drop = new Gun(2, 200, 1, "Better Gun", isJar);
+			break;
+		case 2:																//FederalReserve
+			drop = new Gun(1, 100, 2, "Federal Reserve", isJar);
+			break;
+		case 3:																//ElPresidente
+			drop = new Gun(4, 600, 3, "El Presidente", isJar);
+			break;
+		case 4:																//ToiletPaper
+			drop = new Gun(10, 1000, 4, "Toilet Paper", isJar);
+			break;
+		case 5:																//Health Item
+			drop = new Heath(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
+		}
+		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
 }
