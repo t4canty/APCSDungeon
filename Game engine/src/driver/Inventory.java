@@ -58,7 +58,8 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 				public void actionPerformed(ActionEvent arg0) {
 					player.setActiveGun(l);
 					System.out.println("tick");
-					} //Each button sets the active weapon to their corresponding weapon
+					requestFocusInWindow();		//set focus back to jFrame so keyListener can work
+				} //Each button sets the active weapon to their corresponding weapon
 			});
 			i.add(tmp);
 			inventoryB.add(tmp);
@@ -66,21 +67,20 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		
 		i.setLayout(new GridLayout(items.size(), 0));									//Set the nested JPanel to a gridLayout
 		
-		this.addKeyListener(this);
 		this.setLayout(new BorderLayout());
 		this.setTitle("Inventory");														
 		this.setBackground(Color.white);
 		this.setResizable(false);
 		this.setSize(new Dimension(400, 400));
+		this.addKeyListener(this);
 
 		//========Adding Components========//
 		this.add(Title, BorderLayout.PAGE_START);										//Adds the title to the center top of the page
 		this.add(scrollBar);															//Adds the scrollPane of the nested JPanel
-
-
+		
 		//========Finalization========//
 		this.setVisible(true);
-		System.out.println(requestFocusInWindow());
+		requestFocusInWindow();															//Set focus so keyListener works
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		t.start();																		//Start ticking timer
 	}
