@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -28,7 +30,7 @@ import gameObjects.Player;
  *
  */
 @SuppressWarnings("serial")
-public class Inventory extends JFrame implements ActionListener {
+public class Inventory extends JFrame implements ActionListener, KeyListener {
 
 	/**
 	 * Spawns a new JFrame object to manage inventory, which self destructs when finished. 
@@ -64,6 +66,7 @@ public class Inventory extends JFrame implements ActionListener {
 		
 		i.setLayout(new GridLayout(items.size(), 0));									//Set the nested JPanel to a gridLayout
 		
+		this.addKeyListener(this);
 		this.setLayout(new BorderLayout());
 		this.setTitle("Inventory");														
 		this.setBackground(Color.white);
@@ -77,6 +80,7 @@ public class Inventory extends JFrame implements ActionListener {
 
 		//========Finalization========//
 		this.setVisible(true);
+		System.out.println(requestFocusInWindow());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		t.start();																		//Start ticking timer
 	}
@@ -85,5 +89,24 @@ public class Inventory extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		if(!this.isFocused())															//Disposes of the JFrame when focus is lost
 			dispose();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println(e.getKeyCode());
+		if(e.getKeyCode() == 69 || e.getKeyCode() == 27) {
+			dispose();
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

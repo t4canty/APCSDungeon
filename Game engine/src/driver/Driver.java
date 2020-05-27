@@ -14,12 +14,8 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import gameObjects.GameObject;
@@ -27,6 +23,14 @@ import gameObjects.Loot;
 import gameObjects.Player;
 import gameObjects.Projectile;
 import gameObjects.Room;
+
+/**
+ * 
+ * Created May 26, 2020
+ * @author t4canty
+ * @author TJ178
+ *
+ */
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
 	private Dimension bounds;
@@ -36,11 +40,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Room currentRoom;
 	private boolean debug;
 	
-	//Hey Timmy think you can add some comments to your code when you get the chance
-	//just to cut down on spaghetti
-	
 	//keybindings - {up, right, down, left, interact, reload}
-	private final char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
+	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
+	
+	
 	
 	/**
 	 * Driver object allows for a set size to be passed in, allowing for a method to create the jframe and resize it in a settings method.
@@ -48,6 +51,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * Size of the jframe
 	 * @param title
 	 * Title of the window
+	 * @param debug
+	 * Enable debug console printouts
 	 */
 	public Driver(Dimension bounds, String title, boolean debug) {
 		this.bounds = bounds;
@@ -58,24 +63,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.setResizable(false);
 		f.setBackground(Color.black);
 		f.add(this);
-		
-		//inputmap = this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
-		//actionmap = this.getActionMap();
 		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
 		
 		
-		//set key bindings to default things
-		/*inputmap.put(KeyStroke.getKeyStroke("W"), "move up");
-		inputmap.put(KeyStroke.getKeyStroke("A"), "move left");
-		inputmap.put(KeyStroke.getKeyStroke("S"), "move down");
-		inputmap.put(KeyStroke.getKeyStroke("D"), "move right");
-		inputmap.put(KeyStroke.getKeyStroke("E"), "interact");
-		inputmap.put(KeyStroke.getKeyStroke("R"), "reload");
-		*/
-		
-		
+		//===========Temporary player initialization for testing===========//
 		try {
 			player = new Player(100, 100, new Dimension(50,50), "", "", "", "", debug);
 			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
@@ -87,7 +80,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		
-		
 		//Adding ticking timer
 		t = new Timer(17,this);
 		t.start();
@@ -95,93 +87,56 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.setVisible(true);
 		
 	}
+	
+	//================== Update Function =================//
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 		
+		//move player if any keyboard buttons are pressed
 		if(playerUp) player.move(player.UP);
 		if(playerRight) player.move(player.RIGHT);
 		if(playerDown) player.move(player.DOWN);
 		if(playerLeft) player.move(player.LEFT);
 		if(playerInteract) { 
-			new Inventory(player.getInventory(), player); 
+			new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
 			playerInteract = false;
 		}
+		if(playerReload) {
+			//TODO: implement reloading
+		}
 		
+		//tell player where the mouse is to update the gun
 		player.updateGunAngle(mouseX, mouseY);
+		
+		//player -> enemy projectile & player -> wall collision
 		player.checkCollision(currentRoom.getEntities());
 		
+		//shoot the gun if the cooldown is ready and button is pressed
 		boolean canShoot = player.isShooting && player.canShootBullet();
-		//System.out.println("In Driver: CanShoot:" + canShoot);
+		//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
 		if(canShoot) {
-			currentRoom.getEntities().add(new Projectile(player.getActiveGun().getDamage(), false, player.getCenterX(), player.getCenterY(), 20, player.getGunAngle(), new Dimension(25, 25), null, 0));
+			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 		}
 	}
+	
+	
+	//=================== Paint function =====================//
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		//player.paint(g);
-		currentRoom.paint(g);
-		currentRoom.paintEntities(g);
+		
+		currentRoom.paint(g);			//background
+		currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
 	}
 	
-	private void changeKeyBinding(char oldkey, char newkey) {
-		for(int i = 0; i < keybindings.length; i++) {
-			if(keybindings[i] == oldkey) {
-				keybindings[i] = newkey;
-				break;
-			}
-		}
-		
-		/*inputmap.put(KeyStroke.getKeyStroke(newkey), inputmap.get(KeyStroke.getKeyStroke(oldkey)));
-		inputmap.remove(KeyStroke.getKeyStroke(oldkey));*/
-	}
-	
-	///Actions that are bound to keys
-	/*private class PlayerAction extends AbstractAction{
-		
-		private int action = -1;
-		
-		public PlayerAction(int action) {
-			this.action = action;
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			switch(action) {
-			case 0:
-				////move player up
-				player.move(0);
-				break;
-			case 1:
-				////move player left
-				player.move(3);
-				break;
-			case 2:
-				//move player down
-				player.move(2);
-				break;
-			case 3:
-				//move player right
-				player.move(1);
-				break;
-			case 4:
-				//interact with something somehow
-				break;
-			case 5:
-				//reload weapon
-				break;
-			default:
-				System.out.println("KeyBindings: incorrect PlayerAction action");
-			}
-			
-		}
-	}*/
 	
 	
+	//================ Mouse / Keyboard input ================//
 	
-	/////// Mouse and Keyboard inputs / variables
+	//variables for movement and interaction keys
 	private boolean playerUp = false;
 	private boolean playerRight = false;
 	private boolean playerDown = false;
@@ -189,9 +144,28 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerInteract = false;
 	private boolean playerReload = false;
 	
+	//mouse location tracker
 	private int mouseX = 0;
 	private int mouseY = 0;
 	
+	/** 
+	 * Changes default key bindings to a new key
+	 * @param oldkey
+	 * Key that action was previously set to
+	 * @param newkey
+	 * New key that action will now set to
+	 */
+	private void changeKeyBinding(char oldkey, char newkey) {
+		for(int i = 0; i < keybindings.length; i++) {
+			if(keybindings[i] == oldkey) {
+				keybindings[i] = newkey;
+				break;
+			}
+		}
+	}
+	
+	
+	//set designated variables to true when specific key is pressed
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -215,6 +189,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			playerReload = true;
 		}
 	}
+	
+	//set designated variables to false when specific key is released
 	@Override
 	public void keyReleased(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -240,6 +216,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 	}
 	
+	//if the left mouse button is pressed, shoot gun
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
@@ -247,6 +224,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 	}
+	
+	//if left mouse button is released, stop shooting gun
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
@@ -255,6 +234,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 	}
 	
+	//if left mouse is pressed & mouse is moving, keep track of location and continue shooting
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		//change where player weapon is aiming & shooting
@@ -263,6 +243,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.isShooting = true;
 		
 	}
+	
+	//keep track of mouse location when button is not pressed
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		//change where player weapon is aiming
@@ -278,18 +260,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		//start tracking mouse
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		//stop tracking mouse
-	}
+	public void mouseExited(MouseEvent e) {}
+	
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 	
 }

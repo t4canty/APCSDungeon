@@ -94,57 +94,57 @@ public class Player extends GameObject{
 	}
 		/**
 		 * 
-		 * Player constructor with x and y inputs;
-		 * @param x
-		 * Starting X position for the player on the jframe
-		 * @param y
-		 * Starting Y position for the player on the jframe
-		 * @param size
-		 * Size of the player object
-		 * @param Sprite1
-		 * Full path to the idle sprite
-		 * @param Sprite2
-		 * Full path to the move sprite
-		 * @param Sprite3
-		 * Full path to the hurt sprite
-		 * @param Sprite
-		 * Full path to Attack Sprite
-		 * @param debug
-		 * Sets debug flag
-		 * 
-		 */
-		public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
-			this(x, y, size, Sprite1, Sprite2, Sprite3, Sprite4);
-			this.debug = debug;
-		}
-		/**
-		 * Player constructor
-		 * @param x
-		 * Starting X position for the player on the jframe
-		 * @param y
-		 * Starting Y position for the player on the jframe
-		 * @param size
-		 * Size of the player object
-		 * @param x
-		 * Starting X position for the player on the jframe
-		 * @param y
-		 * Starting Y position for the player on the jframe
-		 * @param size
-		 * Size of the player object
-		 * @param Sprite1
-		 * Full path to the idle sprite
-		 * @param Sprite2
-		 * Full path to the move sprite
-		 * @param Sprite3
-		 * Full path to the hurt sprite
-		 * @param Sprite4 full path to Attack Sprite
-		 * @param debug
-		 * Sets debug flag
-		 */
-		public Player(Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
-			this(size, Sprite1, Sprite2, Sprite3, Sprite4);
-			this.debug = debug;
-		}
+	 * Player constructor with x and y inputs;
+	 * @param x
+	 * Starting X position for the player on the jframe
+	 * @param y
+	 * Starting Y position for the player on the jframe
+	 * @param size
+	 * Size of the player object
+	 * @param Sprite1
+	 * Full path to the idle sprite
+	 * @param Sprite2
+	 * Full path to the move sprite
+	 * @param Sprite3
+	 * Full path to the hurt sprite
+	 * @param Sprite
+	 * Full path to Attack Sprite
+	 * @param debug
+	 * Sets debug flag
+	 * 
+	 */
+	public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+		this(x, y, size, Sprite1, Sprite2, Sprite3, Sprite4);
+		this.debug = debug;
+	}
+	/**
+	 * Player constructor
+	 * @param x
+	 * Starting X position for the player on the jframe
+	 * @param y
+	 * Starting Y position for the player on the jframe
+	 * @param size
+	 * Size of the player object
+	 * @param x
+	 * Starting X position for the player on the jframe
+	 * @param y
+	 * Starting Y position for the player on the jframe
+	 * @param size
+	 * Size of the player object
+	 * @param Sprite1
+	 * Full path to the idle sprite
+	 * @param Sprite2
+	 * Full path to the move sprite
+	 * @param Sprite3
+	 * Full path to the hurt sprite
+	 * @param Sprite4 full path to Attack Sprite
+	 * @param debug
+	 * Sets debug flag
+	 */
+	public Player(Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+		this(size, Sprite1, Sprite2, Sprite3, Sprite4);
+		this.debug = debug;
+	}
 	
 	//========Methods========//
 	@Override
@@ -178,7 +178,7 @@ public class Player extends GameObject{
 	/**
 	 * Movement method.
 	 * @param dir
-	 * Determines the direction of the movemnt.
+	 * Determines the direction of the movement.
 	 */
 	public void move(int dir) {
 		switch(dir) {
@@ -215,9 +215,7 @@ public class Player extends GameObject{
 	 * @param mouseY
 	 */
 	public void updateGunAngle(int mouseX, int mouseY) {
-		//double riseRun = (mouseY - y) * 1.0 / (mouseX - x);
 		gunAngle = Math.atan2(mouseY - rBox.getCenterY(), mouseX - rBox.getCenterX());
-		
 	}
 	/**
 	 * Method to check all currently colliding entities.
@@ -226,6 +224,16 @@ public class Player extends GameObject{
 	public void checkCollision(ArrayList<GameObject> entities) {
 		//TODO
 	}
+	
+	
+	/**
+	 * Return projectile entity shot from gun
+	 */
+	//TODO: make this responsive to different types of guns
+	public Projectile getNewBullet() {
+		return new Projectile(activeGun.getDamage(), false, getCenterX(), getCenterY(), 20, gunAngle, new Dimension(25, 25), null, 0);
+	}
+	
 	
 	/**
 	 * Sets collision bounds for the JFrame.
