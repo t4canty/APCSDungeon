@@ -2,6 +2,7 @@ package gameObjects;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class Enemy extends GameObject{
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
+		rBox.x = x;
+		rBox.y = y;
 		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);
 		
 		if(isJar)
@@ -56,7 +59,8 @@ public class Enemy extends GameObject{
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-		//TODO
+		Graphics2D g2d = ((Graphics2D) g);
+		g2d.draw(rBox);
 	}
 	private void computeDrop() {
 		int rand = new Random().nextInt(6);

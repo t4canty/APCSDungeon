@@ -73,10 +73,12 @@ public class Room {
 				if(j != i) {
 					GameObject temp2 = entities.get(j);
 					if(temp instanceof Projectile && !((Projectile) temp).isEnemyFire() && temp2 instanceof Enemy){
-						((Enemy) temp2).damage(((Projectile)temp).getDamage());
-						entities.remove(i);
-						i--;
-						break;
+						if(temp.getHitbox().intersects(temp2.getHitbox())) {
+							((Enemy) temp2).damage(((Projectile)temp).getDamage());
+							entities.remove(i);
+							i--;
+							break;
+						}
 					}
 				}
 			}
