@@ -2,6 +2,7 @@ package driver;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -119,6 +121,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(canShoot) {
 			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 		}
+		
+		
 	}
 	
 	
@@ -128,6 +132,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);
 		
 		currentRoom.paint(g);			//background
+		
+		g.setFont(new Font("Arial", 10, 10));
+		long currentTime = System.currentTimeMillis();
+		char[][] map = AIMapGenerator.generateMap(player, currentRoom, 800);
+		g.drawString("Calculation time: "+ (System.currentTimeMillis() - currentTime), 250, 700);
+		for(int i = 0; i < map.length; i++) {
+			g.drawString(Arrays.toString(map[i]), 10, i*10 + 30);
+		}
+		
+		
 		currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
 	}

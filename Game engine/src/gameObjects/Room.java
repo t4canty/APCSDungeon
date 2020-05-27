@@ -96,6 +96,10 @@ public class Room {
 		return bounds;
 	}
 	
+	public Rectangle getRectBounds() {
+		return new Rectangle(leftBound, topBound, bottomBound-topBound, rightBound-leftBound);
+	}
+	
 	
 	public void getImagesFromFolder(String background) throws IOException {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();

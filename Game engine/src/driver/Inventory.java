@@ -97,7 +97,6 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
 		if(e.getKeyCode() == 69 || e.getKeyCode() == 27) {
 			dispose();
 		}

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Random;
 public class Enemy extends GameObject{
 	//========Variables========//
 	private Loot drop;
+	private Loot activeGun;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -41,6 +43,8 @@ public class Enemy extends GameObject{
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
+		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);
+		
 		if(isJar)
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
@@ -77,4 +81,40 @@ public class Enemy extends GameObject{
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
+	
+	/*
+	 * Three different states for AI
+	 * 1) running towards player until a certain range
+	 * 2) shooting at player once within range
+	 * 3) dodging bullets from player
+	 * 
+	 * Things AI needs to check for in step 1
+	 * 1) make sure it doesn't run into walls or other enemies
+	 * 		figuring out how to get around other things will be complicated but not impossible
+	 * 		pathfinding will have to have something to do with squares an enemy can walk on, perhaps generate a path for each enemy for each frame? idk how long that would take
+	 * 
+	 * Things AI needs to check for in step 2
+	 * 1) make sure that there's a clear line to the player
+	 * 2) make sure that it shoots out the appropriate projectile for the gun it's holding
+	 * 
+	 * Things AI needs to check for in step 3
+	 * 1) don't dodge bullets from other enemies
+	 * 2) probably just move away from a certain radius of a projectile if one gets close
+	 * 3) perhaps a sort of risk/reward system where small bullets are less likely to get it to run rather than fight
+	 */
+	
+	private int currentState = 0;
+	
+	public void runAI(Player player, ArrayList<GameObject> Entities, Room room) {
+		switch(currentState) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		}
+	}
+	
+	
 }
