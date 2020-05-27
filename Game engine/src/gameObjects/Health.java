@@ -9,7 +9,7 @@ import java.awt.Image;
  * @author TJ178
  *
  */
-public class Heath extends Loot {
+public class Health extends Loot {
 	
 	//========Constructor========//
 	/**
@@ -23,7 +23,7 @@ public class Heath extends Loot {
 	 * @param cooldown
 	 * Cooldown time of the potion in ms.
 	 */
-	public Heath(int damage, String name, Image Sprite, int cooldown) {
+	public Health(int damage, String name, Image Sprite, int cooldown) {
 		this.Damage = damage;
 		this.Name = name;
 		this.Sprite = Sprite;

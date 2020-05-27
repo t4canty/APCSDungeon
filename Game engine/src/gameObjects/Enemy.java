@@ -73,7 +73,7 @@ public class Enemy extends GameObject{
 			drop = new Gun(10, 1000, 4, "Toilet Paper", isJar);
 			break;
 		case 5:																//Health Item
-			drop = new Heath(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
+			drop = new Health(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
