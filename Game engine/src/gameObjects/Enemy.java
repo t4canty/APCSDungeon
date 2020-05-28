@@ -51,7 +51,7 @@ public class Enemy extends GameObject{
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		activeGun = new Gun(100, 700, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(100, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		
 		if(isJar)
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
@@ -81,19 +81,19 @@ public class Enemy extends GameObject{
 		int rand = new Random().nextInt(6);
 		switch (rand) {
 		case 0:																//BadGun
-			drop = new Gun(1, 300, 0, "Bad Gun", isJar);
+			drop = new Gun(1, 300, 5, 5, 15, 0, "Bad Gun", isJar);
 			break;
 		case 1:																//BetterGun
-			drop = new Gun(2, 200, 1, "Better Gun", isJar);
+			drop = new Gun(2, 200, 15, 8, 15, 1, "Better Gun", isJar);
 			break;
 		case 2:																//FederalReserve
-			drop = new Gun(1, 100, 2, "Federal Reserve", isJar);
+			drop = new Gun(1, 100, 30, 10, 8, 2, "Federal Reserve", isJar);
 			break;
 		case 3:																//ElPresidente
-			drop = new Gun(4, 600, 3, "El Presidente", isJar);
+			drop = new Gun(4, 600, 8, 5, 20, 3, "El Presidente", isJar);
 			break;
 		case 4:																//ToiletPaper
-			drop = new Gun(10, 1000, 4, "Toilet Paper", isJar);
+			drop = new Gun(10, 1000, 3, 5, 30, 4, "Toilet Paper", isJar);
 			break;
 		case 5:																//Health Item
 			drop = new Health(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
@@ -128,6 +128,8 @@ public class Enemy extends GameObject{
 	 */
 	
 	public void runAI(Player player, Room room) {
+		
+		//first determine which state the AI will operate within
 		int currentState = 0;
 		int distFromPlayer = (int)getDistanceFrom(player.getCenterX(), player.getCenterY());
 		if(distFromPlayer > 250) {
@@ -140,8 +142,7 @@ public class Enemy extends GameObject{
 			currentState = 2;
 		}
 		
-		//System.out.println(currentState);
-		
+		//act accordingly based on that state
 		switch(currentState) {
 		case 0:
 			x += movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
@@ -158,11 +159,13 @@ public class Enemy extends GameObject{
 			break;
 		}
 		
-		if(y < room.topBound) y = room.topBound;				//Collision on the bounds of the room
+		//make sure to stay within room bounds
+		if(y < room.topBound) y = room.topBound;
 		if(y > room.bottomBound - rBox.height) y = room.bottomBound - rBox.height;
 		if(x < room.leftBound) x = room.leftBound;
 		if(x > room.rightBound - rBox.width) x = room.rightBound - rBox.width;;
 		
+		//update angle of held gun
 		gunAngle = Math.atan2(player.getCenterY() - rBox.getCenterY(), player.getCenterX() - rBox.getCenterX());
 	}
 	

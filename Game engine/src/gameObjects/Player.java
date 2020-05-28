@@ -25,6 +25,7 @@ public class Player extends GameObject{
 	private double gunAngle;
 	public boolean isShooting;
 	private long lastBulletShot = 0; 															//system time when last bullet was shot, used for cooldown
+	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	
 	//========Constructors========//
@@ -55,7 +56,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);									//Starting gun
+		activeGun = new Gun(100, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 	/**
@@ -89,7 +90,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(100, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 		/**
@@ -158,6 +159,7 @@ public class Player extends GameObject{
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
+		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
 	/**
 	 * Method to determine if cooldown is over
@@ -165,14 +167,7 @@ public class Player extends GameObject{
 	 * returns true or false if enough time has passed. 
 	 */
 	public boolean canShootBullet() {
-		//if(debug) System.out.println("Current time to next shot:" + (System.currentTimeMillis() - lastBulletShot) + " IsShooting:" + isShooting);
-		if(System.currentTimeMillis() - lastBulletShot > activeGun.getCooldown()) {
-			lastBulletShot = System.currentTimeMillis();
-			if(debug) System.out.println("True: Current time is now:" + lastBulletShot);
-			if(debug) System.out.println("Current Cooldown Time:" + activeGun.getCooldown());
-			return true;
-		}
-		return false;
+		return activeGun.canShoot();
 	}
 	/**
 	 * Movement method.
@@ -230,7 +225,11 @@ public class Player extends GameObject{
 	 */
 	//TODO: make this responsive to different types of guns
 	public Projectile getNewBullet() {
-		return new Projectile(activeGun.getDamage(), false, getCenterX(), getCenterY(), 20, gunAngle, new Dimension(25, 25), null, 0);
+		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, false);
+	}
+	
+	public void reload() {
+		ammo = activeGun.reload(ammo);
 	}
 	
 	
@@ -253,4 +252,6 @@ public class Player extends GameObject{
 	public double getGunAngle() { return gunAngle; }
 	public Gun getActiveGun() { return activeGun; }
 	public void setActiveGun(Gun g) {activeGun = g; }
+	public int getTotalAmmo() { return ammo; }
+	public int getAmmoInMag() { return activeGun.getAmmoInMag(); }
 }

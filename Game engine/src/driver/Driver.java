@@ -76,7 +76,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			player = new Player(100, 100, new Dimension(50,50), "", "", "", "", debug);
 			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
-			player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
+			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
 			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -108,7 +108,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			playerInteract = false;
 		}
 		if(playerReload) {
-			//TODO: implement reloading
+			player.reload();
 		}
 		
 		//tell player where the mouse is to update the gun
@@ -147,6 +147,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		currentRoom.paint(g);			//background
 		currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
+		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 200, 700);
 	}
 	
 	
