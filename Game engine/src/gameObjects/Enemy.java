@@ -51,7 +51,7 @@ public class Enemy extends GameObject{
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		activeGun = new Gun(100, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		
 		if(isJar)
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);

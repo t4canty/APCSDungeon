@@ -42,6 +42,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Player player;
 	private Room currentRoom;
 	private boolean debug;
+	private long lastEnemySpawn = 0; //temp timer to spawn multiple enemies
 	
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
@@ -136,6 +137,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 			}
 		}
+		
+		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
+			lastEnemySpawn = System.currentTimeMillis();
+			try {
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
@@ -147,7 +158,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		currentRoom.paint(g);			//background
 		currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
-		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 200, 700);
+		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
+		g.drawString("health: " + player.getHP(), 150, 715);
 	}
 	
 	

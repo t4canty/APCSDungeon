@@ -102,4 +102,5 @@ public abstract class GameObject {
 	public int getCenterX() { return x + rBox.width/2;}
 	public int getCenterY() { return y + rBox.height/2;};
 	public boolean hasAI() { return hasAI; }
+	public int getHP() { return hp; }
 }

@@ -56,7 +56,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Gun(100, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 	/**
@@ -90,7 +90,7 @@ public class Player extends GameObject{
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
 		else
 			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
-		activeGun = new Gun(100, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
 		/**
@@ -216,7 +216,19 @@ public class Player extends GameObject{
 	 * @param entities
 	 */
 	public void checkCollision(ArrayList<GameObject> entities) {
-		//TODO
+		for(int i = 0; i < entities.size(); i++) {
+			if(entities.get(i).getHitbox().intersects(rBox)) {
+				if(entities.get(i) instanceof Projectile) {
+					if(((Projectile) entities.get(i)).isEnemyFire()) {
+						hp -= ((Projectile) entities.get(i)).getDamage();
+						entities.remove(i);
+						i--;
+					}
+				}else if(entities.get(i) instanceof Enemy) {
+					hp -= entities.get(i).getHitbox().height / 10;
+				}
+			}
+		}
 	}
 	
 	
