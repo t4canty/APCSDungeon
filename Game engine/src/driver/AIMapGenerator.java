@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import gameObjects.*;
 
@@ -20,14 +22,27 @@ public class AIMapGenerator {
 	 * . -> empty
 	 */
 	
+	final static public byte NULL = -1;
+	final static public byte EMPTY = 0;
+	final static public byte WALL = 1;
+	final static public byte PLAYER = 2;
+	final static public byte ENEMY = 3;
+	final static public byte P_PROJECTILE = 4;
+	final static public byte PATH = 5;
 	
-	public static char[][] generateMap(Player player, Room room, int screenSize){
+	//costs for determining g cost function for A*
+	final static public byte HORIZONTALCOST = 10;
+	final static public byte DIAGONALCOST = 14;
+	
+	
+	//creates the 64x64 bytemap that is used to pathfind from the screen size
+	public static byte[][] generateMap(Player player, Room room, int screenSize){
 		int scannerSize = screenSize / 64;
 		
-		char[][] map = new char[64][64];
-		for(char[] i : map) {
-			for(char j : i) {
-				j = 'n';
+		byte[][] map = new byte[64][64];
+		for(byte[] i : map) {
+			for(byte j : i) {
+				j = NULL;
 			}
 		}
 		Rectangle scanner = new Rectangle(0, 0, scannerSize, scannerSize);
@@ -40,13 +55,13 @@ public class AIMapGenerator {
 			for(int j = 0; j < map[i].length; j++) {
 				scanner.setLocation(j * scannerSize, i * scannerSize);
 				if(!playerFound && scanner.intersects(player.getHitbox())) {
-					map[i][j] = 'p';
+					map[i][j] = PLAYER;
 					playerFound = true;
 					continue;
 				}
 				
 				if(!bounds.contains(scanner)) {
-					map[i][j] = 'x';
+					map[i][j] = WALL;
 					continue;
 				}
 				for(GameObject e : entities) {
@@ -54,9 +69,10 @@ public class AIMapGenerator {
 						if(scanner.y + scannerSize > e.getY() && scanner.y - scannerSize/2 < e.getY()) {
 							if(scanner.intersects(e.getHitbox())){
 								if(e instanceof Enemy) {
-									map[i][j] = 'e';
+									map[i][j] = ENEMY;
+									System.out.println("x:" + i + " y:" + j);
 								}else if(e instanceof Projectile && !((Projectile)e).isEnemyFire()) {
-									map[i][j] = 'o';
+									map[i][j] = P_PROJECTILE;
 								}else {
 									System.out.println("this is a different gameObject");
 								}
@@ -69,7 +85,7 @@ public class AIMapGenerator {
 				if(entityFound) {
 					entityFound = false;
 				}else {
-					map[i][j] = '.';
+					map[i][j] = EMPTY;
 				}
 			}
 		}
@@ -77,22 +93,22 @@ public class AIMapGenerator {
 	}
 	
 	
-	public static char[][] pathfind(Enemy e, char[][] map) {
-		/*ArrayList<MapPoint> points = new ArrayList<MapPoint>();
-		points.add(new MapPoint(e.getX() / 64, e.getY() / 64, 'e'));
+	public static byte[][] pathfind(Enemy e, Player p, byte[][] map) {
+		MapPoint[][] nodeMap = new MapPoint[64][64];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[0].length; j++) {
-				if(map[i][j] == '.' || map[i][j] == 'p') {
-					points.add(new MapPoint(i, j, map[i][j]));
-				}
+				nodeMap[i][j] = new MapPoint(i, j, map[i][j]);
 			}
-		}*/
+		}
+		System.out.println(e.getX() / (800/64));
 		
-		calculate(map);
+		calculate(nodeMap, new MapPoint(e.getX() / (800 / 64), e.getY() / (800 / 64), ENEMY), new MapPoint(p.getX() / (800 / 64), p.getY() / (800 / 64), PLAYER));
 		
-		/*for(MapPoint p : points) {
-			map[p.row()][p.col()] = p.character();
-		}*/
+		for(MapPoint[] f : nodeMap) {
+			for(MapPoint j : f) {
+				map[j.row()][j.col()] = j.data();
+			}
+		}
 		return map;
 	}
 	
@@ -100,11 +116,11 @@ public class AIMapGenerator {
 	
 	
 	
-	public static char[][] calculate(char[][] map) {
-		ArrayDeque<MapPoint> queue = new ArrayDeque<MapPoint>();		//holds all open spaces seen
-		ArrayDeque<MapPoint> dequeue = new ArrayDeque<MapPoint>();		//holds all spaces that have been visited
+	public static MapPoint[][] calculate(MapPoint[][] data, MapPoint startPoint, MapPoint endPoint) {
+		PriorityQueue<MapPoint> openList = initQueue();		//holds all open spaces seen
+		ArrayDeque<MapPoint> closedList = new ArrayDeque<MapPoint>();		//holds all spaces that have been visited
+		openList.add(startPoint);
 		
-		char[][] data = map;
 		boolean[][] seen = new boolean[64][64];
 		for(boolean[] i : seen) {
 			for(boolean j : i) {
@@ -112,7 +128,108 @@ public class AIMapGenerator {
 			}
 		}
 		
-
+		boolean playerFound = false;
+		
+		while(openList.size() != 0 && !playerFound){
+			MapPoint current = openList.remove();
+			MapPoint[] successors = getSuccessors(data, current, endPoint);
+			System.out.println(current);
+			
+			for(int i = 0; i < successors.length; i++) {
+				if(successors[i] != null && successors[i].data() != WALL) {
+					if(successors[i].data() == PLAYER) {
+						System.out.println("found player");
+						playerFound = true;
+						break;
+					}
+					int f = successors[i].calculateFCost(endPoint.row(), endPoint.col(), HORIZONTALCOST);
+					
+					if(openList.contains(successors[i]) && successors[i].getFCost() < f) {
+						continue;
+					}
+					
+					if(closedList.contains(successors[i]) && successors[i].getFCost() < f) {
+						continue;
+					}
+					
+					successors[i].setFCost(f);
+					openList.add(successors[i]);
+				}
+			}
+			
+			closedList.add(current);
+		}
+		
+		for(MapPoint p : closedList) {
+			data[p.row()][p.col()].setData(PATH);
+		}
+		return data;
+	}
+	
+	private static MapPoint[] getSuccessors(MapPoint[][] data, MapPoint p, MapPoint dest) {
+		MapPoint[] successors = new MapPoint[8];
+		if(p.row() > 0) {	//top row
+			if(p.col() > 0) {	//top left
+				successors[0] = data[p.row()-1][p.col()-1];
+				successors[0].setParent(p);
+			}
+			//top middle
+			successors[1] = data[p.row()-1][p.col()];
+			successors[1].setParent(p);
+			
+			if(p.col()+1 < data[0].length) { //top right
+				successors[2] = data[p.row()-1][p.col()+1];
+				successors[2].setParent(p);
+			}
+		}
+		
+		if(p.col() > 0) {	//middle left
+			successors[3] = data[p.row()][p.col()-1];
+			successors[3].setParent(p);
+		}
+		if(p.col()+1 < data[0].length) { //middle right
+			successors[4] = data[p.row()][p.col()+1];
+			successors[4].setParent(p);
+		}
+		
+		if(p.row()+1 < data.length) {	//bottom row
+			if(p.col() > 0) {	//bottom left
+				successors[5] = data[p.row()+1][p.col()-1];
+				successors[5].setParent(p);
+			}
+			//bottom middle
+			successors[6] = data[p.row()+1][p.col()];
+			successors[6].setParent(p);
+			
+			if(p.col()+1 < data[0].length) { //bottom right
+				successors[7] = data[p.row()+1][p.col()+1];
+				successors[7].setParent(p);
+			}
+		}
+		
+		return successors;
+	}
+	
+	
+	
+	//////function used for initializing the priority queue in the A* algo
+	
+	private static PriorityQueue<MapPoint> initQueue() {
+        return new PriorityQueue<MapPoint>(10, new Comparator<MapPoint>() {
+            public int compare(MapPoint x, MapPoint y) {
+                if (x.getFCost() < y.getFCost()){
+                	return -1;
+                }
+                if (x.getFCost() > y.getFCost())
+                {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+    }
+		
+/*
 			for(int row = 0; row < data.length; row++) {
 				for(int col = 0; col < data[0].length; col++) {
 					if(data[row][col] == 'e') {
@@ -331,5 +448,5 @@ public class AIMapGenerator {
 				break;
 			}
 		}
-	}
+	}*/
 }

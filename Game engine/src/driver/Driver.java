@@ -139,7 +139,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		g.setFont(new Font("Arial", 10, 10));
 		long currentTime = System.currentTimeMillis();
-		char[][] map = AIMapGenerator.pathfind(testEnemy, AIMapGenerator.generateMap(player, currentRoom, 800));
+		byte[][] map = AIMapGenerator.pathfind(testEnemy, player, AIMapGenerator.generateMap(player, currentRoom, 800));
 		g.drawString("Calculation time: "+ (System.currentTimeMillis() - currentTime), 250, 700);
 		for(int i = 0; i < map.length; i++) {
 			g.drawString(Arrays.toString(map[i]), 10, i*10 + 30);

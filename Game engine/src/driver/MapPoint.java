@@ -1,17 +1,28 @@
 package driver;
 
 public class MapPoint {
-	private char character;
+	private byte data;
 	private int row;
 	private int col;
-	private double distFromKirby;
-	private double distFromCake; 
+	private int f;
+	private MapPoint parent;
 	
-	public MapPoint(int row, int col, char character) {
+	public MapPoint(int row, int col, byte data) {
 		this.row = row;
 		this.col = col;
-		this.character = character;
-		distFromKirby = Integer.MAX_VALUE;
+		this.data = data;
+		parent = null;
+		f = Integer.MAX_VALUE;
+	}
+	
+	
+	public MapPoint(int row, int col, byte data, MapPoint parent, int destRow, int destCol, int cost) {
+		this.row = row;
+		this.col = col;
+		this.data = data;
+		this.parent = parent;
+		int g = parent.getFCost() + cost;
+		f = (int)(g + Math.sqrt(Math.abs(destRow - row) + Math.abs(destCol - col)));
 	}
 	
 	public int row() {
@@ -22,27 +33,32 @@ public class MapPoint {
 		return col;
 	}
 	
-	public char character() {
-		return character;
+	public byte data() {
+		return data;
 	}
 	
-	public void setDistFromKirby(double dist) {
-		distFromKirby = dist;
+	public void setData(byte d) {
+		data = d;
 	}
 	
-	public void setDistFromCake(double dist) {
-		distFromCake = dist;
+	public void setFCost(int f) {
+		this.f = f;
 	}
 	
-	public double getDistFromKirby() {
-		return distFromKirby;
+	public int calculateFCost(int destRow, int destCol, int cost) {
+		int g = parent.getFCost() + cost;
+		return (int)(g + Math.sqrt(Math.abs(destRow - row) + Math.abs(destCol - col)));
 	}
 	
-	public double getDistFromCake() {
-		return distFromCake;
+	public void setParent(MapPoint parent) {
+		this.parent = parent;
+	}
+	
+	public int getFCost() {
+		return f;
 	}
 	
 	public String toString() {
-		return character + " r: " + row + " c: " + col;
+		return data + " r: " + row + " c: " + col;
 	}
 }
