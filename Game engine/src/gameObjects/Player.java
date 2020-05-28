@@ -154,7 +154,7 @@ public class Player extends GameObject{
 		rBox.y = y;																					//Set hitbox to current x
 		Graphics2D g2d = (Graphics2D) g; 															//neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
-		g2d.drawImage(idleSprite, x, y, null);
+		g2d.drawImage(idleSprite, x, y, rBox.width, rBox.height, null);
 		if(debug) g2d.draw(rBox);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);

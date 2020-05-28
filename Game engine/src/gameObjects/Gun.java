@@ -60,15 +60,15 @@ public class Gun extends Loot {
 		try {
 			switch(id) {																	//Uses the id to read the sprite from the jar.
 			case 0: //badGun
-				return ImageIO.read(getClass().getResourceAsStream("img/badgun.png"));
+				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
 			case 1: //betterGun
-				return ImageIO.read(getClass().getResourceAsStream("betterGun.png"));
+				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
 			case 2: //federalReserve
-				return ImageIO.read(getClass().getResourceAsStream("federalReserve.png"));
+				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
 			case 3: //ElPresidente
-				return ImageIO.read(getClass().getResourceAsStream("ElPresidente.png"));
+				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
 			case 4: //ToiletPaper
-				return ImageIO.read(getClass().getResourceAsStream("ToiletPaper.png"));
+				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -74,8 +74,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(50,50), "", "", "", "", debug);
-			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
+			player = new Player(100, 100, new Dimension(128,128), "/img/test2.gif", "", "", "", debug);
+			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "/img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
 			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));

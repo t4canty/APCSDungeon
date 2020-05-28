@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -34,7 +36,7 @@ public abstract class GameObject {
 	protected Image attackSprite;
 	protected Image hurtSprite;
 	protected boolean debug = false;
-	public boolean isJar = false;
+	public boolean isJar = true;
 	protected boolean hasAI = false;
 	
 	//========Abstract methods========//
@@ -80,10 +82,14 @@ public abstract class GameObject {
 	 * Throws IOException when idleSprite is null.
 	 */
 	public void getImagesFromJar(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if(getClass().getResourceAsStream(idleSprite) == null) {
 			System.err.println("Error, getClass is null");
 		}
-		this.idleSprite = ImageIO.read(getClass().getResourceAsStream(idleSprite));
+		InputStream in = getClass().getResourceAsStream(idleSprite);
+		byte[] arr = new byte[in.available()];
+		in.read(arr);
+		this.idleSprite = toolkit.createImage(arr);
 		this.moveSprite = ImageIO.read(getClass().getResourceAsStream(moveSprite));
 		this.hurtSprite = ImageIO.read(getClass().getResourceAsStream(hurtSprite));
 		this.attackSprite = ImageIO.read(getClass().getResourceAsStream(attackSprite));
