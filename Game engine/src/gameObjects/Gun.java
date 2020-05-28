@@ -1,5 +1,6 @@
 package gameObjects;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
@@ -14,6 +15,10 @@ import javax.imageio.ImageIO;
 public class Gun extends Loot {
 	//========Variables========//
 	private int numBullet;
+	private long lastShot = 0;
+	private int bulletVelocity = 10;
+	private int bulletSize = 10;
+	
 	
 	//========Constructor========//
 	/**
@@ -72,6 +77,18 @@ public class Gun extends Loot {
 			return toolkit.getImage("ElPresidente.png");
 		case 4: //ToiletPaper
 			return toolkit.getImage("ToiletPaper.png");
+		}
+		return null;
+	}
+	
+	public boolean canShoot() {
+		return System.currentTimeMillis() - lastShot > cooldown;
+	}
+	
+	public Projectile getGunshot(int x, int y, double angle, boolean isEnemy) {
+		if(canShoot()) {
+			lastShot = System.currentTimeMillis();
+			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), Sprite, id);
 		}
 		return null;
 	}

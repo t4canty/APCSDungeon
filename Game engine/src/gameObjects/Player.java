@@ -155,7 +155,6 @@ public class Player extends GameObject{
 		g2d.setColor(Color.BLACK);
 		g2d.drawImage(idleSprite, x, y, null);
 		if(debug) g2d.draw(rBox);
-		if(isShooting) g2d.setColor(Color.RED);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));

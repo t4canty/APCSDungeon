@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Gun;
 import gameObjects.Player;
@@ -76,6 +77,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			currentRoom = new Room(new Rectangle(100, 100, 700, 700), "img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
+			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,7 +124,18 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 		}
 		
-		
+		for(int i = 0; i < currentRoom.getEntities().size(); i++) {
+			GameObject o = currentRoom.getEntities().get(i);
+			if(o instanceof Enemy) {
+				((Enemy) o).runAI(player, currentRoom);
+				if(((Enemy) o).isShooting()) {
+					Projectile e = ((Enemy)o).getGunshot();
+					if(e != null) {
+						currentRoom.getEntities().add(e);
+					}
+				}
+			}
+		}
 	}
 	
 	
@@ -132,16 +145,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);
 		
 		currentRoom.paint(g);			//background
-		
-		g.setFont(new Font("Arial", 10, 10));
-		long currentTime = System.currentTimeMillis();
-		char[][] map = AIMapGenerator.generateMap(player, currentRoom, 800);
-		g.drawString("Calculation time: "+ (System.currentTimeMillis() - currentTime), 250, 700);
-		for(int i = 0; i < map.length; i++) {
-			g.drawString(Arrays.toString(map[i]), 10, i*10 + 30);
-		}
-		
-		
 		currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
 	}

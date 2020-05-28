@@ -1,7 +1,10 @@
 package gameObjects;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,10 @@ import java.util.Random;
 public class Enemy extends GameObject{
 	//========Variables========//
 	private Loot drop;
-	private Loot activeGun;
+	private Gun activeGun;
+	private int movementSpeed = 4;
+	private boolean isShooting = false;
+	private double gunAngle;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -43,7 +49,9 @@ public class Enemy extends GameObject{
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
-		activeGun = new Gun(100, 300, 0, "Bad Gun", super.isJar);
+		rBox.x = x;
+		rBox.y = y;
+		activeGun = new Gun(100, 700, 0, "Bad Gun", super.isJar);
 		
 		if(isJar)
 			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
@@ -56,8 +64,19 @@ public class Enemy extends GameObject{
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-		//TODO
+		rBox.x = x;
+		rBox.y = y;
+		
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.draw(rBox);
+		
+		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
+		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
+		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
+		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
+	
+	
 	private void computeDrop() {
 		int rand = new Random().nextInt(6);
 		switch (rand) {
@@ -82,11 +101,16 @@ public class Enemy extends GameObject{
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
 	
+	public Projectile getGunshot() {
+		return activeGun.getGunshot(getCenterY(), getCenterY(), gunAngle, true);
+	}
+	
 	/*
 	 * Three different states for AI
 	 * 1) running towards player until a certain range
-	 * 2) shooting at player once within range
-	 * 3) dodging bullets from player
+	 * 2) running away from player when they're too close
+	 * 3) shooting at player once within range // if they're too close
+	 * 4) dodging bullets from player
 	 * 
 	 * Things AI needs to check for in step 1
 	 * 1) make sure it doesn't run into walls or other enemies
@@ -103,18 +127,46 @@ public class Enemy extends GameObject{
 	 * 3) perhaps a sort of risk/reward system where small bullets are less likely to get it to run rather than fight
 	 */
 	
-	private int currentState = 0;
-	
-	public void runAI(Player player, ArrayList<GameObject> Entities, Room room) {
+	public void runAI(Player player, Room room) {
+		int currentState = 0;
+		int distFromPlayer = (int)getDistanceFrom(player.getCenterX(), player.getCenterY());
+		if(distFromPlayer > 250) {
+			currentState = 0;
+		}else if(distFromPlayer < rBox.height * 2) {
+			currentState = 1;
+		}else if(room.isCloseToPlayerProjectile(getCenterX(), getCenterY())) {
+			currentState = 3;
+		}else {
+			currentState = 2;
+		}
+		
+		//System.out.println(currentState);
+		
 		switch(currentState) {
 		case 0:
+			x += movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
+			y += movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
+			isShooting = false;
 			break;
 		case 1:
+			x -= movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
+			y -= movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
+			isShooting = true;
 			break;
 		case 2:
+			isShooting = true;
 			break;
 		}
+		
+		if(y < room.topBound) y = room.topBound;				//Collision on the bounds of the room
+		if(y > room.bottomBound - rBox.height) y = room.bottomBound - rBox.height;
+		if(x < room.leftBound) x = room.leftBound;
+		if(x > room.rightBound - rBox.width) x = room.rightBound - rBox.width;;
+		
+		gunAngle = Math.atan2(player.getCenterY() - rBox.getCenterY(), player.getCenterX() - rBox.getCenterX());
 	}
 	
 	
+	// Getters / Setters
+	public boolean isShooting() { return isShooting; }
 }

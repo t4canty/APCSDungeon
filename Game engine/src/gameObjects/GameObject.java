@@ -35,6 +35,7 @@ public abstract class GameObject {
 	protected Image hurtSprite;
 	protected boolean debug = false;
 	public boolean isJar = false;
+	protected boolean hasAI = false;
 	
 	//========Abstract methods========//
 	public abstract void paint(Graphics g);
@@ -88,6 +89,10 @@ public abstract class GameObject {
 		this.attackSprite = ImageIO.read(getClass().getResourceAsStream(attackSprite));
 	}
 	
+	public double getDistanceFrom(int x, int y) {
+		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+	}
+	
 	//========Getters/Setters========//
 	public void damage(int hp) {this.hp -= hp;}
 	public Rectangle getHitbox() {return rBox;}
@@ -96,4 +101,5 @@ public abstract class GameObject {
 	public int getY() { return y; }
 	public int getCenterX() { return x + rBox.width/2;}
 	public int getCenterY() { return y + rBox.height/2;};
+	public boolean hasAI() { return hasAI; }
 }
