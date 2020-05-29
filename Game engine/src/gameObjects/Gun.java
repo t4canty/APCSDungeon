@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
  */
 public class Gun extends Loot {
 	//========Variables========//
-	private int numBullet;
+	private AnimatedImage bulletSprite;
 	private long lastShot = 0;
 	private int bulletVelocity = 10;
 	private int bulletSize = 10;
@@ -53,6 +53,7 @@ public class Gun extends Loot {
 			Sprite = getSpriteFromJar();
 		else
 			Sprite = getSpriteFromFolder();
+		bulletSprite = null;
 	}
 	
 	//========Methods========//
@@ -103,7 +104,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), Sprite, id);
+			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), "", id);
 		}
 		return null;
 	}

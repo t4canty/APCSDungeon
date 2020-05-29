@@ -3,6 +3,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import driver.Driver;
+import fileIO.ImageLoader;
 
 public class GameInit {
 	//========Varibles========//
@@ -15,6 +16,7 @@ public class GameInit {
 	}
 	//========Main========//
 	public static void main(String[] args) {
+		ImageLoader.loadAllImages(false);
 		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", true, new Dimension(800, 800));
 	}
 }

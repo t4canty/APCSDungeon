@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import fileIO.ImageLoader;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Gun;
@@ -43,6 +44,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Room currentRoom;
 	private boolean debug;
 	private long lastEnemySpawn = 0; //temp timer to spawn multiple enemies
+	private long lastAnimationUpdate = 0;
 	
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
@@ -74,11 +76,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(128,128), "/img/test2.gif", "", "", "", debug);
-			currentRoom = new Room(new Rectangle(50, 50, 700, 700), "/img/testbackground.png", null, new ArrayList<GameObject>(), true);
+			player = new Player(100, 100, new Dimension(128,128), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
+			currentRoom = new Room(new Rectangle(50, 50, 700, 700), "src/img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
-			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
+			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -141,11 +143,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
+			for(GameObject e : currentRoom.getEntities()) {
+				e.advanceAnimationFrame();
+			}
+			player.advanceAnimationFrame();
+			lastAnimationUpdate = System.currentTimeMillis();
 		}
 	}
 	

@@ -7,7 +7,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
+//import org.apache.commons.io.IOUtils;
 
 /**
  * This class is the superclass to all objects that 'exist' in the game, excluding things like rooms or ui.
@@ -31,12 +31,12 @@ public abstract class GameObject {
 	protected Rectangle rBox;
 	protected int x, y;
 	protected int hp;
-	protected Image idleSprite;																//Sprites, stored in gif format
-	protected Image moveSprite;
-	protected Image attackSprite;
-	protected Image hurtSprite;
+	protected AnimatedImage idleSprite;																//Sprites, stored in gif format
+	protected AnimatedImage moveSprite;
+	protected AnimatedImage attackSprite;
+	protected AnimatedImage hurtSprite;
 	protected boolean debug = false;
-	public boolean isJar = true;
+	public boolean isJar = false;
 	protected boolean hasAI = false;
 	
 	//========Abstract methods========//
@@ -57,7 +57,7 @@ public abstract class GameObject {
 	 * @throws IOException
 	 * Throws IOException when idleSprite is null. 
 	 */
-	public void getImagesFromFolder(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
+	/*public void getImagesFromFolder(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		this.idleSprite = toolkit.getImage(idleSprite);
 		this.moveSprite = toolkit.getImage(moveSprite);
@@ -65,7 +65,7 @@ public abstract class GameObject {
 		this.hurtSprite = toolkit.getImage(attackSprite);
 		if(idleSprite == null)
 			throw new IOException();
-	}
+	}*/
 	
 	/**
 	 * Used for compiling a finished jar, reads images from inside the jar. 
@@ -81,7 +81,7 @@ public abstract class GameObject {
 	 * @throws IOException
 	 * Throws IOException when idleSprite is null.
 	 */
-	public void getImagesFromJar(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
+	/*public void getImagesFromJar(String idleSprite, String moveSprite, String hurtSprite, String attackSprite) throws IOException {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if(getClass().getResourceAsStream(idleSprite) == null) {
 			System.err.println("Error, getClass is null");
@@ -94,6 +94,14 @@ public abstract class GameObject {
 		this.hurtSprite = toolkit.createImage(IOUtils.toByteArray(in));
 		in = getClass().getResourceAsStream(attackSprite);
 		this.attackSprite = toolkit.createImage(IOUtils.toByteArray(in));
+	}*/
+	
+	public void advanceAnimationFrame() {
+		if(idleSprite != null) { idleSprite.advanceCurrentFrame(); }
+		if(moveSprite != null) { moveSprite.advanceCurrentFrame(); }
+		if(hurtSprite != null) { hurtSprite.advanceCurrentFrame(); }
+		if(attackSprite != null) { attackSprite.advanceCurrentFrame(); }
+		
 	}
 	
 	public double getDistanceFrom(int x, int y) {

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -44,7 +45,7 @@ public class Enemy extends GameObject{
 	 * Full path to the hurt sprite
 	 * @param Sprite4 full path to Attack Sprite
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
@@ -52,11 +53,10 @@ public class Enemy extends GameObject{
 		rBox.x = x;
 		rBox.y = y;
 		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
-		
-		if(isJar)
-			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
-		else
-			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		idleSprite = new AnimatedImage(Sprite1);
+		moveSprite = new AnimatedImage(Sprite2);
+		attackSprite = new AnimatedImage(Sprite3);
+		hurtSprite = new AnimatedImage(Sprite4);
 		computeDrop();
 	}
 	//========Getters/setters========//
@@ -69,6 +69,7 @@ public class Enemy extends GameObject{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.draw(rBox);
+		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
@@ -96,7 +97,7 @@ public class Enemy extends GameObject{
 			drop = new Gun(10, 1000, 3, 5, 30, 4, "Toilet Paper", isJar);
 			break;
 		case 5:																//Health Item
-			drop = new Health(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
+			drop = new Health(-10, "Small Heath Potion", null, 2000); 		//TODO Fix later to include actual sprite
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
