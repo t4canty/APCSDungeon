@@ -34,7 +34,7 @@ public class Projectile extends GameObject {
 	 * determines whether the projectile hurts enemies or the player
 	 * @param isEnemy
 	 */
-	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, Image sprite, int id) {
+	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, String sprite, int id) {
 		this.damage = damage;
 		this.isEnemyFire = isEnemy;
 		this.x = x;
@@ -45,7 +45,7 @@ public class Projectile extends GameObject {
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		this.idleSprite = sprite;
+		idleSprite = new AnimatedImage(sprite, super.isJar);
 	}
 	
 	//========Methods========//
@@ -63,7 +63,7 @@ public class Projectile extends GameObject {
 	
 	//========Getters/Setters========//
 	public void setSize(Dimension size) {rBox = new Rectangle(size);}
-	public void setSprite(Image Sprite) {this.idleSprite = Sprite;}
+	//public void setSprite(Image Sprite) {this.idleSprite = Sprite;}
 	public boolean isEnemyFire() {return isEnemyFire;}
 	public int getDamage() {return damage;}
 }

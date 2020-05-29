@@ -52,11 +52,10 @@ public class Enemy extends GameObject{
 		rBox.x = x;
 		rBox.y = y;
 		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
-		
-		if(isJar)
-			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
-		else
-			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		idleSprite = new AnimatedImage(Sprite1, super.isJar);
+		moveSprite = new AnimatedImage(Sprite2, super.isJar);
+		attackSprite = new AnimatedImage(Sprite3, super.isJar);
+		hurtSprite = new AnimatedImage(Sprite4, super.isJar);
 		computeDrop();
 	}
 	//========Getters/setters========//
@@ -69,6 +68,7 @@ public class Enemy extends GameObject{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.draw(rBox);
+		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
@@ -96,7 +96,7 @@ public class Enemy extends GameObject{
 			drop = new Gun(10, 1000, 3, 5, 30, 4, "Toilet Paper", isJar);
 			break;
 		case 5:																//Health Item
-			drop = new Health(-10, "Small Heath Potio", null, 2000); 		//TODO Fix later to include actual sprite
+			drop = new Health(-10, "Small Heath Potion", null, 2000); 		//TODO Fix later to include actual sprite
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}

@@ -43,7 +43,7 @@ public class Player extends GameObject{
 	 * Full path to the move sprite
 	 * @param Sprite3
 	 * Full path to the hurt sprite
-	 * @param Sprite
+	 * @param Sprite4
 	 * Full path to Attack Sprite
 	 * 
 	 */
@@ -52,10 +52,11 @@ public class Player extends GameObject{
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
-		if(isJar)
-			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
-		else
-			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		idleSprite = new AnimatedImage(Sprite1, super.isJar);
+		moveSprite = new AnimatedImage(Sprite2, super.isJar);
+		attackSprite = new AnimatedImage(Sprite3, super.isJar);
+		hurtSprite = new AnimatedImage(Sprite4, super.isJar);
+		
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
@@ -86,10 +87,10 @@ public class Player extends GameObject{
 		this.y = 0;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
-		if(isJar)
-			getImagesFromJar(Sprite1, Sprite2, Sprite3, Sprite4);
-		else
-			getImagesFromFolder(Sprite1, Sprite2, Sprite3, Sprite4);
+		idleSprite = new AnimatedImage(Sprite1, super.isJar);
+		moveSprite = new AnimatedImage(Sprite2, super.isJar);
+		attackSprite = new AnimatedImage(Sprite3, super.isJar);
+		hurtSprite = new AnimatedImage(Sprite4, super.isJar);
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
@@ -154,7 +155,7 @@ public class Player extends GameObject{
 		rBox.y = y;																					//Set hitbox to current x
 		Graphics2D g2d = (Graphics2D) g; 															//neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
-		g2d.drawImage(idleSprite, x, y, rBox.width, rBox.height, null);
+		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		if(debug) g2d.draw(rBox);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 10, null);
