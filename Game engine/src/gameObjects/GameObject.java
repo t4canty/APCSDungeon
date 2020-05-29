@@ -9,6 +9,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * This class is the superclass to all objects that 'exist' in the game, excluding things like rooms or ui.
  * 1) Enemy - anything that damages the player.
@@ -87,12 +89,13 @@ public abstract class GameObject {
 			System.err.println("Error, getClass is null");
 		}
 		InputStream in = getClass().getResourceAsStream(idleSprite);
-		byte[] arr = new byte[in.available()];
-		in.read(arr);
-		this.idleSprite = toolkit.createImage(arr);
-		this.moveSprite = ImageIO.read(getClass().getResourceAsStream(moveSprite));
-		this.hurtSprite = ImageIO.read(getClass().getResourceAsStream(hurtSprite));
-		this.attackSprite = ImageIO.read(getClass().getResourceAsStream(attackSprite));
+		this.idleSprite = toolkit.createImage(IOUtils.toByteArray(in));
+		in = getClass().getResourceAsStream(moveSprite);
+		this.moveSprite = toolkit.createImage(IOUtils.toByteArray(in));
+		in = getClass().getResourceAsStream(hurtSprite);
+		this.hurtSprite = toolkit.createImage(IOUtils.toByteArray(in));
+		in = getClass().getResourceAsStream(attackSprite);
+		this.attackSprite = toolkit.createImage(IOUtils.toByteArray(in));
 	}
 	
 	public double getDistanceFrom(int x, int y) {
