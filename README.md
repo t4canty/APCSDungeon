@@ -1,19 +1,20 @@
-# GameEngine
-Designed to make programming games with jpanel, specifically games with npcs and a world to move in, much easier by creating json/xml files that represent game objects.
+# Dungeon Crawler
+A game in the style of Enter the Gungeon and Binding of Issac, using swing.
 
-## Features
-  - Dedicated json/xml writers
-  - Global positioning
-  - Audio handling
-  - settings window
+## Controls:
+  - W/A/S/D to move
+  - E for inventory
+  - R to reload
   
  Trello Link:
  https://trello.com/b/HhVPI8UP/apcs-game
  
  ## In Progress:
-  - XML Gui
-  - GameObject system
-  - XML Reading/Writing
-  - Global Jframe system
+  - Sprites
+  - Splash screen
+  - Enemy system
+  - Room System
+  - Audio
+  - A lot more
 See Trello for more in-depth progress.
   
