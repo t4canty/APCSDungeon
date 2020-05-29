@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +22,6 @@ import javax.swing.Timer;
 import fileIO.ImageLoader;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
-import gameObjects.Gun;
 import gameObjects.Player;
 import gameObjects.Projectile;
 import gameObjects.Room;

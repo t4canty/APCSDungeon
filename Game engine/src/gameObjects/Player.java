@@ -29,7 +29,6 @@ public class Player extends GameObject{
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
 	public boolean isShooting;
-	private long lastBulletShot = 0; 															//system time when last bullet was shot, used for cooldown
 	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	
@@ -42,14 +41,8 @@ public class Player extends GameObject{
 	 * Starting Y position for the player on the jframe
 	 * @param size
 	 * Size of the player object
-	 * @param Sprite1
-	 * Full path to the idle sprite
-	 * @param Sprite2
-	 * Full path to the move sprite
-	 * @param Sprite3
-	 * Full path to the hurt sprite
-	 * @param Sprite4
-	 * Full path to Attack Sprite
+	 * @param skin
+	 * Player skin to use
 	 * 
 	 */
 	public Player(int x, int y, Dimension size, BufferedImage[] skin) throws IOException {
@@ -65,47 +58,26 @@ public class Player extends GameObject{
 		inventory.add(activeGun);
 	}
 	/**
-	 * Player constructor
-	 * @param x
-	 * Starting X position for the player on the jframe
-	 * @param y
-	 * Starting Y position for the player on the jframe
+	 * Bare Player constructor
 	 * @param size
-	 * Size of the player object
-	 * @param x
-	 * Starting X position for the player on the jframe
-	 * @param y
-	 * Starting Y position for the player on the jframe
-	 * @param size
-	 * Size of the player object
-	 * @param Sprite1
-	 * Full path to the idle sprite
-	 * @param Sprite2
-	 * Full path to the move sprite
-	 * @param Sprite3
-	 * Full path to the hurt sprite
-	 * @param Sprite4 full path to Attack Sprite
+	 * Size of the hitbox for the player
+	 * @param skin
+	 * Player skin to use
 	 */
 	public Player(Dimension size, BufferedImage[] skin) throws IOException {
 		this(0, 0, size, skin);
 	}
 		/**
 		 * 
-	 * Player constructor with x and y inputs;
+	 * Player constructor with x and y inputs, debug option
 	 * @param x
 	 * Starting X position for the player on the jframe
 	 * @param y
 	 * Starting Y position for the player on the jframe
 	 * @param size
 	 * Size of the player object
-	 * @param Sprite1
-	 * Full path to the idle sprite
-	 * @param Sprite2
-	 * Full path to the move sprite
-	 * @param Sprite3
-	 * Full path to the hurt sprite
-	 * @param Sprite
-	 * Full path to Attack Sprite
+	 * @param skin
+	 * Player skin to use
 	 * @param debug
 	 * Sets debug flag
 	 * 
@@ -115,26 +87,11 @@ public class Player extends GameObject{
 		this.debug = debug;
 	}
 	/**
-	 * Player constructor
-	 * @param x
-	 * Starting X position for the player on the jframe
-	 * @param y
-	 * Starting Y position for the player on the jframe
+	 * Player constructor with debug option
 	 * @param size
 	 * Size of the player object
-	 * @param x
-	 * Starting X position for the player on the jframe
-	 * @param y
-	 * Starting Y position for the player on the jframe
-	 * @param size
-	 * Size of the player object
-	 * @param Sprite1
-	 * Full path to the idle sprite
-	 * @param Sprite2
-	 * Full path to the move sprite
-	 * @param Sprite3
-	 * Full path to the hurt sprite
-	 * @param Sprite4 full path to Attack Sprite
+	 * @param skin
+	 * player skin to use
 	 * @param debug
 	 * Sets debug flag
 	 */
@@ -226,6 +183,8 @@ public class Player extends GameObject{
 		
 	}
 	
+	
+	//Used to draw the gun onto the screen
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {

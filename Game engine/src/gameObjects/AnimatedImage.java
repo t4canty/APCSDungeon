@@ -1,7 +1,6 @@
 package gameObjects;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.File;
@@ -16,7 +15,6 @@ public class AnimatedImage {
 	private BufferedImage spritesheet;
 	private int numFrames = 60;
 	private int currentFrame = 1;
-	private int currentFrameX = 0;
 	private int currentFrameY = 0;
 	private boolean isStatic = false;
 	

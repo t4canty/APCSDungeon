@@ -1,11 +1,8 @@
 package gameObjects;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.io.IOException;
-import java.io.InputStream;
 
 //import org.apache.commons.io.IOUtils;
 
@@ -111,6 +108,8 @@ public abstract class GameObject {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
 	}
 	
+	
+	//check if this GameObject's hitbox is colliding with another
 	public boolean isColliding(Rectangle r) {
 		if(r != null) {
 			return rBox.intersects(r);

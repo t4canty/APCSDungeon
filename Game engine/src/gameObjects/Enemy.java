@@ -1,14 +1,11 @@
 package gameObjects;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import fileIO.ImageLoader;
@@ -36,20 +33,15 @@ public class Enemy extends GameObject{
 	/**
 	 * Enemy constructor with x and y inputs;
 	 * @param x
-	 * Starting X position for the player on the jframe
+	 * Starting X position for the enemy on the jframe
 	 * @param y
-	 * Starting Y position for the player on the jframe
+	 * Starting Y position for the enemy on the jframe
+	 * @param hp
+	 * Amount of HP enemy starts with
 	 * @param size
 	 * Size of the player object
-	 * @param drop
-	 * What thing this enemy drops - input null for nothing
-	 * @param Sprite1
-	 * Full path to the idle sprite
-	 * @param Sprite2
-	 * Full path to the move sprite
-	 * @param Sprite3
-	 * Full path to the hurt sprite
-	 * @param Sprite4 full path to Attack Sprite
+	 * @param skin
+	 * Skin of sprites to use
 	 */
 	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin) throws IOException {
 		this.x = x;
@@ -148,6 +140,7 @@ public class Enemy extends GameObject{
 		
 	}
 	
+	//draw gun on the screen dependent on the angle it's aiming
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
@@ -159,6 +152,7 @@ public class Enemy extends GameObject{
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
 	
+	//update all of the animations
 	@Override
 	public void advanceAnimationFrame() {
 		for(AnimatedImage i : skin) {
@@ -166,7 +160,7 @@ public class Enemy extends GameObject{
 		}
 	}
 	
-	
+	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
 		int rand = new Random().nextInt(6);
 		switch (rand) {
@@ -191,13 +185,15 @@ public class Enemy extends GameObject{
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
 	
+	//get a new projectile from the gun
 	public Projectile getGunshot() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, true);
 	}
 	
+	//damage this enemy
 	public void damage(int hp) {
 		this.hp -= hp;
-		lastDamageTaken = System.currentTimeMillis();
+		lastDamageTaken = System.currentTimeMillis(); //keep track of when damage is taken to show hurt animation
 	}
 	
 	/*
@@ -237,6 +233,7 @@ public class Enemy extends GameObject{
 			currentState = 2;
 		}
 		
+		//check if this enemy is intersecting others, if so move away from the other enemies
 		int eX = 0;
 		int eY = 0;
 		for(GameObject e : room.getEntities()) {
@@ -251,23 +248,28 @@ public class Enemy extends GameObject{
 		//act accordingly based on that state
 		switch(currentState) {
 		case 0:
+			//move towards player
 			x += movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 			y += movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
 			lastWalk = System.currentTimeMillis();
 			isShooting = false;
 			break;
 		case 1:
+			//move away from player
 			x -= movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 			y -= movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
 			lastWalk = System.currentTimeMillis();
 			isShooting = true;
 			break;
 		case 2:
+			//shoot player
 			isShooting = true;
 			break;
 		case 3:
+			//TODO: run away from player gunshots
 			break;
 		case 4:
+			//avoid intersecting other enemies
 			x -= movementSpeed * (eX - getCenterX()) / distFromPlayer;
 			y -= movementSpeed * (eY - getCenterY()) / distFromPlayer;
 			lastWalk = System.currentTimeMillis();
