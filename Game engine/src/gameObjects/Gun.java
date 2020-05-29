@@ -51,10 +51,7 @@ public class Gun extends Loot {
 		this.ammoInMag = maxAmmoInMag;
 		this.bulletVelocity = bulletVelocity;
 		this.bulletSize = bulletSize;
-		if(IsJar)
-			Sprite = getSpriteFromJar();
-		else
-			Sprite = getSpriteFromFolder();
+		Sprite = ImageLoader.BADGUN;
 		bulletSprite = null;
 	}
 	
