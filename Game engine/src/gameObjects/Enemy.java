@@ -161,7 +161,6 @@ public class Enemy extends GameObject{
 			}
 		}
 		
-		System.out.println(currentState);
 		//act accordingly based on that state
 		switch(currentState) {
 		case 0:

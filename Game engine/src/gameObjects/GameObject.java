@@ -108,10 +108,16 @@ public abstract class GameObject {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
 	}
 	
+	public boolean isColliding(Rectangle r) {
+		if(r != null) {
+			return rBox.intersects(r);
+		}
+		return false;
+	}
+	
 	//========Getters/Setters========//
 	public void damage(int hp) {this.hp -= hp;}
 	public Rectangle getHitbox() {return rBox;}
-	public boolean isColliding(Rectangle r) {return rBox.intersects(r);}
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getCenterX() { return x + rBox.width/2;}

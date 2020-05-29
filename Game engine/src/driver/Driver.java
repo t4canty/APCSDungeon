@@ -42,6 +42,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Timer t;
 	private Player player;
 	private Room currentRoom;
+	private Room room1;
+	private Room room2; //temporary testing room
 	private boolean debug;
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
@@ -77,10 +79,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//===========Temporary player initialization for testing===========//
 		try {
 			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
-			currentRoom = new Room(new Rectangle(50, 50, 950, 950), "src/img/testbackground.png", null, new ArrayList<GameObject>(), true);
+			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true);
+			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true);
+			currentRoom = room1;
 			player.updateBounds(currentRoom.getBounds());
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
-			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
+			//currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -119,6 +123,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//player -> enemy projectile & player -> wall collision
 		player.checkCollision(currentRoom.getEntities());
+		
+		if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
+			currentRoom = currentRoom.nextRoom();
+			player.moveTo(75, player.getY());
+		}
+		
+		if(player.isColliding(currentRoom.getLeftDoor())) {
+			currentRoom = currentRoom.lastRoom();
+			player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
+		}
 		
 		//shoot the gun if the cooldown is ready and button is pressed
 		boolean canShoot = player.isShooting && player.canShootBullet();

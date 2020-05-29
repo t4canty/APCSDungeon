@@ -17,29 +17,28 @@ public class Room {
 	protected Image backgroundSprite;			//image for background
 	protected Room rightRoom;					//linked room to the right
 	protected Room leftRoom;					//linked room to the left
+	protected Rectangle leftDoor;
+	protected Rectangle rightDoor;
 	protected ArrayList<GameObject> entities;	//list of entities within the room
 	public boolean isJar = false;				//change image loading if image is a jar file
 	
 	protected boolean doorOpen = false;		 	//if the door to the next room can be walked through
 	
 	
-	public Room(Rectangle usableArea, String background, Room leftRoom, ArrayList<GameObject> entities, boolean doorOpen) throws IOException {
+	public Room(Rectangle usableArea, Rectangle leftDoorHitbox, Rectangle rightDoorHitbox, Image background, Room leftRoom, ArrayList<GameObject> entities, boolean doorOpen) throws IOException {
 		leftBound = usableArea.x;
 		topBound = usableArea.y;
 		bottomBound = usableArea.y + usableArea.height;
 		rightBound = usableArea.x + usableArea.width;
 		this.leftRoom = leftRoom;
 		this.entities = entities;
+		rightDoor = rightDoorHitbox;
+		leftDoor = leftDoorHitbox;
 		this.doorOpen = doorOpen;
+		backgroundSprite = background;
 		
 		if(leftRoom != null) {
 			leftRoom.setRightRoom(this);
-		}
-		
-		if(isJar) {
-			getImagesFromJar(background);
-		}else {
-			getImagesFromFolder(background);
 		}
 	}
 	
@@ -108,20 +107,24 @@ public class Room {
 		return new Rectangle(leftBound, topBound, bottomBound-topBound, rightBound-leftBound);
 	}
 	
-	
-	public void getImagesFromFolder(String background) throws IOException {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		this.backgroundSprite = toolkit.getImage(background);
-		if(backgroundSprite == null) {
-			throw new IOException();
-		}
+	public Rectangle getLeftDoor() {
+		return leftDoor;
 	}
 	
-	public void getImagesFromJar(String background) throws IOException {
-		if(getClass().getResourceAsStream(background) == null) {
-			System.err.println("Error, getClass is null");
-		}
-		this.backgroundSprite = ImageIO.read(getClass().getResourceAsStream(background));
+	public Rectangle getRightDoor() {
+		return rightDoor;
+	}
+	
+	public Room nextRoom() {
+		return rightRoom;
+	}
+	
+	public Room lastRoom() {
+		return leftRoom;
+	}
+	
+	public boolean isDoorOpen() {
+		return doorOpen;
 	}
 
 	public boolean isCloseToPlayerProjectile(int x, int y) {

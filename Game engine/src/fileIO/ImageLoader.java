@@ -33,6 +33,8 @@ public class ImageLoader {
 	public static BufferedImage BADGUN;
 	public static BufferedImage PISTOLMAG;
 	
+	public static BufferedImage ROOM_1;
+	
 	
 	//called at beginning of program, loads all images
 	public static void loadAllImages(boolean isJar) {
@@ -43,12 +45,16 @@ public class ImageLoader {
 			NO_IMAGE = getImageFromFolder("src/img/noimage.png");
 			MARINE_FRONTIDLE = getImageFromFolder("src/img/Marine_frontIdle.png");
 			MARINE_SIDEIDLE = getImageFromFolder("src/img/Marine_sideIdle.png");
-			NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
-			NPC_SIDEIDLE = getImageFromFolder("src/img/NPC_sideIdle.png");
 			WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
 			WSB_SIDEIDLE = getImageFromFolder("src/img/WSB_sideIdle.png");
+			
+			NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
+			NPC_SIDEIDLE = getImageFromFolder("src/img/NPC_sideIdle.png");
+			
 			BADGUN = getImageFromFolder("src/img/badGun.png");
 			PISTOLMAG = getImageFromFolder("src/img/pistolMag.png");
+			
+			ROOM_1 = getImageFromFolder("src/img/testbackground.png");
 			
 			}catch(IOException e) {
 				e.printStackTrace();
