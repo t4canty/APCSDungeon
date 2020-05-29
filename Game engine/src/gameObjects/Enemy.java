@@ -107,7 +107,7 @@ public class Enemy extends GameObject{
 	}
 	
 	public Projectile getGunshot() {
-		return activeGun.getGunshot(getCenterY(), getCenterY(), gunAngle, true);
+		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, true);
 	}
 	
 	/*
