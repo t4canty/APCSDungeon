@@ -72,7 +72,7 @@ public class Enemy extends GameObject{
 		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
-		if(Math.abs(gunAngle) > 1) {
+		if(Math.abs(gunAngle) > 1.07) {
 			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 50, -50, null);
 		}else {
 			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, 50, 50, null);
