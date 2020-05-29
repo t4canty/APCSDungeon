@@ -20,6 +20,7 @@ public class Projectile extends GameObject {
 	private int velocityY = 0;
 	private int damage = 0;
 	private boolean isEnemyFire = false;
+	private AnimatedImage sprite;
 	
 	//========Constructor========//
 	/**
@@ -46,7 +47,7 @@ public class Projectile extends GameObject {
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		idleSprite = new AnimatedImage(sprite);
+		this.sprite = new AnimatedImage(sprite);
 	}
 	
 	//========Methods========//
@@ -58,9 +59,14 @@ public class Projectile extends GameObject {
 		rBox.y = y;
 		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		g2d.drawImage(sprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		g2d.draw(rBox);
 		
+	}
+	
+	@Override
+	public void advanceAnimationFrame() {
+		sprite.advanceCurrentFrame();
 	}
 	
 	//========Getters/Setters========//

@@ -31,20 +31,27 @@ public abstract class GameObject {
 	final public int DOWNRIGHT = 5;
 	final public int DOWNLEFT = 6;
 	final public int UPLEFT = 7;
+	
+	final public int FRONTIDLE = 0;
+	final public int SIDEIDLE = 1;
+	final public int BACKIDLE = 2;
+	final public int FRONTMOVE = 3;
+	final public int SIDEMOVE = 4;
+	final public int BACKMOVE = 5;
+	final public int FRONTHURT = 6;
+	final public int SIDEHURT = 7;
+	final public int BACKHURT = 8;
 	//========Variables========//
 	protected Rectangle rBox;
 	protected int x, y;
 	protected int hp;
-	protected AnimatedImage idleSprite;																//Sprites, stored in gif format
-	protected AnimatedImage moveSprite;
-	protected AnimatedImage attackSprite;
-	protected AnimatedImage hurtSprite;
 	protected boolean debug = false;
 	public boolean isJar = false;
 	protected boolean hasAI = false;
 	
 	//========Abstract methods========//
 	public abstract void paint(Graphics g);
+	public abstract void advanceAnimationFrame();
 	
 	//========Methods========//
 	/**
@@ -100,14 +107,6 @@ public abstract class GameObject {
 		this.attackSprite = toolkit.createImage(IOUtils.toByteArray(in));
 	}*/
 	
-	public void advanceAnimationFrame() {
-		if(idleSprite != null) { idleSprite.advanceCurrentFrame(); }
-		if(moveSprite != null) { moveSprite.advanceCurrentFrame(); }
-		if(hurtSprite != null) { hurtSprite.advanceCurrentFrame(); }
-		if(attackSprite != null) { attackSprite.advanceCurrentFrame(); }
-		
-	}
-	
 	public double getDistanceFrom(int x, int y) {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
 	}
@@ -120,7 +119,6 @@ public abstract class GameObject {
 	}
 	
 	//========Getters/Setters========//
-	public void damage(int hp) {this.hp -= hp;}
 	public Rectangle getHitbox() {return rBox;}
 	public int getX() { return x; }
 	public int getY() { return y; }

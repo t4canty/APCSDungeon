@@ -78,7 +78,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_SIDEIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
+			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINESKIN, debug);
 			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true);
 			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true);
 			currentRoom = room1;
@@ -178,7 +178,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_SIDEIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

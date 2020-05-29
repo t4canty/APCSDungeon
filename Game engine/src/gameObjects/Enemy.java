@@ -29,6 +29,9 @@ public class Enemy extends GameObject{
 	private boolean isShooting = false;
 	private double gunAngle;
 	private int graphicsDir;
+	private long lastDamageTaken = 0;
+	private long lastWalk = 0;
+	private AnimatedImage[] skin = new AnimatedImage[9];
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -48,18 +51,19 @@ public class Enemy extends GameObject{
 	 * Full path to the hurt sprite
 	 * @param Sprite4 full path to Attack Sprite
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4) throws IOException {
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
+		for(int i = 0; i < skin.length; i++) {
+			System.out.println(i);
+			this.skin[i] = new AnimatedImage(skin[i]);
+		}
 		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
-		idleSprite = new AnimatedImage(Sprite1);
-		moveSprite = new AnimatedImage(Sprite2);
-		attackSprite = new AnimatedImage(Sprite3);
-		hurtSprite = new AnimatedImage(Sprite4);
+		
 		//computeDrop();
 		drop = new AmmoMag(10, ImageLoader.PISTOLMAG);
 	}
@@ -79,25 +83,72 @@ public class Enemy extends GameObject{
 		}else if(Math.abs(gunAngle) < .79) {
 			graphicsDir = RIGHT;
 		}else if(gunAngle > 0) {
-			graphicsDir = UP;
-		}else {
 			graphicsDir = DOWN;
+		}else {
+			graphicsDir = UP;
 		}
 		
-		switch(graphicsDir) {
-		case LEFT:
-			g2d.drawImage(moveSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			break;
-		case RIGHT:
-			g2d.drawImage(moveSprite.getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-			break;
-		case UP:
-			//include the other thing later
-			//break;
-		case DOWN:
-			g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		///All of these states are the same right now as we don't have sprites for them yet
+				if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
+					
+					//moving sprites
+					switch(graphicsDir) {
+					case LEFT:
+						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case RIGHT:
+						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+						break;
+					case UP:
+						drawGun(g2d);
+						g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case DOWN:
+						g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					}
+					
+					///hurt sprites
+				} else if(System.currentTimeMillis() - lastDamageTaken < 20){
+					switch(graphicsDir) {
+					case LEFT:
+						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case RIGHT:
+						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+						break;
+					case UP:
+						drawGun(g2d);
+						g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case DOWN:
+						g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					}
+					
+					//idle sprites
+				} else {
+					switch(graphicsDir) {
+					case LEFT:
+						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case RIGHT:
+						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+						break;
+					case UP:
+						drawGun(g2d);
+						g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+						break;
+					case DOWN:
+						g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					}
+				}
+		
+		if(graphicsDir != UP) {
+			drawGun(g2d);
 		}
 		
+	}
+	
+	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
 			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 50, -50, null);
@@ -106,6 +157,13 @@ public class Enemy extends GameObject{
 		}
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
+	}
+	
+	@Override
+	public void advanceAnimationFrame() {
+		for(AnimatedImage i : skin) {
+			i.advanceCurrentFrame();
+		}
 	}
 	
 	
@@ -135,6 +193,11 @@ public class Enemy extends GameObject{
 	
 	public Projectile getGunshot() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, true);
+	}
+	
+	public void damage(int hp) {
+		this.hp -= hp;
+		lastDamageTaken = System.currentTimeMillis();
 	}
 	
 	/*
@@ -190,11 +253,13 @@ public class Enemy extends GameObject{
 		case 0:
 			x += movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 			y += movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
+			lastWalk = System.currentTimeMillis();
 			isShooting = false;
 			break;
 		case 1:
 			x -= movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 			y -= movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
+			lastWalk = System.currentTimeMillis();
 			isShooting = true;
 			break;
 		case 2:
@@ -205,6 +270,7 @@ public class Enemy extends GameObject{
 		case 4:
 			x -= movementSpeed * (eX - getCenterX()) / distFromPlayer;
 			y -= movementSpeed * (eY - getCenterY()) / distFromPlayer;
+			lastWalk = System.currentTimeMillis();
 		}
 		
 		//make sure to stay within room bounds

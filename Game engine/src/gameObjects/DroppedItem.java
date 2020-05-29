@@ -45,4 +45,8 @@ public class DroppedItem extends GameObject {
 
 	}
 
+	@Override
+	public void advanceAnimationFrame() {
+	}
+
 }
