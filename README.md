@@ -17,5 +17,6 @@ A game in the style of Enter the Gungeon and Binding of Issac, using swing.
   - Room System
   - Audio
   - A lot more
+
 See Trello for more in-depth progress.
   
