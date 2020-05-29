@@ -7,8 +7,6 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-
 import org.apache.commons.io.IOUtils;
 
 /**
