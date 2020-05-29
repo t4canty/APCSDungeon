@@ -1,4 +1,5 @@
-# Dungeon Crawler
+![Logo](https://github.com/t4canty/APCSDungeon/raw/master/Game%20engine/src/img/Logo.png)
+
 A game in the style of Enter the Gungeon and Binding of Issac, using swing.
 
 ## Controls:
