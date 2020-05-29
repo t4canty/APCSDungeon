@@ -21,7 +21,7 @@ public class AnimatedImage {
 	private boolean isStatic = false;
 	
 	public AnimatedImage(String filePath, boolean isJar) {
-		if(filePath.isBlank()) {
+		if(filePath.equals("") || filePath == null) {
 			filePath = "src/img/noimage.png";
 			isStatic = true;
 		}
