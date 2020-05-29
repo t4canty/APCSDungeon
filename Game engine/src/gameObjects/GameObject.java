@@ -111,7 +111,7 @@ public abstract class GameObject {
 	//========Getters/Setters========//
 	public void damage(int hp) {this.hp -= hp;}
 	public Rectangle getHitbox() {return rBox;}
-	public boolean isColliding(Rectangle r) {return rBox.contains(r);}
+	public boolean isColliding(Rectangle r) {return rBox.intersects(r);}
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getCenterX() { return x + rBox.width/2;}

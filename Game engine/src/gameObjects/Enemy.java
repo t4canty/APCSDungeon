@@ -143,6 +143,18 @@ public class Enemy extends GameObject{
 			currentState = 2;
 		}
 		
+		int eX = 0;
+		int eY = 0;
+		for(GameObject e : room.getEntities()) {
+			if(e instanceof Enemy && e.isColliding(rBox) && !e.equals(this)) {
+				currentState = 4;
+				eX = e.getCenterX();
+				eY = e.getCenterY();
+				distFromPlayer = (int)getDistanceFrom(eX, eY);
+			}
+		}
+		
+		System.out.println(currentState);
 		//act accordingly based on that state
 		switch(currentState) {
 		case 0:
@@ -158,6 +170,11 @@ public class Enemy extends GameObject{
 		case 2:
 			isShooting = true;
 			break;
+		case 3:
+			break;
+		case 4:
+			x -= movementSpeed * (eX - getCenterX()) / distFromPlayer;
+			y -= movementSpeed * (eY - getCenterY()) / distFromPlayer;
 		}
 		
 		//make sure to stay within room bounds

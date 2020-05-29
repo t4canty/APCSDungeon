@@ -17,6 +17,6 @@ public class GameInit {
 	//========Main========//
 	public static void main(String[] args) {
 		ImageLoader.loadAllImages(false);
-		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", true, new Dimension(800, 800));
+		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", true, new Dimension(1000, 1000));
 	}
 }

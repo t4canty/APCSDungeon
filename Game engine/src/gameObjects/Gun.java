@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
+
+import fileIO.ImageLoader;
 /**
  * 
  * Created May 26, 2020
@@ -81,7 +83,7 @@ public class Gun extends Loot {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		switch(id){																			//Uses id to read sprite from folder using Toolkit.
 		case 0:
-			return toolkit.getImage("img/badgun.png");
+			return toolkit.getImage("src/img/badgun.png");
 		case 1: //betterGun
 			return toolkit.getImage("betterGun.png");
 		case 2: //federalReserve
@@ -104,7 +106,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), "", id);
+			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id);
 		}
 		return null;
 	}

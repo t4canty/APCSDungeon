@@ -43,7 +43,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Player player;
 	private Room currentRoom;
 	private boolean debug;
-	private long lastEnemySpawn = 0; //temp timer to spawn multiple enemies
+	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
 	
 	//keybindings - {up, right, down, left, interact, reload}
@@ -76,8 +76,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(128,128), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
-			currentRoom = new Room(new Rectangle(50, 50, 700, 700), "src/img/testbackground.png", null, new ArrayList<GameObject>(), true);
+			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
+			currentRoom = new Room(new Rectangle(50, 50, 950, 950), "src/img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
 			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
@@ -88,7 +88,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		
 		//Adding ticking timer
-		t = new Timer(5,this);
+		t = new Timer(17,this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
@@ -127,6 +127,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 		}
 		
+		//enemy shooting
 		for(int i = 0; i < currentRoom.getEntities().size(); i++) {
 			GameObject o = currentRoom.getEntities().get(i);
 			if(o instanceof Enemy) {
@@ -140,16 +141,18 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 		
+		
+		//timed spawning of enemies (temporary for now)
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
 				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
+		//update all animations at 30 fps
 		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
 			for(GameObject e : currentRoom.getEntities()) {
 				e.advanceAnimationFrame();

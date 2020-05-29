@@ -8,16 +8,32 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Loads images into a static reference so they are kept in memory
+ * Created May 28, 2020
+ * @author TJ178
+ * @author t4canty
+ *
+ */
+
 public class ImageLoader {
-	public static BufferedImage MARINE_FRONTIDLE;
-	public static BufferedImage MARINE_SIDEIDLE;
-	public static BufferedImage NPC_FRONTIDLE;
-	public static BufferedImage NPC_SIDEIDLE;
-	public static BufferedImage WSB_FRONTIDLE;
-	public static BufferedImage WSB_SIDEIDLE;
+	//all stored images
 	public static BufferedImage NO_IMAGE;
 	
+	public static BufferedImage MARINE_FRONTIDLE;
+	public static BufferedImage MARINE_SIDEIDLE;
+	public static BufferedImage MARINE_MOVE;
+	public static BufferedImage WSB_FRONTIDLE;
+	public static BufferedImage WSB_SIDEIDLE;
 	
+	public static BufferedImage NPC_FRONTIDLE;
+	public static BufferedImage NPC_SIDEIDLE;
+	
+	public static BufferedImage BULLET = NO_IMAGE;
+	public static BufferedImage BADGUN;
+	
+	
+	//called at beginning of program, loads all images
 	public static void loadAllImages(boolean isJar) {
 		if(isJar) {
 			//load from jar
@@ -30,6 +46,7 @@ public class ImageLoader {
 			NPC_SIDEIDLE = getImageFromFolder("src/img/NPC_sideIdle.png");
 			WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
 			WSB_SIDEIDLE = getImageFromFolder("src/img/WSB_sideIdle.png");
+			BADGUN = getImageFromFolder("src/img/badGun.png");
 			
 			}catch(IOException e) {
 				e.printStackTrace();
@@ -37,7 +54,7 @@ public class ImageLoader {
 		}
 	}
 	
-	
+	//gets an image from the filesystem
 	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
 		System.out.println(new File(filePath).getAbsolutePath());
 		BufferedImage temp = ImageIO.read(new File(filePath));
@@ -46,6 +63,7 @@ public class ImageLoader {
 		return temp;
 	}
 	
+	//TODO: needs to get fixed
 	/*public static BufferedImage getImageFromJar(String filePath) throws IOException {
 		if(getClass().getResourceAsStream(filePath) == null) {
 			System.err.println("Error, getClass is null");

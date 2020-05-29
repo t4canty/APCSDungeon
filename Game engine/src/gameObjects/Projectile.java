@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 /**
  * Class for different types of projectiles available - determined by id.
@@ -34,7 +35,7 @@ public class Projectile extends GameObject {
 	 * determines whether the projectile hurts enemies or the player
 	 * @param isEnemy
 	 */
-	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, String sprite, int id) {
+	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, BufferedImage sprite, int id) {
 		this.damage = damage;
 		this.isEnemyFire = isEnemy;
 		this.x = x;
@@ -45,7 +46,7 @@ public class Projectile extends GameObject {
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		idleSprite = new AnimatedImage(sprite, super.isJar);
+		idleSprite = new AnimatedImage(sprite);
 	}
 	
 	//========Methods========//
@@ -57,6 +58,7 @@ public class Projectile extends GameObject {
 		rBox.y = y;
 		
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		g2d.draw(rBox);
 		
 	}
