@@ -1,4 +1,4 @@
-# Dungeoun Crawler
+# Dungeon Crawler
 A game in the style of Enter the Gungeon and Binding of Issac, using swing.
 
 ## Controls:
