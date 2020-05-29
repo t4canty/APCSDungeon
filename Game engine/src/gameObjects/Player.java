@@ -231,8 +231,10 @@ public class Player extends GameObject{
 						entities.remove(i);
 						i--;
 					}
-				}else if(entities.get(i) instanceof Enemy) {
-					hp -= entities.get(i).getHitbox().height / 10;
+				}else if(entities.get(i) instanceof DroppedItem) {
+					((DroppedItem)entities.get(i)).getItem().use(this);
+					entities.remove(i);
+					i--;
 				}
 			}
 		}
@@ -273,4 +275,5 @@ public class Player extends GameObject{
 	public void setActiveGun(Gun g) {activeGun = g; }
 	public int getTotalAmmo() { return ammo; }
 	public int getAmmoInMag() { return activeGun.getAmmoInMag(); }
+	public void addAmmo(int amt) { ammo += amt; }
 }

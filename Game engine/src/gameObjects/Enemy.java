@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import fileIO.ImageLoader;
+
 /**
  * 
  * Created May 26, 2020
@@ -57,10 +59,11 @@ public class Enemy extends GameObject{
 		moveSprite = new AnimatedImage(Sprite2);
 		attackSprite = new AnimatedImage(Sprite3);
 		hurtSprite = new AnimatedImage(Sprite4);
-		computeDrop();
+		//computeDrop();
+		drop = new AmmoMag(10, ImageLoader.PISTOLMAG);
 	}
-	//========Getters/setters========//
-	public Loot getDrop() {return drop;}
+	
+	
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
@@ -194,4 +197,5 @@ public class Enemy extends GameObject{
 	
 	// Getters / Setters
 	public boolean isShooting() { return isShooting; }
+	public Loot getDrop() { return drop; } 
 }

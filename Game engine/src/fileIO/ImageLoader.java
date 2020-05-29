@@ -31,6 +31,7 @@ public class ImageLoader {
 	
 	public static BufferedImage BULLET = NO_IMAGE;
 	public static BufferedImage BADGUN;
+	public static BufferedImage PISTOLMAG;
 	
 	
 	//called at beginning of program, loads all images
@@ -47,6 +48,7 @@ public class ImageLoader {
 			WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
 			WSB_SIDEIDLE = getImageFromFolder("src/img/WSB_sideIdle.png");
 			BADGUN = getImageFromFolder("src/img/badGun.png");
+			PISTOLMAG = getImageFromFolder("src/img/pistolMag.png");
 			
 			}catch(IOException e) {
 				e.printStackTrace();

@@ -12,16 +12,22 @@ import java.awt.Image;
 
 public abstract class Loot {
 	//========Variables========//
-	protected int id;
+	protected int id;		//type number
 	protected Image Sprite;
 	protected String Name;
-	protected int Damage;
+	protected int number;	//number of hp, ammo, etc
 	protected int cooldown;
+	
+	public static int HEALTHPACK = 0;
+	public static int PISTOLMAG = 1;
+	public static int GUN = 2;
+	
+	public abstract void use(Player p);
 	
 	//========Getters/Setters========//
 	public int getId() {return id;}
 	public Image getSprite() {return Sprite;}
 	public String getName() {return Name;}
-	public int getDamage() {return Damage;}
+	public int getNum() {return number;}
 	public int getCooldown() {return cooldown;}
 }

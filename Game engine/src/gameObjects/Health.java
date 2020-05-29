@@ -23,11 +23,16 @@ public class Health extends Loot {
 	 * @param cooldown
 	 * Cooldown time of the potion in ms.
 	 */
-	public Health(int damage, String name, Image Sprite, int cooldown) {
-		this.Damage = damage;
+	public Health(int hp, String name, Image Sprite, int cooldown) {
+		this.number = hp;
 		this.Name = name;
 		this.Sprite = Sprite;
 		this.cooldown = cooldown;
-		this.id = 5; //Special ID reserved for health potions
+		this.id = Loot.HEALTHPACK; //Special ID reserved for health potions
+	}
+
+	@Override
+	public void use(Player p) {
+		p.hp += number;
 	}
 }

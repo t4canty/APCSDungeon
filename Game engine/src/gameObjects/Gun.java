@@ -18,6 +18,7 @@ public class Gun extends Loot {
 	//========Variables========//
 	private AnimatedImage bulletSprite;
 	private long lastShot = 0;
+	private int damage;
 	private int bulletVelocity = 10;
 	private int bulletSize = 10;
 	private int ammoInMag = 10;
@@ -43,7 +44,7 @@ public class Gun extends Loot {
 	 * Name of the gun.
 	 */
 	public Gun(int Damage, int cooldown, int maxAmmoInMag, int bulletVelocity, int bulletSize, int id, String Name, boolean IsJar) {
-		this.Damage = Damage;
+		damage = Damage;
 		this.cooldown = cooldown;
 		this.id = id;
 		this.Name = Name;
@@ -103,7 +104,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			return new Projectile(Damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id);
+			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id);
 		}
 		return null;
 	}
@@ -129,4 +130,10 @@ public class Gun extends Loot {
 	// getters / setters
 	public int getAmmoInMag() { return ammoInMag; }
 	public int getMaxAmmoInMag() { return maxAmmoInMag; }
+
+	@Override
+	public void use(Player p) {
+		p.getInventory().add(this);
+		
+	}
 }

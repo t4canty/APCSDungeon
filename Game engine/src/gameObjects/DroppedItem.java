@@ -1,7 +1,9 @@
 package gameObjects;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 /**
  * Basic Loot container class to represent an item on the ground
@@ -26,10 +28,9 @@ public class DroppedItem extends GameObject {
 		this.x = x;
 		this.y = y;
 		this.item = item;
+		rBox = new Rectangle(new Dimension(size,size));
 		rBox.x = x;
 		rBox.y = y;
-		rBox.height = size;
-		rBox.width = size;
 	}
 	
 	public Loot getItem() {
@@ -40,7 +41,7 @@ public class DroppedItem extends GameObject {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.draw(rBox);
-		g2d.drawImage(item.Sprite, x, y, null);
+		g2d.drawImage(item.Sprite, x, y, rBox.height, rBox.width, null);
 
 	}
 
