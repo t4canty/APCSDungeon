@@ -166,23 +166,23 @@ public class Enemy extends GameObject{
 		int rand = new Random().nextInt(7);
 		switch (rand) {
 		case 0:																//BadGun
-			drop = new Gun(1, 300, 5, 5, 15, 0, "Bad Gun", isJar);
+			drop = new Gun(10, 300, 5, 5, 15, 0, "Bad Gun", isJar);
 			activeGun = (Gun) drop;
 			break;
 		case 1:																//BetterGun
-			drop = new Gun(2, 200, 15, 8, 15, 1, "Better Gun", isJar);
+			drop = new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar);
 			activeGun = (Gun) drop;
 			break;
 		case 2:																//FederalReserve
-			drop = new Gun(1, 100, 30, 10, 8, 2, "Federal Reserve", isJar);
+			drop = new Gun(10, 50, 30, 10, 8, 2, "Federal Reserve", isJar);
 			activeGun = (Gun) drop;
 			break;
 		case 3:																//ElPresidente
-			drop = new Gun(4, 600, 8, 5, 20, 3, "El Presidente", isJar);
+			drop = new Gun(40, 600, 8, 5, 20, 3, "El Presidente", isJar);
 			activeGun = (Gun) drop;
 			break;
 		case 4:																//ToiletPaper
-			drop = new Gun(10, 1000, 3, 5, 30, 4, "Toilet Paper", isJar);
+			drop = new Gun(100, 10000, 3, 5, 50, 4, "Toilet Paper", isJar);
 			activeGun = (Gun) drop;
 			break;
 		case 5:																//Health Item

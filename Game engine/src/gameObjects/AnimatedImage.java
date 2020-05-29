@@ -36,6 +36,11 @@ public class AnimatedImage {
 		}
 	}
 	
+	public AnimatedImage(String filePath, boolean isJar, int numFrames) {
+		this(filePath, isJar);
+		this.numFrames = numFrames;
+	}
+	
 	public AnimatedImage(BufferedImage source) {
 		if(source == null) {
 			isStatic = true;
