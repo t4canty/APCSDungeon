@@ -45,11 +45,12 @@ public class Player extends GameObject{
 	 * Player skin to use
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, BufferedImage[] skin) throws IOException {
+	public Player(int x, int y, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
+		this.isJar = isJar;
 		for(int i = 0; i < skin.length; i++) {
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
@@ -64,8 +65,8 @@ public class Player extends GameObject{
 	 * @param skin
 	 * Player skin to use
 	 */
-	public Player(Dimension size, BufferedImage[] skin) throws IOException {
-		this(0, 0, size, skin);
+	public Player(Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
+		this(0, 0, size, skin, isJar);
 	}
 		/**
 		 * 
@@ -82,9 +83,11 @@ public class Player extends GameObject{
 	 * Sets debug flag
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, BufferedImage[] skin, boolean debug) throws IOException {
-		this(x, y, size, skin);
+	public Player(int x, int y, Dimension size, BufferedImage[] skin, boolean isJar, boolean debug) throws IOException {
+		this(x, y, size, skin, isJar);
 		this.debug = debug;
+		if(debug)
+			inventory.add(new Gun(20, 10, 99999, 40, 10, 0, "EZ Death Lazer", super.isJar));
 	}
 	/**
 	 * Player constructor with debug option
@@ -95,9 +98,11 @@ public class Player extends GameObject{
 	 * @param debug
 	 * Sets debug flag
 	 */
-	public Player(Dimension size, BufferedImage[] skin, boolean debug) throws IOException {
-		this(size, skin);
+	public Player(Dimension size, BufferedImage[] skin, boolean isJar, boolean debug) throws IOException {
+		this(size, skin, isJar);
 		this.debug = debug;
+		if(debug)
+			inventory.add(new Gun(20, 10, 99999, 40, 10, 0, "EZ Death Lazer", super.isJar));
 	}
 	
 	//========Methods========//

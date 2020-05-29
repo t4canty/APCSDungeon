@@ -25,8 +25,10 @@ public class AnimatedImage {
 		}
 		try {
 			if(isJar) {
+				System.out.println("Loading images from Jar (From AnimateImage)");
 				spritesheet = getImageFromJar(filePath);
 			}else {
+				System.out.println("Loading images from Folder (From AnimateImage)");
 				spritesheet = getImageFromFolder(filePath);
 			}
 		}catch(IOException e){
@@ -87,12 +89,10 @@ public class AnimatedImage {
 	}
 	
 	public BufferedImage getImageFromJar(String filePath) throws IOException {
-		if(getClass().getResourceAsStream(filePath) == null) {
+		System.out.println(filePath);
+		if(ImageLoader.class.getResourceAsStream(filePath) == null) {
 			System.err.println("Error, getClass is null");
 		}
-		InputStream in = getClass().getResourceAsStream(filePath);
-		//byte[] arr = new byte[in.available()];
-		//in.read(arr);
-		return ImageIO.read(in);
+		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
 	}
 }

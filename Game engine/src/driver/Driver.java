@@ -43,6 +43,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Room room1;
 	private Room room2; //temporary testing room
 	private boolean debug;
+	private boolean isJar;
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
 	
@@ -60,7 +61,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * @param debug
 	 * Enable debug console printouts
 	 */
-	public Driver(Dimension bounds, String title, boolean debug) {
+	public Driver(Dimension bounds, String title, boolean debug, boolean isJar) {
 		this.bounds = bounds;
 		this.debug = debug;
 		f = new JFrame();
@@ -76,7 +77,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINESKIN, debug);
+			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINESKIN, isJar, debug);
 			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true);
 			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true);
 			currentRoom = room1;
@@ -176,7 +177,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN));
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

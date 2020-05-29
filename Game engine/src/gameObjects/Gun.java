@@ -23,6 +23,7 @@ public class Gun extends Loot {
 	private int bulletSize = 10;
 	private int ammoInMag = 10;
 	private int maxAmmoInMag = 10;
+	private boolean isJar;
 	
 	
 	//========Constructor========//
@@ -48,6 +49,7 @@ public class Gun extends Loot {
 		this.cooldown = cooldown;
 		this.id = id;
 		this.Name = Name;
+		this.isJar = IsJar;
 		this.maxAmmoInMag = maxAmmoInMag;
 		this.ammoInMag = maxAmmoInMag;
 		this.bulletVelocity = bulletVelocity;
@@ -104,7 +106,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id);
+			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
 		}
 		return null;
 	}

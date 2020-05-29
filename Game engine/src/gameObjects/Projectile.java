@@ -35,11 +35,12 @@ public class Projectile extends GameObject {
 	 * determines whether the projectile hurts enemies or the player
 	 * @param isEnemy
 	 */
-	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, BufferedImage sprite, int id) {
+	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, BufferedImage sprite, int id, boolean isJar) {
 		this.damage = damage;
 		this.isEnemyFire = isEnemy;
 		this.x = x;
 		this.y = y;
+		this.isJar = isJar;
 		this.velocityX = (int)(velocity * Math.cos(angle));
 		this.velocityY = (int)(velocity * Math.sin(angle));
 		hp = -1;

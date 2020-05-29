@@ -43,7 +43,7 @@ public abstract class GameObject {
 	protected int x, y;
 	protected int hp;
 	protected boolean debug = false;
-	public boolean isJar = false;
+	public boolean isJar = true;
 	protected boolean hasAI = false;
 	
 	//========Abstract methods========//

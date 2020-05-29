@@ -43,18 +43,19 @@ public class Enemy extends GameObject{
 	 * @param skin
 	 * Skin of sprites to use
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin) throws IOException {
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
+		this.isJar = isJar;
 		rBox.x = x;
 		rBox.y = y;
 		for(int i = 0; i < skin.length; i++) {
 			System.out.println(i);
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
-		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
 		
 		//computeDrop();
 		drop = new AmmoMag(10, ImageLoader.PISTOLMAG);
