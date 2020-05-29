@@ -78,7 +78,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
+			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_SIDEIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
 			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true);
 			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true);
 			currentRoom = room1;
@@ -106,10 +106,28 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		repaint();
 		
 		//move player if any keyboard buttons are pressed
-		if(playerUp) player.move(player.UP);
-		if(playerRight) player.move(player.RIGHT);
-		if(playerDown) player.move(player.DOWN);
-		if(playerLeft) player.move(player.LEFT);
+		boolean diag = false;
+		if(playerUp) {
+			if(playerRight) {
+				player.move(player.UPRIGHT);
+			}else if(playerLeft) {
+				player.move(player.UPLEFT);
+			}else {
+				player.move(player.UP);
+			}
+		}else if(playerDown) {
+			if(playerRight) {
+				player.move(player.DOWNRIGHT);
+			}else if(playerLeft) {
+				player.move(player.DOWNLEFT);
+			}else {
+				player.move(player.DOWN);
+			}
+		}else if(playerLeft) {
+			player.move(player.LEFT);
+		}else if(playerRight) {
+			player.move(player.RIGHT);
+		}
 		if(playerInteract) { 
 			new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
 			playerInteract = false;
@@ -160,7 +178,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_SIDEIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

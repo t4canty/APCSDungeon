@@ -19,10 +19,13 @@ import java.util.ArrayList;
 public class Player extends GameObject{
 	//========Variables========//
 	private Gun activeGun;																		//Currently held gun.
-	private int minX = 0;
+	private int minX = 0;	//bounds of room
 	private int minY = 0;
-	private int maxX;																			
+	private int maxX;													
 	private int maxY;
+	private int graphicsDir;		//direction that a player is holding their gun
+	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
+	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
 	public boolean isShooting;
 	private long lastBulletShot = 0; 															//system time when last bullet was shot, used for cooldown
@@ -156,13 +159,77 @@ public class Player extends GameObject{
 		rBox.y = y;																					//Set hitbox to current x
 		Graphics2D g2d = (Graphics2D) g; 															//neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
-		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		
+		if(Math.abs(gunAngle) > 2.35) {
+			graphicsDir = LEFT;
+		}else if(Math.abs(gunAngle) < .79) {
+			graphicsDir = RIGHT;
+		}else if(gunAngle > 0) {
+			graphicsDir = UP;
+		}else {
+			graphicsDir = DOWN;
+		}
+		
+		
+		///All of these states are the same right now as we don't have sprites for them yet
+		if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
+			
+			//moving sprites
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				//include the other thing later
+				//break;
+			case DOWN:
+				g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+			
+			///hurt sprites
+		} else if(System.currentTimeMillis() - lastDamageTaken < 20){
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				//include the other thing later
+				//break;
+			case DOWN:
+				g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+			
+			//idle sprites
+		} else {
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(moveSprite.getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				//include the other thing later
+				//break;
+			case DOWN:
+				g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+		}
+		
+		
+		
 		if(debug) g2d.draw(rBox);
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 50, -50, null);
+			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, 50, -50, null);
 		}else {
-			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, 50, 50, null);
+			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, 50, 50, null);
 		}
 		
 		//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
@@ -182,6 +249,7 @@ public class Player extends GameObject{
 	 * Determines the direction of the movement.
 	 */
 	public void move(int dir) {
+		lastWalk = System.currentTimeMillis();
 		switch(dir) {
 		case UP:
 			y -= 10;
@@ -195,6 +263,23 @@ public class Player extends GameObject{
 		case LEFT:
 			x -= 10;
 			break;
+		case UPRIGHT:
+			y -= 5;
+			x += 5;
+			break;
+		case UPLEFT:
+			y -= 5;
+			x -= 5;
+			break;
+		case DOWNRIGHT:
+			y += 5;
+			x += 5;
+			break;
+		case DOWNLEFT:
+			y += 5;
+			x -= 5;
+			break;
+			
 		}
 		if(y < minY) y = minY;																			//Collision on the bounds of the room
 		if(y > maxY) y = maxY;

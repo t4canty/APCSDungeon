@@ -28,6 +28,7 @@ public class Enemy extends GameObject{
 	private int movementSpeed = 4;
 	private boolean isShooting = false;
 	private double gunAngle;
+	private int graphicsDir;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -72,7 +73,30 @@ public class Enemy extends GameObject{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.draw(rBox);
-		g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		
+		if(Math.abs(gunAngle) > 2.35) {
+			graphicsDir = LEFT;
+		}else if(Math.abs(gunAngle) < .79) {
+			graphicsDir = RIGHT;
+		}else if(gunAngle > 0) {
+			graphicsDir = UP;
+		}else {
+			graphicsDir = DOWN;
+		}
+		
+		switch(graphicsDir) {
+		case LEFT:
+			g2d.drawImage(moveSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			break;
+		case RIGHT:
+			g2d.drawImage(moveSprite.getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+			break;
+		case UP:
+			//include the other thing later
+			//break;
+		case DOWN:
+			g2d.drawImage(idleSprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		}
 		
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {

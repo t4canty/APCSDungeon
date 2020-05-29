@@ -27,6 +27,10 @@ public abstract class GameObject {
 	final public int DOWN = 2;
 	final public int LEFT = 3;
 	final public int RIGHT = 1;
+	final public int UPRIGHT = 4;
+	final public int DOWNRIGHT = 5;
+	final public int DOWNLEFT = 6;
+	final public int UPLEFT = 7;
 	//========Variables========//
 	protected Rectangle rBox;
 	protected int x, y;
