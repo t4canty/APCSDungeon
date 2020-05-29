@@ -31,6 +31,10 @@ public class Player extends GameObject{
 	public boolean isShooting;
 	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
+	private boolean[] CollectedGuns = { false, false, false, false, false};
+	
+	
+	
 	
 	//========Constructors========//
 	/**
@@ -339,4 +343,6 @@ public class Player extends GameObject{
 	public int getTotalAmmo() { return ammo; }
 	public int getAmmoInMag() { return activeGun.getAmmoInMag(); }
 	public void addAmmo(int amt) { ammo += amt; }
+	public boolean[] getOwnedGuns() { return CollectedGuns; }
+	public void ownGun(boolean b, int n ) { CollectedGuns[n] = b; }
 }

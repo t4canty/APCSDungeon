@@ -55,10 +55,10 @@ public class Enemy extends GameObject{
 			System.out.println(i);
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
-		activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
+		//activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
 		
-		//computeDrop();
-		drop = new AmmoMag(10, ImageLoader.PISTOLMAG);
+		computeDrop();
+		
 	}
 	
 	
@@ -81,7 +81,7 @@ public class Enemy extends GameObject{
 			graphicsDir = UP;
 		}
 		
-		///All of these states are the same right now as we don't have sprites for them yet
+		//All of these states are the same right now as we don't have sprites for them yet
 				if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
 					
 					//moving sprites
@@ -163,25 +163,36 @@ public class Enemy extends GameObject{
 	
 	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
-		int rand = new Random().nextInt(6);
+		int rand = new Random().nextInt(7);
 		switch (rand) {
 		case 0:																//BadGun
 			drop = new Gun(1, 300, 5, 5, 15, 0, "Bad Gun", isJar);
+			activeGun = (Gun) drop;
 			break;
 		case 1:																//BetterGun
 			drop = new Gun(2, 200, 15, 8, 15, 1, "Better Gun", isJar);
+			activeGun = (Gun) drop;
 			break;
 		case 2:																//FederalReserve
 			drop = new Gun(1, 100, 30, 10, 8, 2, "Federal Reserve", isJar);
+			activeGun = (Gun) drop;
 			break;
 		case 3:																//ElPresidente
 			drop = new Gun(4, 600, 8, 5, 20, 3, "El Presidente", isJar);
+			activeGun = (Gun) drop;
 			break;
 		case 4:																//ToiletPaper
 			drop = new Gun(10, 1000, 3, 5, 30, 4, "Toilet Paper", isJar);
+			activeGun = (Gun) drop;
 			break;
 		case 5:																//Health Item
-			drop = new Health(-10, "Small Heath Potion", null, 2000); 		//TODO Fix later to include actual sprite
+			drop = new Health(-10, "Small Heath Potion", null, 2000);
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
+			break;
+		case 6:
+			rand = new Random().nextInt(100);
+			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}

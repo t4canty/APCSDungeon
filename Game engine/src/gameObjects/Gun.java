@@ -25,6 +25,16 @@ public class Gun extends Loot {
 	private int maxAmmoInMag = 10;
 	private boolean isJar;
 	
+	public final int BADGUN = 0;
+	public final int BETTERGUN = 1;
+	public final int FEDRESERVE = 2;
+	public final int PRESIDENTE = 3;
+	public final int TP = 4;
+			
+			
+			
+			
+	
 	
 	//========Constructor========//
 	/**
@@ -79,21 +89,23 @@ public class Gun extends Loot {
 		}
 		return null;
 	}
+	//Fix this later
 	private Image getSpriteFromFolder() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		switch(id){																			//Uses id to read sprite from folder using Toolkit.
 		case 0:
-			return toolkit.getImage("src/img/badgun.png");
+			//return toolkit.getImage("src/img/badgun.png");
 		case 1: //betterGun
-			return toolkit.getImage("betterGun.png");
+			//return toolkit.getImage("betterGun.png");
 		case 2: //federalReserve
-			return toolkit.getImage("federalReserve.png");
+			//return toolkit.getImage("federalReserve.png");
 		case 3: //ElPresidente
-			return toolkit.getImage("ElPresidente.png");
+			//return toolkit.getImage("ElPresidente.png");
 		case 4: //ToiletPaper
-			return toolkit.getImage("ToiletPaper.png");
+			//return toolkit.getImage("ToiletPaper.png");
 		}
-		return null;
+		//return null;
+		return toolkit.getImage("src/img/badgun.png");
 	}
 	
 	//returns true if the gun is ready to fire
@@ -135,7 +147,13 @@ public class Gun extends Loot {
 
 	@Override
 	public void use(Player p) {
-		p.getInventory().add(this);
+		boolean[] bArr = p.getOwnedGuns();
+		if(bArr[id] == false) {
+			p.getInventory().add(this);
+			p.ownGun(true, id);
+		}else {
+			p.addAmmo(ammoInMag);
+		}
 		
 	}
 }
