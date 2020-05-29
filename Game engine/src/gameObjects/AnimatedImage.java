@@ -10,6 +10,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import fileIO.ImageLoader;
+
 public class AnimatedImage {
 	private BufferedImage spritesheet;
 	private int numFrames = 60;
@@ -31,6 +33,15 @@ public class AnimatedImage {
 			}
 		}catch(IOException e){
 			e.printStackTrace();
+		}
+	}
+	
+	public AnimatedImage(BufferedImage source) {
+		if(source == null) {
+			isStatic = true;
+			spritesheet = ImageLoader.NO_IMAGE;
+		}else {
+			spritesheet = source;
 		}
 	}
 	

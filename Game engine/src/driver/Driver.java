@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import fileIO.ImageLoader;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Gun;
@@ -75,11 +76,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(128,128), "src/img/Marine_FrontIdle.png", "src/img/Marine_FrontIdle.png", "src/img/Marine_FrontIdle.png", "src/img/Marine_FrontIdle.png", debug);
+			player = new Player(100, 100, new Dimension(128,128), ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, ImageLoader.MARINE_FRONTIDLE, debug);
 			currentRoom = new Room(new Rectangle(50, 50, 700, 700), "src/img/testbackground.png", null, new ArrayList<GameObject>(), true);
 			player.updateBounds(currentRoom.getBounds());
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
-			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
+			currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,7 +143,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 			lastEnemySpawn = System.currentTimeMillis();
 			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), "","","",""));
+				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

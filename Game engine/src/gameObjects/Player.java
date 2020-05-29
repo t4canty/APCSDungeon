@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -47,15 +48,15 @@ public class Player extends GameObject{
 	 * Full path to Attack Sprite
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
+	public Player(int x, int y, Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
-		idleSprite = new AnimatedImage(Sprite1, super.isJar);
-		moveSprite = new AnimatedImage(Sprite2, super.isJar);
-		attackSprite = new AnimatedImage(Sprite3, super.isJar);
-		hurtSprite = new AnimatedImage(Sprite4, super.isJar);
+		idleSprite = new AnimatedImage(Sprite1);
+		moveSprite = new AnimatedImage(Sprite2);
+		attackSprite = new AnimatedImage(Sprite3);
+		hurtSprite = new AnimatedImage(Sprite4);
 		
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
@@ -82,15 +83,15 @@ public class Player extends GameObject{
 	 * Full path to the hurt sprite
 	 * @param Sprite4 full path to Attack Sprite
 	 */
-	public Player(Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4) throws IOException {
+	public Player(Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4) throws IOException {
 		this.x = 0;
 		this.y = 0;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
-		idleSprite = new AnimatedImage(Sprite1, super.isJar);
-		moveSprite = new AnimatedImage(Sprite2, super.isJar);
-		attackSprite = new AnimatedImage(Sprite3, super.isJar);
-		hurtSprite = new AnimatedImage(Sprite4, super.isJar);
+		idleSprite = new AnimatedImage(Sprite1);
+		moveSprite = new AnimatedImage(Sprite2);
+		attackSprite = new AnimatedImage(Sprite3);
+		hurtSprite = new AnimatedImage(Sprite4);
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
@@ -115,7 +116,7 @@ public class Player extends GameObject{
 	 * Sets debug flag
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+	public Player(int x, int y, Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4, boolean debug) throws IOException {
 		this(x, y, size, Sprite1, Sprite2, Sprite3, Sprite4);
 		this.debug = debug;
 	}
@@ -143,7 +144,7 @@ public class Player extends GameObject{
 	 * @param debug
 	 * Sets debug flag
 	 */
-	public Player(Dimension size, String Sprite1, String Sprite2, String Sprite3, String Sprite4, boolean debug) throws IOException {
+	public Player(Dimension size, BufferedImage Sprite1, BufferedImage Sprite2, BufferedImage Sprite3, BufferedImage Sprite4, boolean debug) throws IOException {
 		this(size, Sprite1, Sprite2, Sprite3, Sprite4);
 		this.debug = debug;
 	}
