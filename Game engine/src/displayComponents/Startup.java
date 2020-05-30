@@ -24,20 +24,22 @@ public class Startup extends JPanel implements ActionListener{
 	private String t;
 	private boolean isJar;
 	JFrame f;
+	ImageLoader i;
 	private int id = Player.MARINE;
 	private JButton start;
 	
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
-		 f = new JFrame("Startup");
+		i = new ImageLoader();
+		i.start(isJar); 
+		f = new JFrame("Startup");
 		this.debug = debug;
 		d = bounds;
 		t = title;
 
 		start = new JButton("Start");
-		start.setEnabled(false);
 		start.setActionCommand("l");
 		start.addActionListener(this);
-		
+		start.setEnabled(false);
 
 		JRadioButton marine = new JRadioButton("Marine");
 		JRadioButton wsb = new JRadioButton("WSB");
@@ -74,11 +76,7 @@ public class Startup extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(ImageLoader.finished && SoundLoader.finished) {
-			start.setEnabled(true);
-		}
-		
-		
+		if(!i.isAlive()) start.setEnabled(true);		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
