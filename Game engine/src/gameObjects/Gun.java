@@ -6,7 +6,9 @@ import java.awt.Toolkit;
 import javax.imageio.ImageIO;
 
 import displayComponents.AnimatedImage;
+import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 /**
  * 
  * Created May 26, 2020
@@ -18,6 +20,7 @@ import fileIO.ImageLoader;
 public class Gun extends Loot {
 	//========Variables========//
 	private AnimatedImage bulletSprite;
+	private SoundEffect sound;
 	private long lastShot = 0;
 	private int damage;
 	private int bulletVelocity = 10;
@@ -66,6 +69,7 @@ public class Gun extends Loot {
 		this.bulletVelocity = bulletVelocity;
 		this.bulletSize = bulletSize;
 		Sprite = ImageLoader.BADGUN;
+		sound = SoundLoader.GUNSHOT;
 		bulletSprite = null;
 	}
 	
@@ -119,6 +123,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
+			sound.play();
 			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
 		}
 		return null;

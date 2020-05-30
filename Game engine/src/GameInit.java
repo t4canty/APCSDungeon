@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 
 import driver.Driver;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 
 public class GameInit {
 	//========Varibles========//
@@ -12,6 +13,7 @@ public class GameInit {
 	//========Constructor========//
 	public GameInit(Path filePath, String title, boolean debug, Dimension bounds, boolean isJar) {
 		ImageLoader.loadAllImages(isJar);
+		SoundLoader.loadAllSounds(isJar);
 		jDriver = new Driver(bounds, title, debug, isJar);
 		if(debug) System.out.println("Created Jframe");
 	}
