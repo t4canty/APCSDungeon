@@ -209,7 +209,7 @@ public class ImageLoader implements Runnable{
 	}
 	public void start(boolean isJar) {
 		System.out.println("Starting ImageLoad Thread");
-		isJar = isJar;
+		this.isJar = isJar;
 		if(t == null)
 			t = new Thread(this, "ImageLoader");
 		t.start();
