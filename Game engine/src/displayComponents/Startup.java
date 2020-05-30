@@ -14,6 +14,8 @@ import javax.swing.JRadioButton;
 import javax.swing.Timer;
 
 import driver.Driver;
+import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 import gameObjects.Player;
 
 public class Startup extends JPanel implements ActionListener{
@@ -23,13 +25,16 @@ public class Startup extends JPanel implements ActionListener{
 	private boolean isJar;
 	JFrame f;
 	private int id = Player.MARINE;
+	private JButton start;
+	
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
 		 f = new JFrame("Startup");
 		this.debug = debug;
 		d = bounds;
 		t = title;
 
-		JButton start = new JButton("Start");
+		start = new JButton("Start");
+		start.setEnabled(false);
 		start.setActionCommand("l");
 		start.addActionListener(this);
 		
@@ -69,6 +74,11 @@ public class Startup extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(ImageLoader.finished && SoundLoader.finished) {
+			start.setEnabled(true);
+		}
+		
+		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {

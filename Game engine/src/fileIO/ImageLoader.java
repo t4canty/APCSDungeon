@@ -33,6 +33,8 @@ public class ImageLoader {
 	
 	public static BufferedImage ROOM_1;
 	
+	public static boolean finished = false;
+	
 	
 	//called at beginning of program, loads all images
 	public static void loadAllImages(boolean isJar) {
@@ -180,6 +182,8 @@ public class ImageLoader {
 				e.printStackTrace();
 			}
 		}
+		
+		finished = true;
 	}
 	
 	//gets an image from the filesystem

@@ -12,9 +12,9 @@ public class GameInit implements Runnable{
 	private Path cDir;
 	//========Constructor========//
 	public GameInit(Path filePath, String title, boolean debug, Dimension bounds, boolean isJar){
+		new Startup(bounds, title, debug, isJar);
 		ImageLoader.loadAllImages(isJar);
 		SoundLoader.loadAllSounds(isJar);
-		new Startup(bounds, title, debug, isJar);
 		if(debug) System.out.println("Created Jframe");
 	}
 	//========Main========//

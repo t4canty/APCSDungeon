@@ -11,9 +11,13 @@ public class SoundLoader {
 	
 	public static SoundEffect GUNSHOT;
 	
+	public static boolean finished = false;
+	
 	
 	public static void loadAllSounds(boolean isJar) {
 		GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav");
+		
+		finished = true;
 	}
 	
 	
