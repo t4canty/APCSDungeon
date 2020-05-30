@@ -20,8 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import displayComponents.Inventory;
+import displayComponents.SoundEffect;
 import displayComponents.StatusBar;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 import gameObjects.Chest;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -47,6 +49,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Room room1;
 	private Room room2; //temporary testing room
 	private StatusBar healthBar;
+	private SoundEffect backgroundMusic;
 	private boolean debug;
 	private boolean isJar;
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
@@ -88,6 +91,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			currentRoom = room1;
 			currentRoom.getEntities().add(new Chest(400, 200, new Dimension(128,  64), new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar), ImageLoader.NO_IMAGE));
 			player.updateBounds(currentRoom.getBounds());
+			backgroundMusic = SoundLoader.ACTIONMUSIC;
+			backgroundMusic.setVolume(0.1);
 			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
 			//currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
 		} catch (IOException e) {
@@ -96,6 +101,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		healthBar = new StatusBar(10, 10, new Dimension(200, 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
+		backgroundMusic.loop();
 		
 		//Adding ticking timer
 		t = new Timer(17,this);

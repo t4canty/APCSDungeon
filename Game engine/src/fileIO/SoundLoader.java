@@ -11,6 +11,7 @@ public class SoundLoader {
 	
 	public static SoundEffect FOOTSTEP;
 	public static SoundEffect GUNSHOT;
+	public static SoundEffect ACTIONMUSIC;
 	
 	public static boolean finished = false;
 	
@@ -18,6 +19,7 @@ public class SoundLoader {
 	public static void loadAllSounds(boolean isJar) {
 		GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav");
 		FOOTSTEP = new SoundEffect("src/sound/footsteps.wav");
+		ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav");
 		
 		finished = true;
 	}

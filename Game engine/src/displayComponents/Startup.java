@@ -3,6 +3,7 @@ package displayComponents;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +44,7 @@ public class Startup extends JPanel implements ActionListener{
 	private int alpha = 255;
 	private float a2 = 0.0f;
 	private boolean maxed = false;
+	private boolean animationFinished = false;
 	final long StartTime = System.currentTimeMillis();
 	private Image logo;
 	
@@ -70,6 +73,7 @@ public class Startup extends JPanel implements ActionListener{
 		start.setActionCommand("l");
 		start.addActionListener(this);
 		start.setEnabled(false);
+		start.setVisible(false);
 		
 		JPanel anotherFuckingPanelJustForButtons = new JPanel();
 		anotherFuckingPanelJustForButtons.setLayout(new GridLayout(1, 3));
@@ -86,7 +90,6 @@ public class Startup extends JPanel implements ActionListener{
 		
 		pictureLabel = new JLabel(Placeholder);
 
-			
 		ButtonGroup bg = new ButtonGroup();
 
 		bg.add(marine);
@@ -106,6 +109,7 @@ public class Startup extends JPanel implements ActionListener{
 		anotherFuckingPanelJustForButtons.add(s);
 		
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
+		selectPanel.setVisible(false);
 		
 		
 		this.add(selectPanel);
@@ -121,7 +125,7 @@ public class Startup extends JPanel implements ActionListener{
 	
 
 	public void paint(Graphics g) {
-		super.paintComponents(g);
+		if(animationFinished) 	super.paintComponents(g);
 		//g.setColor(new Color(255,0,0,100));
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight());
@@ -135,20 +139,31 @@ public class Startup extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(a2 < 1 && !maxed)
-			a2 += 0.01f;
-		else if(a2 >= 1) {
-			maxed = true;
-			a2 -= 0.01;
-		}else if(a2 > 0.1 && maxed) {
-			a2 -= 0.01;
+		if(!animationFinished) {
+			if(a2 < 1 && !maxed)
+				a2 += 0.01f;
+			else if(a2 >= 1) {
+				maxed = true;
+				a2 -= 0.01;
+			}else if(a2 > 0.1 && maxed) {
+				a2 -= 0.01;
+			}
+			if(a2 < 0.1 && maxed) {
+				animationFinished = true;
+				a2 = 0f;
+			}
 		}
-		else {
-			a2 = 0f;
+		if(animationFinished && !start.isVisible()) {
+			start.setVisible(true);
+			for(Component c : this.getComponents()){
+				c.setVisible(true);
+			}
 		}
 		
-		if(alpha > 0 && (System.currentTimeMillis() - StartTime > 7800)) alpha /= 1.2;
 		
+		if(a2 > 1) { a2 = (float) 1; }
+		
+		if(alpha > 0 && (System.currentTimeMillis() - StartTime > 7000)) alpha /= 1.2;
 		
 		repaint();
 		

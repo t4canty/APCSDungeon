@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
 import javax.sound.sampled.LineListener;
@@ -18,19 +19,23 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class SoundEffect implements LineListener{
 	private ArrayList<Clip> clips = new ArrayList<Clip>();
 	private byte[] clipData;
+	private float gain = 1.0f;
 	
 	
 	public SoundEffect(String filepath) {
-		
 		System.out.println(filepath);
 		try {
 	         File temp = new File(filepath);
 	         clipData = Files.readAllBytes(temp.toPath());
-	         
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      }
-	   }
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
+	}
+	
+	public SoundEffect(String filepath, double volume) {
+		this(filepath);
+		setVolume(volume);
+	}
 	   
 
    	public void play() {
@@ -39,6 +44,8 @@ public class SoundEffect implements LineListener{
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(bStream);
 			clips.add(AudioSystem.getClip());
 			clips.get(clips.size()-1).open(audioStream);
+			FloatControl gainControl = (FloatControl) clips.get(clips.size()-1).getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(gain);
 		} catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
 			e.printStackTrace();
 		}
@@ -63,6 +70,10 @@ public class SoundEffect implements LineListener{
    		if(clips.size() != 0) {
    			clips.get(0).stop();
    		}
+   	}
+   	
+   	public void setVolume(double volume) {
+   		gain = 20f * (float) Math.log10(volume);
    	}
 
 	@Override
