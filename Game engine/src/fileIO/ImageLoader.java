@@ -35,7 +35,7 @@ public class ImageLoader implements Runnable{
 
 	private boolean isJar;
 	Thread t;
-
+	
 	//called at beginning of program, loads all images
 	public static void loadAllImages(boolean isJar) {
 		if(isJar) {
