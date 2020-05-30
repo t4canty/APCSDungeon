@@ -53,7 +53,6 @@ public class Enemy extends GameObject{
 		rBox.x = x;
 		rBox.y = y;
 		for(int i = 0; i < skin.length; i++) {
-			System.out.println(i);
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
 		//activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);

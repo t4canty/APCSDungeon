@@ -3,15 +3,12 @@ package displayComponents;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
 import javax.sound.sampled.LineListener;
@@ -48,6 +45,25 @@ public class SoundEffect implements LineListener{
    		clips.get(clips.size()-1).start();
    		clips.get(clips.size()-1).addLineListener(this);
 	}
+   	
+   	public void loop() {
+   		if(clips.size() == 0) {
+   			play();
+   		}
+   		clips.get(0).loop(Clip.LOOP_CONTINUOUSLY);
+   	}
+   	
+   	public void stopLoop() {
+   		if(clips.size() != 0) {
+   			clips.get(0).loop(0);
+   		}
+   	}
+   	
+   	public void stop() {
+   		if(clips.size() != 0) {
+   			clips.get(0).stop();
+   		}
+   	}
 
 	@Override
 	public void update(LineEvent event) {

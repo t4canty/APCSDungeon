@@ -9,6 +9,7 @@ import displayComponents.SoundEffect;
 
 public class SoundLoader {
 	
+	public static SoundEffect FOOTSTEP;
 	public static SoundEffect GUNSHOT;
 	
 	public static boolean finished = false;
@@ -16,6 +17,7 @@ public class SoundLoader {
 	
 	public static void loadAllSounds(boolean isJar) {
 		GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav");
+		FOOTSTEP = new SoundEffect("src/sound/footsteps.wav");
 		
 		finished = true;
 	}

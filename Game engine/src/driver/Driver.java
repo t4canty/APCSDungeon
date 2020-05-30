@@ -268,6 +268,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 		}else if(temp == keybindings[4]) {
 			playerInteract = true;
+			playerUp = false;
+			playerRight = false;
+			playerLeft = false;
+			playerDown = false;
 			
 		}else if(temp == keybindings[5]) {
 			playerReload = true;

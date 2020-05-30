@@ -9,8 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
+
 import displayComponents.AnimatedImage;
+import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 
 /**
  * 
@@ -33,6 +37,7 @@ public class Player extends GameObject{
 	private int maxY;
 	private int graphicsDir;		//direction that a player is holding their gun
 	private AnimatedImage[] skin = new AnimatedImage[9];
+	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
@@ -136,7 +141,7 @@ public class Player extends GameObject{
 		
 		
 		///All of these states are the same right now as we don't have sprites for them yet
-		if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
+		if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
 			
 			//moving sprites
 			switch(graphicsDir) {
@@ -153,9 +158,10 @@ public class Player extends GameObject{
 			case DOWN:
 				g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 			}
+			footsteps.loop();
 			//System.out.println("moving");
 			///hurt sprites
-		} else if(System.currentTimeMillis() - lastDamageTaken < 20){
+		} else if(System.currentTimeMillis() - lastDamageTaken < 500){
 			switch(graphicsDir) {
 			case LEFT:
 				g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
@@ -188,6 +194,7 @@ public class Player extends GameObject{
 			case DOWN:
 				g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 			}
+			footsteps.stop();
 			//System.out.println("idle");
 		}
 		
@@ -302,6 +309,7 @@ public class Player extends GameObject{
 				if(entities.get(i) instanceof Projectile) {
 					if(((Projectile) entities.get(i)).isEnemyFire()) {
 						hp -= ((Projectile) entities.get(i)).getDamage();
+						lastDamageTaken = System.currentTimeMillis();
 						entities.remove(i);
 						i--;
 					}
