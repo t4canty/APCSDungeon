@@ -18,7 +18,7 @@ public class AnimatedImage {
 	private int currentFrameY = 0;
 	private boolean isStatic = false;
 	
-	public AnimatedImage(String filePath, boolean isJar) {
+	public AnimatedImage(String filePath, boolean isJar, int numFrames) {
 		if(filePath.equals("") || filePath == null) {
 			filePath = "src/img/noimage.png";
 			isStatic = true;
@@ -36,16 +36,12 @@ public class AnimatedImage {
 		}
 	}
 	
-	public AnimatedImage(String filePath, boolean isJar, int numFrames) {
-		this(filePath, isJar);
-		this.numFrames = numFrames;
-	}
-	
 	public AnimatedImage(BufferedImage source) {
 		if(source == null) {
 			isStatic = true;
 			spritesheet = ImageLoader.NO_IMAGE;
 		}else {
+			this.numFrames = source.getHeight() / 512;
 			spritesheet = source;
 		}
 	}

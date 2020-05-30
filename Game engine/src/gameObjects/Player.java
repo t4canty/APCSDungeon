@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import displayComponents.AnimatedImage;
+import fileIO.ImageLoader;
 
 /**
  * 
@@ -19,6 +20,11 @@ import displayComponents.AnimatedImage;
  *
  */
 public class Player extends GameObject{
+	//Finals
+	final public static int MARINE = 0;
+	final public static int WSB = 1;
+	final public static int SECRET = 2;
+	
 	//========Variables========//
 	private Gun activeGun;																		//Currently held gun.
 	private int minX = 0;	//bounds of room
@@ -34,6 +40,7 @@ public class Player extends GameObject{
 	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	private boolean[] CollectedGuns = { false, false, false, false, false};
+	private int id;
 	
 	
 	
@@ -51,16 +58,14 @@ public class Player extends GameObject{
 	 * Player skin to use
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
+	public Player(int x, int y, Dimension size, int pid, boolean isJar) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
 		this.isJar = isJar;
-		for(int i = 0; i < skin.length; i++) {
-			this.skin[i] = new AnimatedImage(skin[i]);
-		}
-		
+		this.id = pid;
+		getPlayerSkin(pid);
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
 	}
@@ -71,8 +76,8 @@ public class Player extends GameObject{
 	 * @param skin
 	 * Player skin to use
 	 */
-	public Player(Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
-		this(0, 0, size, skin, isJar);
+	public Player(Dimension size, int pid, boolean isJar) throws IOException {
+		this(0, 0, size, pid, isJar);
 	}
 		/**
 		 * 
@@ -83,14 +88,14 @@ public class Player extends GameObject{
 	 * Starting Y position for the player on the jframe
 	 * @param size
 	 * Size of the player object
-	 * @param skin
-	 * Player skin to use
+	 * @param pid
+	 * Id of the char to use
 	 * @param debug
 	 * Sets debug flag
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, BufferedImage[] skin, boolean isJar, boolean debug) throws IOException {
-		this(x, y, size, skin, isJar);
+	public Player(int x, int y, Dimension size, int pid, boolean isJar, boolean debug) throws IOException {
+		this(x, y, size, pid, isJar);
 		this.debug = debug;
 		if(debug)
 			inventory.add(new Gun(20, 10, 99999, 40, 10, 0, "EZ Death Lazer", super.isJar));
@@ -104,8 +109,8 @@ public class Player extends GameObject{
 	 * @param debug
 	 * Sets debug flag
 	 */
-	public Player(Dimension size, BufferedImage[] skin, boolean isJar, boolean debug) throws IOException {
-		this(size, skin, isJar);
+	public Player(Dimension size,int pid, boolean isJar, boolean debug) throws IOException {
+		this(size, pid, isJar);
 		this.debug = debug;
 		if(debug)
 			inventory.add(new Gun(20, 10, 99999, 40, 10, 0, "EZ Death Lazer", super.isJar));
@@ -334,6 +339,27 @@ public class Player extends GameObject{
 		maxY = bounds[2] - rBox.height;
 		minX = bounds[3];
 	}
+	private void getPlayerSkin(int id) {
+		switch (id) {
+		case MARINE:
+			for(int i = 0; i < skin.length; i++) {
+				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
+			}
+			hp += hp/2;
+			break;
+		case WSB:
+			for(int i = 0; i < skin.length; i++) {
+				this.skin[i] = new AnimatedImage(ImageLoader.WSBSKIN[i]);
+			}
+			break;
+		case SECRET:
+			for(int i = 0; i < skin.length; i++) {
+				//this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
+				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
+			}
+		}
+	}
+	
 	
 	//========Getters/Setters========//
 	public void add(Gun l) {inventory.add(l);}
@@ -347,4 +373,5 @@ public class Player extends GameObject{
 	public void addAmmo(int amt) { ammo += amt; }
 	public boolean[] getOwnedGuns() { return CollectedGuns; }
 	public void ownGun(boolean b, int n ) { CollectedGuns[n] = b; }
+	public int getId() { return id; }
 }

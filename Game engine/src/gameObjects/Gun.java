@@ -155,6 +155,11 @@ public class Gun extends Loot {
 	public void use(Player p) {
 		boolean[] bArr = p.getOwnedGuns();
 		if(bArr[id] == false) {
+			if(p.getId() == Player.WSB && id == FEDRESERVE) {
+				cooldown = 5;
+				bulletVelocity += 20;
+				damage += 10;
+			}
 			p.getInventory().add(this);
 			p.ownGun(true, id);
 		}else {
