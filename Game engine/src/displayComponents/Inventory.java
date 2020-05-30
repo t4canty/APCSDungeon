@@ -1,4 +1,4 @@
-package driver;
+package displayComponents;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

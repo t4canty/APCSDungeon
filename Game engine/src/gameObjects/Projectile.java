@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import displayComponents.AnimatedImage;
+
 /**
  * Class for different types of projectiles available - determined by id.
  * Created May 26, 2020

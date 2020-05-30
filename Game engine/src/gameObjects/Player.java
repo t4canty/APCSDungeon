@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import displayComponents.AnimatedImage;
+
 /**
  * 
  * Created May 26, 2020
