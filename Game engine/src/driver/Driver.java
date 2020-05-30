@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import displayComponents.Inventory;
+import displayComponents.StatusBar;
 import fileIO.ImageLoader;
 import gameObjects.Chest;
 import gameObjects.Enemy;
@@ -45,6 +46,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Room currentRoom;
 	private Room room1;
 	private Room room2; //temporary testing room
+	private StatusBar healthBar;
 	private boolean debug;
 	private boolean isJar;
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
@@ -93,6 +95,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			e.printStackTrace();
 		}
 		
+		healthBar = new StatusBar(10, 10, new Dimension(200, 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
 		
 		//Adding ticking timer
 		t = new Timer(17,this);
@@ -162,6 +165,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 		}
 		
+		healthBar.setValue(player.getHP());
+		
 		//enemy shooting
 		for(int i = 0; i < currentRoom.getEntities().size(); i++) {
 			GameObject o = currentRoom.getEntities().get(i);
@@ -208,6 +213,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.paint(g);
 		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
 		g.drawString("health: " + player.getHP(), 150, 715);
+		healthBar.paint(g);
 	}
 	
 	
