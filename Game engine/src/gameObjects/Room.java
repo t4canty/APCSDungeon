@@ -96,13 +96,26 @@ public class Room {
 					GameObject temp2 = entities.get(j);
 					//check if a projectile that was shot by the player hit an enemy
 					//kill the projectile if so, kill the enemy if it has no health left and spawn its drop
-					if(temp instanceof Projectile && !((Projectile) temp).isEnemyFire() && temp2 instanceof Enemy){
+					if(temp instanceof Projectile && !((Projectile) temp).isEnemyFire() && (temp2 instanceof Enemy || temp2 instanceof Chest)){
 						if(temp.getHitbox().intersects(temp2.getHitbox())) {
-							((Enemy) temp2).damage(((Projectile)temp).getDamage());
-							if(temp2.hp <= 0) {
-								entities.add(new DroppedItem(temp2.getCenterX(), temp2.getCenterY(), ((Enemy)temp2).getDrop(), 25));
-								entities.remove(j);
-								i--;
+							if(temp2 instanceof Enemy) {
+							((Enemy)temp2).damage(((Projectile)temp).getDamage());
+								if(temp2.hp <= 0) {
+									entities.add(new DroppedItem(temp2.getCenterX(), temp2.getCenterY(), ((Enemy)temp2).getDrop(), 25));
+									entities.remove(j);
+									if(j < i) {
+										i--;
+									}
+								}
+							}else {
+								((Chest) temp2).damage(((Projectile)temp).getDamage());
+								if(temp2.hp <= 0) {
+									entities.add(new DroppedItem(temp2.getCenterX(), temp2.getCenterY(), ((Chest)temp2).getDrop(), 25));
+									entities.remove(j);
+									if(j < i) {
+										i--;
+									}
+								}
 							}
 							
 							entities.remove(i);

@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.imageio.ImageIO;
 
+import displayComponents.AnimatedImage;
 import fileIO.ImageLoader;
 /**
  * 
