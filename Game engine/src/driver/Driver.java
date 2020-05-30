@@ -66,7 +66,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * @param debug
 	 * Enable debug console printouts
 	 */
-	public Driver(Dimension bounds, String title, boolean debug, boolean isJar) {
+	public Driver(Dimension bounds, String title, boolean debug, int pid, boolean isJar) {
 		this.bounds = bounds;
 		this.debug = debug;
 		f = new JFrame();
@@ -82,7 +82,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(80,80), ImageLoader.MARINESKIN, isJar, debug);
+			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
 			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true);
 			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true);
 			currentRoom = room1;
