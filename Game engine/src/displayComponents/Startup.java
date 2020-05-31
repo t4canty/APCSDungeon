@@ -57,6 +57,7 @@ public class Startup extends JPanel implements ActionListener{
 	private JRadioButton wsb;
 	private JRadioButton secret;
 	private Image logo;
+	private StatusBar loadingBar;
 	
 	
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
@@ -70,7 +71,6 @@ public class Startup extends JPanel implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		s = new SoundLoader();															//Start SoundLoader thread
 		s.start(isJar, debug);
 		
@@ -123,7 +123,10 @@ public class Startup extends JPanel implements ActionListener{
 		selectPanel.setLayout(new BorderLayout());
 		selectPanel.add(pictureLabel);
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
+
 		
+		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.DARK_GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
 		this.add(start, BorderLayout.PAGE_END);
@@ -138,13 +141,16 @@ public class Startup extends JPanel implements ActionListener{
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponents(g);
+		if(i.isAlive() || s.isAlive()) { loadingBar.paint(g); }
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight()); 								//Animated black screen
-		
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, f.getWidth()/2 - logo.getWidth(null)/2, f.getHeight()/2 - logo.getHeight(null)/2, null);
+		if(i.isAlive() || s.isAlive()) {	
+			loadingBar.paint(g);
+		}
 	}
 	
 	@Override
@@ -160,6 +166,7 @@ public class Startup extends JPanel implements ActionListener{
 			}
 			if(a2 < 0.1 && maxed) {
 				animationFinished = true;
+				loadingBar.setColor(Color.LIGHT_GRAY);
 				a2 = 0f;
 			}
 		}
@@ -171,14 +178,12 @@ public class Startup extends JPanel implements ActionListener{
 		}
 		
 		if(a2 > 1) { a2 = (float) 1; }												//Error correction
+		if(a2 > 1) { a2 = (float) 1; }
 		if(alpha > 0 && animationFinished) alpha /= 1.2;
+		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 		
 		repaint();
-		
-		if(!i.isAlive() && !s.isAlive() && !start.isEnabled()) {
-			if(debug) System.out.println("Finished Loading - game ready.");
-			start.setEnabled(true);		
-		}
+		if(!i.isAlive() && !s.isAlive()) start.setEnabled(true);		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {

@@ -10,7 +10,10 @@ import displayComponents.SoundEffect;
  *
  */
 public class SoundLoader implements Runnable {
-	
+
+	public static boolean finished = false;
+	public static int totalNumberToLoad = 3;
+	public static int totalNumberLoaded = 0;
 	public static SoundEffect FOOTSTEP;
 	public static SoundEffect GUNSHOT;
 	public static SoundEffect ACTIONMUSIC;
@@ -21,15 +24,22 @@ public class SoundLoader implements Runnable {
 	private static void loadAllSounds(boolean isJar) {
 		if(!isJar) {
 			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug);
+			totalNumberLoaded++;
 			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug);
+			totalNumberLoaded++;
 			ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
+			totalNumberLoaded++;
+			finished = true;
 		}else {
 			GUNSHOT = new SoundEffect("/sound/pistolgunshot.wav", isJar, debug);
+			totalNumberLoaded++;
 			FOOTSTEP = new SoundEffect("/sound/footsteps.wav", isJar, debug);
+			totalNumberLoaded++;
 			ACTIONMUSIC = new SoundEffect("/sound/gamemusic alleyway loop.wav", isJar, debug);
+			totalNumberLoaded++;
+			finished = true;
 		}
-	}
-
+}
 	@Override
 	public void run() {
 		if(debug) System.out.println("Loading Audio Files");

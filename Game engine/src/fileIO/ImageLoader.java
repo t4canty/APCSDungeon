@@ -29,7 +29,9 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage ROOM_1;
 	private boolean isJar;
 	private static boolean debug;
-	private Thread t;
+	public static int totalNumberToLoad = 31;
+	public static int totalNumberLoaded = 0;
+	Thread t;
 	
 	//called at beginning of program, loads all images
 	private static void loadAllImages(boolean isJar) {
@@ -135,36 +137,35 @@ public class ImageLoader implements Runnable{
 				WSBSKIN[1] = WSB_SIDEIDLE;
 				WSB_BACKIDLE = getImageFromFolder("src/img/WSB_backIdle.png");
 				WSBSKIN[2] = WSB_BACKIDLE;
-				WSB_FRONTMOVE = WSB_FRONTIDLE;
+				WSB_FRONTMOVE = getImageFromFolder("src/img/WSB_frontMove.png");
 				WSBSKIN[3] = WSB_FRONTMOVE;
-				WSB_SIDEMOVE = WSB_SIDEIDLE;
+				WSB_SIDEMOVE = getImageFromFolder("src/img/WSB_sideMove.png");
 				WSBSKIN[4] = WSB_SIDEMOVE;
-				WSB_BACKMOVE = WSB_BACKIDLE;
+				WSB_BACKMOVE = getImageFromFolder("src/img/WSB_backMove.png");
 				WSBSKIN[5] = WSB_BACKMOVE;
-				WSB_FRONTHURT = WSB_FRONTIDLE;
+				WSB_FRONTHURT = getImageFromFolder("src/img/WSB_frontHurt.png");
 				WSBSKIN[6] = WSB_FRONTHURT;
-				WSB_SIDEHURT = WSB_SIDEIDLE;
+				WSB_SIDEHURT = getImageFromFolder("src/img/WSB_sideHurt.png");
 				WSBSKIN[7] = WSB_SIDEHURT;
-				WSB_BACKHURT = WSB_BACKIDLE;
-				WSBSKIN[8] = WSB_BACKHURT;
+				WSB_BACKHURT = getImageFromFolder("src/img/WSB_backHurt.png");
 
-				NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
+				NPC_FRONTIDLE = getImageFromFolder("/img/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
-				NPC_SIDEIDLE = getImageFromFolder("src/img/NPC_sideIdle.png");
+				NPC_SIDEIDLE = getImageFromFolder("/img/NPC_sideIdle.png");
 				NPCSKIN[1] = NPC_SIDEIDLE;
-				NPC_BACKIDLE = getImageFromFolder("src/img/NPC_backIdle.png");
+				NPC_BACKIDLE = getImageFromFolder("/img/NPC_backIdle.png");
 				NPCSKIN[2] = NPC_BACKIDLE;
-				NPC_FRONTMOVE = NPC_FRONTIDLE;
+				NPC_FRONTMOVE = getImageFromFolder("/img/NPC_frontMove.png");
 				NPCSKIN[3] = NPC_FRONTMOVE;
-				NPC_SIDEMOVE = NPC_SIDEIDLE;
+				NPC_SIDEMOVE = getImageFromFolder("/img/NPC_sideMove.png");
 				NPCSKIN[4] = NPC_SIDEMOVE;
-				NPC_BACKMOVE = NPC_BACKIDLE;
+				NPC_BACKMOVE = getImageFromFolder("/img/NPC_backMove.png");
 				NPCSKIN[5] = NPC_BACKMOVE;
-				NPC_FRONTHURT = NPC_FRONTIDLE;
+				NPC_FRONTHURT = getImageFromFolder("/img/NPC_frontHurt.png");
 				NPCSKIN[6] = NPC_FRONTHURT;
-				NPC_SIDEHURT = NPC_SIDEIDLE;
+				NPC_SIDEHURT = getImageFromFolder("/img/NPC_sideHurt.png");;
 				NPCSKIN[7] = NPC_SIDEHURT;
-				NPC_BACKHURT = NPC_BACKIDLE;
+				NPC_BACKHURT = getImageFromFolder("/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 
 
@@ -179,18 +180,19 @@ public class ImageLoader implements Runnable{
 		}
 	}
 
-	//gets an Image from the filesystem
-	private static BufferedImage getImageFromFolder(String filePath) throws IOException {
+	//gets an image from the filesystem
+	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
+		totalNumberLoaded++;
 		if(debug) System.out.println(new File(filePath).getAbsolutePath());
 		BufferedImage temp = ImageIO.read(new File(filePath));
 		if(temp == null)
 			throw new IOException();
 		return temp;
 	}
-
 	//get Image from jar
-	private static BufferedImage getImageFromJar(String filePath) throws IOException {
-		if(debug) System.out.println(filePath);
+	public static BufferedImage getImageFromJar(String filePath) throws IOException {
+		totalNumberLoaded++;
+		if(debug)System.out.println(filePath);
 		if(ImageLoader.class.getResourceAsStream(filePath) == null) {
 			System.err.println("Error, getClass is null");
 		}
