@@ -3,7 +3,6 @@ package displayComponents;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,12 +11,10 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +22,6 @@ import javax.swing.JRadioButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import driver.Driver;
 import fileIO.ImageLoader;
 import gameObjects.Player;
@@ -40,6 +36,9 @@ public class Startup extends JPanel implements ActionListener{
 	JButton start;
 	JLabel pictureLabel;
 	JPanel selectPanel;
+	JRadioButton marine;
+	JRadioButton wsb;
+	JRadioButton s;
 	private int id = Player.MARINE;
 	private int alpha = 255;
 	private float a2 = 0.0f;
@@ -47,6 +46,7 @@ public class Startup extends JPanel implements ActionListener{
 	private boolean animationFinished = false;
 	final long StartTime = System.currentTimeMillis();
 	private Image logo;
+	
 	
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
 		//Load images before ImageLoader
@@ -73,14 +73,13 @@ public class Startup extends JPanel implements ActionListener{
 		start.setActionCommand("l");
 		start.addActionListener(this);
 		start.setEnabled(false);
-		start.setVisible(false);
 		
 		JPanel anotherFuckingPanelJustForButtons = new JPanel();
 		anotherFuckingPanelJustForButtons.setLayout(new GridLayout(1, 3));
 		
-		JRadioButton marine = new JRadioButton("Marine");
-		JRadioButton wsb = new JRadioButton("WSB");
-		JRadioButton s = new JRadioButton("Secret");
+		marine = new JRadioButton("Marine");
+		wsb = new JRadioButton("WSB");
+		s = new JRadioButton("Secret");
 		marine.setActionCommand("m");
 		marine.addActionListener(this);
 		wsb.setActionCommand("w");
@@ -96,6 +95,10 @@ public class Startup extends JPanel implements ActionListener{
 		bg.add(wsb);
 		bg.add(s);
 		
+		s.setEnabled(false);
+		wsb.setEnabled(false);
+		marine.setEnabled(false);
+	
 		f.setResizable(false);
 		f.setBackground(Color.white);
 		f.setSize(800, 800);
@@ -109,7 +112,6 @@ public class Startup extends JPanel implements ActionListener{
 		anotherFuckingPanelJustForButtons.add(s);
 		
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
-		selectPanel.setVisible(false);
 		
 		
 		this.add(selectPanel);
@@ -123,10 +125,9 @@ public class Startup extends JPanel implements ActionListener{
 		t.start();
 	}
 	
-
+	@Override
 	public void paint(Graphics g) {
-		if(animationFinished) 	super.paintComponents(g);
-		//g.setColor(new Color(255,0,0,100));
+		super.paintComponents(g);
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight());
 	
@@ -153,24 +154,17 @@ public class Startup extends JPanel implements ActionListener{
 				a2 = 0f;
 			}
 		}
-		if(animationFinished && !start.isVisible()) {
-			start.setVisible(true);
-			for(Component c : this.getComponents()){
-				c.setVisible(true);
-			}
+		if(animationFinished && alpha == 0) {
+			s.setEnabled(true);
+			wsb.setEnabled(true);
+			marine.setEnabled(true);
 		}
 		
 		
 		if(a2 > 1) { a2 = (float) 1; }
-		
-		if(alpha > 0 && (System.currentTimeMillis() - StartTime > 7000)) alpha /= 1.2;
+		if(alpha > 0 && animationFinished) alpha /= 1.2;
 		
 		repaint();
-		
-		
-		
-		
-		
 		
 		if(!i.isAlive()) start.setEnabled(true);		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
@@ -185,7 +179,7 @@ public class Startup extends JPanel implements ActionListener{
 				if(debug) System.out.println("Selected marine");
 				id = Player.MARINE;
 				//pictureLabel = new ImageIcon(marineSplash)  set this later
-				pictureLabel.setText("test");
+				pictureLabel.setIcon(null);
 				selectPanel.revalidate();
 				break;
 			case "w":
