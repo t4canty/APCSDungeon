@@ -16,6 +16,7 @@ public class GameInit{
 			if(args[0].equals("true"))
 				debug = true;
 		}
+		if(debug) System.out.println("Max:" + Runtime.getRuntime().maxMemory() + "TotalMem:" + Runtime.getRuntime().totalMemory() + "Free: " + Runtime.getRuntime().freeMemory());
 		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true);
 	}
 }
