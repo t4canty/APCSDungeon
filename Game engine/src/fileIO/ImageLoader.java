@@ -149,23 +149,23 @@ public class ImageLoader implements Runnable{
 				WSBSKIN[7] = WSB_SIDEHURT;
 				WSB_BACKHURT = getImageFromFolder("src/img/WSB_backHurt.png");
 
-				NPC_FRONTIDLE = getImageFromFolder("/img/NPC_frontIdle.png");
+				NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
-				NPC_SIDEIDLE = getImageFromFolder("/img/NPC_sideIdle.png");
+				NPC_SIDEIDLE = getImageFromFolder("src/img/NPC_sideIdle.png");
 				NPCSKIN[1] = NPC_SIDEIDLE;
-				NPC_BACKIDLE = getImageFromFolder("/img/NPC_backIdle.png");
+				NPC_BACKIDLE = getImageFromFolder("src/img/NPC_backIdle.png");
 				NPCSKIN[2] = NPC_BACKIDLE;
-				NPC_FRONTMOVE = getImageFromFolder("/img/NPC_frontMove.png");
+				NPC_FRONTMOVE = getImageFromFolder("src/img/NPC_frontMove.png");
 				NPCSKIN[3] = NPC_FRONTMOVE;
-				NPC_SIDEMOVE = getImageFromFolder("/img/NPC_sideMove.png");
+				NPC_SIDEMOVE = getImageFromFolder("src/img/NPC_sideMove.png");
 				NPCSKIN[4] = NPC_SIDEMOVE;
-				NPC_BACKMOVE = getImageFromFolder("/img/NPC_backMove.png");
+				NPC_BACKMOVE = getImageFromFolder("src/img/NPC_backMove.png");
 				NPCSKIN[5] = NPC_BACKMOVE;
-				NPC_FRONTHURT = getImageFromFolder("/img/NPC_frontHurt.png");
+				NPC_FRONTHURT = getImageFromFolder("src/img/NPC_frontHurt.png");
 				NPCSKIN[6] = NPC_FRONTHURT;
-				NPC_SIDEHURT = getImageFromFolder("/img/NPC_sideHurt.png");;
+				NPC_SIDEHURT = getImageFromFolder("src/img/NPC_sideHurt.png");;
 				NPCSKIN[7] = NPC_SIDEHURT;
-				NPC_BACKHURT = getImageFromFolder("/img/NPC_backHurt.png");
+				NPC_BACKHURT = getImageFromFolder("src/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 
 

@@ -16,6 +16,6 @@ public class GameInit{
 			if(args[0].equals("true"))
 				debug = true;
 		}
-		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true);
+		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), false);
 	}
 }

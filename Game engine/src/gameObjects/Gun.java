@@ -20,7 +20,8 @@ import fileIO.SoundLoader;
 public class Gun extends Loot {
 	//========Variables========//
 	private AnimatedImage bulletSprite;
-	private SoundEffect sound;
+	private SoundEffect shootSound;
+	private SoundEffect reloadSound;
 	private long lastShot = 0;
 	private int damage;
 	private int bulletVelocity = 10;
@@ -69,7 +70,8 @@ public class Gun extends Loot {
 		this.bulletVelocity = bulletVelocity;
 		this.bulletSize = bulletSize;
 		Sprite = ImageLoader.BADGUN;
-		sound = SoundLoader.GUNSHOT;
+		shootSound = SoundLoader.GUNSHOT;
+		reloadSound = SoundLoader.SMALLRELOAD;
 		bulletSprite = null;
 	}
 	
@@ -123,7 +125,7 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			sound.play();
+			shootSound.play();
 			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
 		}
 		return null;
@@ -132,6 +134,7 @@ public class Gun extends Loot {
 	//reloads ammo given a stash to take from- returns the leftover amount of ammo
 	public int reload(int totalAmmo) {
 		int ammoNeeded = maxAmmoInMag - ammoInMag;
+		int temp = totalAmmo;
 		if(totalAmmo < ammoNeeded) {
 			ammoInMag += totalAmmo;
 			totalAmmo = 0;
@@ -139,6 +142,10 @@ public class Gun extends Loot {
 			totalAmmo -= ammoNeeded;
 			ammoInMag = maxAmmoInMag;
 		}
+		if(temp != totalAmmo) {
+			reloadSound.play();
+		}
+		
 		return totalAmmo;
 	}
 	

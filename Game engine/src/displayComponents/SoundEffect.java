@@ -16,6 +16,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.io.IOUtils;
 
+import fileIO.SoundLoader;
+
 public class SoundEffect implements LineListener{
 	private ArrayList<Clip> clips = new ArrayList<Clip>();
 	private byte[] clipData;
@@ -23,6 +25,7 @@ public class SoundEffect implements LineListener{
 	
 	
 	public SoundEffect(String filepath, boolean isJar, boolean debug) {
+		SoundLoader.totalNumberLoaded++;
 		if(debug) System.out.println(filepath);
 		try {
 	        if(isJar)
