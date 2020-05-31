@@ -199,8 +199,8 @@ public class Startup extends JPanel implements ActionListener{
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		repaint();
+		
 		if(doneLoading) start.setEnabled(true);		
-		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
 			case "l":
