@@ -23,9 +23,9 @@ public class SoundLoader implements Runnable {
 	
 	private static void loadAllSounds(boolean isJar) {
 		if(!isJar) {
-			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug);
+			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
 			totalNumberLoaded++;
-			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug);
+			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug, 0.75);
 			totalNumberLoaded++;
 			ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
 			totalNumberLoaded++;

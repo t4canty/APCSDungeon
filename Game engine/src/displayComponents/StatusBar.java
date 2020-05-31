@@ -102,6 +102,10 @@ public class StatusBar {
 	public void setColor(Color c) {
 		barColor = c;
 	}
+	
+	public Color getColor() {
+		return barColor;
+	}
 
 
 	public void paint(Graphics g) {

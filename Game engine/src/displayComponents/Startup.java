@@ -125,7 +125,7 @@ public class Startup extends JPanel implements ActionListener{
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
 
-		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.DARK_GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
 
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
@@ -138,6 +138,7 @@ public class Startup extends JPanel implements ActionListener{
 		t.start();
 	}
 
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponents(g);
@@ -149,18 +150,27 @@ public class Startup extends JPanel implements ActionListener{
 			}else {
 				a = alpha + 30;
 			}
-			loadingBar.setColor(new Color(200, 200, 200, a));
-			loadingBar.paint(g); 
 
 		}
+		 
+		
+		
 		g.setColor(new Color(0, 0, 0, alpha));
-		g.fillRect(0, 0, f.getWidth(), f.getHeight()); 								//Animated black screen
+		g.fillRect(0, 0, f.getWidth(), f.getHeight());				//Animated black screen
+		
+		if(i.isAlive() || s.isAlive()) { 
+			//g.setColor(Color.BLACK);
+			loadingBar.paint(g);
+		}
+		g.setColor(new Color(0, 0, 0, alpha));
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, f.getWidth()/2 - logo.getWidth(null)/2, f.getHeight()/2 - logo.getHeight(null)/2, null);
-		if(i.isAlive() || s.isAlive()) {	
-			loadingBar.paint(g);
+		
+		if(!(i.isAlive() || s.isAlive()) && !animationFinished) {
+				loadingBar.setColor(new Color(0, 150, 0));
+				loadingBar.paint(g);
 		}
 	}
 
@@ -178,7 +188,7 @@ public class Startup extends JPanel implements ActionListener{
 					a2 -= 0.01;
 				}
 			}else if(a2 > 0.1 && maxed) {
-				a2 -= 0.01;
+				a2 -= 0.015;
 			}
 
 			if(a2 < 0.1 && maxed) {
