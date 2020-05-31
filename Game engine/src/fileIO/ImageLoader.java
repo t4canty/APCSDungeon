@@ -17,29 +17,24 @@ import javax.imageio.ImageIO;
 public class ImageLoader implements Runnable{
 	//all stored images
 	public static BufferedImage NO_IMAGE;
-
 	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT;
 	public static BufferedImage[] MARINESKIN = new BufferedImage[9];
-
 	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT;
 	public static BufferedImage[] WSBSKIN = new BufferedImage[9];
-
 	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT;
 	public static BufferedImage[] NPCSKIN = new BufferedImage[9];
-
 	public static BufferedImage BULLET = NO_IMAGE;
 	public static BufferedImage BADGUN;
 	public static BufferedImage PISTOLMAG;
-
 	public static BufferedImage ROOM_1;
-
 	private boolean isJar;
-	Thread t;
+	private static boolean debug;
+	private Thread t;
 	
 	//called at beginning of program, loads all images
-	public static void loadAllImages(boolean isJar) {
+	private static void loadAllImages(boolean isJar) {
 		if(isJar) {
-			System.out.println("Loading images from Jar");
+			if(debug) System.out.println("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
 
@@ -111,7 +106,7 @@ public class ImageLoader implements Runnable{
 				e.printStackTrace();
 			}
 		}else {
-			System.out.println("Loading images from Folder");
+			if(debug) System.out.println("Loading images from Folder");
 			try {
 				NO_IMAGE = getImageFromFolder("src/img/noimage.png");
 
@@ -184,32 +179,34 @@ public class ImageLoader implements Runnable{
 		}
 	}
 
-	//gets an image from the filesystem
-	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
-		System.out.println(new File(filePath).getAbsolutePath());
+	//gets an Image from the filesystem
+	private static BufferedImage getImageFromFolder(String filePath) throws IOException {
+		if(debug) System.out.println(new File(filePath).getAbsolutePath());
 		BufferedImage temp = ImageIO.read(new File(filePath));
 		if(temp == null)
 			throw new IOException();
 		return temp;
 	}
 
-	//TODO: needs to get fixed
-	public static BufferedImage getImageFromJar(String filePath) throws IOException {
-		System.out.println(filePath);
+	//get Image from jar
+	private static BufferedImage getImageFromJar(String filePath) throws IOException {
+		if(debug) System.out.println(filePath);
 		if(ImageLoader.class.getResourceAsStream(filePath) == null) {
 			System.err.println("Error, getClass is null");
 		}
 		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
 	}
-
+	
+	//multithread stuff
 	@Override
 	public void run() {
-		System.out.println("Running ImageLoad Thread");
+		if(debug) System.out.println("Running ImageLoad Thread");
 		loadAllImages(isJar);
 	}
 	
-	public void start(boolean isJar) {
-		System.out.println("Starting ImageLoad Thread");
+	public void start(boolean isJar, boolean debug) {
+		this.debug = debug;
+		if(debug) System.out.println("Starting ImageLoad Thread");
 		this.isJar = isJar;
 		if(t == null)
 			t = new Thread(this, "ImageLoader");

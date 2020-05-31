@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -15,6 +14,7 @@ import javax.sound.sampled.LineEvent.Type;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import org.apache.commons.io.IOUtils;
 
 public class SoundEffect implements LineListener{
 	private ArrayList<Clip> clips = new ArrayList<Clip>();
@@ -22,22 +22,30 @@ public class SoundEffect implements LineListener{
 	private float gain = 1.0f;
 	
 	
-	public SoundEffect(String filepath) {
-		System.out.println(filepath);
+	public SoundEffect(String filepath, boolean isJar, boolean debug) {
+		if(debug) System.out.println(filepath);
 		try {
-	         File temp = new File(filepath);
-	         clipData = Files.readAllBytes(temp.toPath());
+	        if(isJar)
+	        	clipData = getClipFromJar(filepath);
+	        else
+	        	clipData = getClipFromFolder(filepath);
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
 	}
 	
-	public SoundEffect(String filepath, double volume) {
-		this(filepath);
+	public SoundEffect(String filepath, boolean isJar, boolean debug, double volume) {
+		this(filepath, isJar, debug);
 		setVolume(volume);
 	}
 	   
-
+	private byte[] getClipFromJar(String fPath) throws IOException {
+		return IOUtils.toByteArray(SoundEffect.class.getResourceAsStream(fPath));
+	}
+	private byte[] getClipFromFolder(String fPath) throws IOException {
+		return Files.readAllBytes(new File(fPath).toPath());
+	}
+	
    	public void play() {
    		ByteArrayInputStream bStream = new ByteArrayInputStream(clipData);
    		try {

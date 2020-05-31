@@ -367,8 +367,7 @@ public class Player extends GameObject{
 			}
 		}
 	}
-	
-	
+
 	//========Getters/Setters========//
 	public void add(Gun l) {inventory.add(l);}
 	public Gun get(int i) {return inventory.get(i);}

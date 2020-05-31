@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import driver.Driver;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 import gameObjects.Player;
 
 /**
@@ -48,12 +49,13 @@ public class Startup extends JPanel implements ActionListener{
 	private String t;
 	private JFrame f;
 	private ImageLoader i;
+	private SoundLoader s;
 	private JButton start;
 	private JLabel pictureLabel;
 	private JPanel selectPanel;
 	private JRadioButton marine;
 	private JRadioButton wsb;
-	private JRadioButton s;
+	private JRadioButton secret;
 	private Image logo;
 	
 	
@@ -69,8 +71,11 @@ public class Startup extends JPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		
-		i = new ImageLoader();															//Start imageLoader  thread
-		i.start(isJar); 
+		s = new SoundLoader();															//Start SoundLoader thread
+		s.start(isJar, debug);
+		
+		i = new ImageLoader();															//Start ImageLoader thread
+		i.start(isJar, debug); 
 		
 		//====Setup====//
 		f = new JFrame("Startup");
@@ -80,7 +85,7 @@ public class Startup extends JPanel implements ActionListener{
 		selectPanel = new JPanel();
 		marine = new JRadioButton("Marine");
 		wsb = new JRadioButton("WSB");
-		s = new JRadioButton("Secret");
+		secret = new JRadioButton("Secret");
 		start = new JButton("Start");
 		JPanel anotherFuckingPanelJustForButtons = new JPanel();
 		pictureLabel = new JLabel(Placeholder);
@@ -100,20 +105,20 @@ public class Startup extends JPanel implements ActionListener{
 		marine.addActionListener(this);
 		wsb.setActionCommand("w");
 		wsb.addActionListener(this);
-		s.setActionCommand("s");
-		s.addActionListener(this);
-		s.setEnabled(false);
+		secret.setActionCommand("s");
+		secret.addActionListener(this);
+		secret.setEnabled(false);
 		wsb.setEnabled(false);
 		marine.setEnabled(false);
 		
 		bg.add(marine);
 		bg.add(wsb);
-		bg.add(s);
+		bg.add(secret);
 		
 		anotherFuckingPanelJustForButtons.setLayout(new GridLayout(1, 3));
 		anotherFuckingPanelJustForButtons.add(marine);
 		anotherFuckingPanelJustForButtons.add(wsb);
-		anotherFuckingPanelJustForButtons.add(s);
+		anotherFuckingPanelJustForButtons.add(secret);
 		
 		selectPanel.setLayout(new BorderLayout());
 		selectPanel.add(pictureLabel);
@@ -160,7 +165,7 @@ public class Startup extends JPanel implements ActionListener{
 		}
 		
 		if(animationFinished && alpha == 0) {										//Re-enable buttons after the animation completes
-			s.setEnabled(true);
+			secret.setEnabled(true);
 			wsb.setEnabled(true);
 			marine.setEnabled(true);
 		}
@@ -170,7 +175,10 @@ public class Startup extends JPanel implements ActionListener{
 		
 		repaint();
 		
-		if(!i.isAlive()) start.setEnabled(true);		
+		if(!i.isAlive() && !s.isAlive() && !start.isEnabled()) {
+			if(debug) System.out.println("Finished Loading - game ready.");
+			start.setEnabled(true);		
+		}
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {

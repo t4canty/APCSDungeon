@@ -1,28 +1,21 @@
 import java.awt.Dimension;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import displayComponents.Startup;
-import driver.Driver;
-import fileIO.ImageLoader;
-import fileIO.SoundLoader;
 
-public class GameInit implements Runnable{
-	//========Varibles========//
-	private Path cDir;
+public class GameInit{
 	//========Constructor========//
 	public GameInit(Path filePath, String title, boolean debug, Dimension bounds, boolean isJar){
 		new Startup(bounds, title, debug, isJar);
-		SoundLoader.loadAllSounds(isJar);
 		if(debug) System.out.println("Created Jframe");
 	}
 	//========Main========//
 	public static void main(String[] args) {
-		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", true, new Dimension(1000, 1000), true);
-	}
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+		boolean debug = true;
+		if(args.length != 0) {
+			if(args[0].equals("true"))
+				debug = true;
+		}
+		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true);
 	}
 }

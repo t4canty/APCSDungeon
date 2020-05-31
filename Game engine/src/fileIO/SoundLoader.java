@@ -1,37 +1,48 @@
 package fileIO;
-
-import java.io.File;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 import displayComponents.SoundEffect;
 
-public class SoundLoader {
+/**
+ * 
+ * Created May 30, 2020
+ * @author t4canty
+ * @author TJ178
+ * Class to load all audio files in the bg. 
+ *
+ */
+public class SoundLoader implements Runnable {
 	
 	public static SoundEffect FOOTSTEP;
 	public static SoundEffect GUNSHOT;
 	public static SoundEffect ACTIONMUSIC;
+	private Thread t;
+	private boolean isJar;
+	private static boolean debug;
 	
-	public static boolean finished = false;
-	
-	
-	public static void loadAllSounds(boolean isJar) {
-		GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav");
-		FOOTSTEP = new SoundEffect("src/sound/footsteps.wav");
-		ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav");
-		
-		finished = true;
-	}
-	
-	
-	public static Clip getClipFromFile(String filepath) {
-		try {
-			AudioSystem.getAudioInputStream(new File(filepath));
-			return AudioSystem.getClip();
-		}catch(Exception e) {
-			e.printStackTrace();
+	private static void loadAllSounds(boolean isJar) {
+		if(!isJar) {
+			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug);
+			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug);
+			ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
+		}else {
+			GUNSHOT = new SoundEffect("/sound/pistolgunshot.wav", isJar, debug);
+			FOOTSTEP = new SoundEffect("/sound/footsteps.wav", isJar, debug);
+			ACTIONMUSIC = new SoundEffect("/sound/gamemusic alleyway loop.wav", isJar, debug);
 		}
-		return null;
 	}
+
+	@Override
+	public void run() {
+		if(debug) System.out.println("Loading Audio Files");
+		loadAllSounds(isJar);
+	}
+	
+	public void start(boolean isJar, boolean debug) {
+		this.isJar = isJar;
+		this.debug = debug;
+		if(debug) System.out.println("Starting AudioLoad Thread");
+		if(t == null)
+			t = new Thread(this, "AudioLoad");
+		t.start();
+	}
+	public boolean isAlive() {return t.isAlive();}
 }
