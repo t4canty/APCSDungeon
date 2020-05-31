@@ -28,6 +28,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import driver.Driver;
 import fileIO.ImageLoader;
+import fileIO.SoundLoader;
 import gameObjects.Player;
 
 public class Startup extends JPanel implements ActionListener{
@@ -36,10 +37,12 @@ public class Startup extends JPanel implements ActionListener{
 	private String t;
 	private boolean isJar;
 	JFrame f;
-	ImageLoader i;
+	ImageLoader iLoader;
+	SoundLoader sLoader;
 	JButton start;
 	JLabel pictureLabel;
 	JPanel selectPanel;
+	StatusBar loadingBar;
 	private int id = Player.MARINE;
 	private int alpha = 255;
 	private float a2 = 0.0f;
@@ -59,8 +62,11 @@ public class Startup extends JPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		
-		i = new ImageLoader();
-		i.start(isJar); 
+		iLoader = new ImageLoader();
+		iLoader.start(isJar); 
+		sLoader = new SoundLoader();
+		sLoader.start(isJar);
+		
 		f = new JFrame("Startup");
 		this.debug = debug;
 		d = bounds;
@@ -111,6 +117,8 @@ public class Startup extends JPanel implements ActionListener{
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 		selectPanel.setVisible(false);
 		
+		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.DARK_GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+		
 		
 		this.add(selectPanel);
 		
@@ -129,7 +137,10 @@ public class Startup extends JPanel implements ActionListener{
 		//g.setColor(new Color(255,0,0,100));
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight());
-	
+		if(iLoader.isAlive() || sLoader.isAlive()) {	
+			loadingBar.paint(g);
+		}
+		
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
@@ -150,6 +161,7 @@ public class Startup extends JPanel implements ActionListener{
 			}
 			if(a2 < 0.1 && maxed) {
 				animationFinished = true;
+				loadingBar.setColor(Color.LIGHT_GRAY);
 				a2 = 0f;
 			}
 		}
@@ -159,6 +171,8 @@ public class Startup extends JPanel implements ActionListener{
 				c.setVisible(true);
 			}
 		}
+		
+		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 		
 		
 		if(a2 > 1) { a2 = (float) 1; }
@@ -172,7 +186,7 @@ public class Startup extends JPanel implements ActionListener{
 		
 		
 		
-		if(!i.isAlive()) start.setEnabled(true);		
+		if(!iLoader.isAlive() && !sLoader.isAlive()) start.setEnabled(true);		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {

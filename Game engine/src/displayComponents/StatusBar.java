@@ -98,6 +98,10 @@ public class StatusBar {
 	public double getValue() {
 		return currentValue;
 	}
+	
+	public void setColor(Color c) {
+		barColor = c;
+	}
 
 
 	public void paint(Graphics g) {
