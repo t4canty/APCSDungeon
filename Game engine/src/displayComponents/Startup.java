@@ -147,8 +147,8 @@ public class Startup extends JPanel implements ActionListener{
 			if(alpha > 225) {
 				a = 255;
 			}else {
-					a = alpha + 30;
-				}
+				a = alpha + 30;
+			}
 			loadingBar.setColor(new Color(200, 200, 200, a));
 			loadingBar.paint(g); 
 
@@ -166,18 +166,23 @@ public class Startup extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		boolean doneLoading = !i.isAlive() && !s.isAlive();
 		if(!animationFinished) {													//Function to fade out logo
 			if(a2 < 1 && !maxed)
 				a2 += 0.01f;
 			else if(a2 >= 1) {
-				maxed = true;
-				a2 -= 0.01;
+				if(!doneLoading)
+					a2 = 1f;
+				else {
+					maxed = true;
+					a2 -= 0.01;
+				}
 			}else if(a2 > 0.1 && maxed) {
 				a2 -= 0.01;
 			}
+
 			if(a2 < 0.1 && maxed) {
 				animationFinished = true;
-				loadingBar.setColor(Color.LIGHT_GRAY);
 				a2 = 0f;
 			}
 		}
@@ -194,7 +199,7 @@ public class Startup extends JPanel implements ActionListener{
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		repaint();
-		if(!i.isAlive() && !s.isAlive()) start.setEnabled(true);		
+		if(doneLoading) start.setEnabled(true);		
 		if(e.getActionCommand() != null) System.out.println(e.getActionCommand());
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
