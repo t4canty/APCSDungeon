@@ -95,7 +95,7 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[6] = NPC_FRONTHURT;
 				NPC_SIDEHURT = getImageFromJar("/img/NPC_sideHurt.png");;
 				NPCSKIN[7] = NPC_SIDEHURT;
-				NPC_BACKHURT = getImageFromJar("/img/NPC_backHurt.png");
+				NPC_BACKHURT = getImageFromJar("/img/NPC_BackHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 
 

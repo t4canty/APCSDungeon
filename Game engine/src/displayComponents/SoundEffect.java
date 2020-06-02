@@ -15,7 +15,6 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.io.IOUtils;
-
 import fileIO.SoundLoader;
 
 public class SoundEffect implements LineListener{

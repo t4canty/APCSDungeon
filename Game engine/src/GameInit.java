@@ -11,11 +11,11 @@ public class GameInit{
 	}
 	//========Main========//
 	public static void main(String[] args) {
-		boolean debug = true;
+		boolean debug = false;
 		if(args.length != 0) {
 			if(args[0].equals("true"))
 				debug = true;
 		}
-		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), false);
+		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true);
 	}
 }

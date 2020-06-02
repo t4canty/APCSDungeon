@@ -15,30 +15,37 @@ public class SoundLoader implements Runnable {
 	public static SoundEffect GUNSHOT;
 	public static SoundEffect SMALLRELOAD;
 	public static SoundEffect ACTIONMUSIC;
-	
+
 	private Thread t;
 	private boolean isJar;
 	private static boolean debug;
 	public static boolean finished = false;
 	public static int totalNumberToLoad = 3;
 	public static int totalNumberLoaded = 0;
-	
+
 	private static void loadAllSounds(boolean isJar) {
-		GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
-		SMALLRELOAD = new SoundEffect("src/sound/smallReload.wav", isJar, debug, 0.5);
-		
-		FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug, 0.75);
-		
-		ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
+		if(!isJar) {
+			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			SMALLRELOAD = new SoundEffect("src/sound/smallReload.wav", isJar, debug, 0.5);
+			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug, 0.75);
+			ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
+		}else {
+			GUNSHOT = new SoundEffect("/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			SMALLRELOAD = new SoundEffect("/sound/smallReload.wav", isJar, debug, 0.5);
+
+			FOOTSTEP = new SoundEffect("/sound/footsteps.wav", isJar, debug, 0.75);
+
+			ACTIONMUSIC = new SoundEffect("/sound/gamemusic alleyway loop.wav", isJar, debug);
+		}
 		finished = true;
 	}
-	
+
 	@Override
 	public void run() {
 		if(debug) System.out.println("Loading Audio Files");
 		loadAllSounds(isJar);
 	}
-	
+
 	public void start(boolean isJar, boolean debug) {
 		this.isJar = isJar;
 		this.debug = debug;

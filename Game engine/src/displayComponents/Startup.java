@@ -58,6 +58,7 @@ public class Startup extends JPanel implements ActionListener{
 	private JRadioButton secret;
 	private Image logo;
 	private StatusBar loadingBar;
+	private long startTime;
 
 
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
@@ -71,6 +72,7 @@ public class Startup extends JPanel implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		startTime = System.currentTimeMillis();
 		s = new SoundLoader();															//Start SoundLoader thread
 		s.start(isJar, debug);
 
@@ -204,13 +206,16 @@ public class Startup extends JPanel implements ActionListener{
 		}
 
 		if(a2 > 1) { a2 = (float) 1; }												//Error correction
-		if(a2 > 1) { a2 = (float) 1; }
 		if(alpha > 0 && animationFinished) alpha /= 1.2;
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		repaint();
 		
-		if(doneLoading) start.setEnabled(true);		
+		if(doneLoading && !start.isEnabled()) { 
+			start.setEnabled(true);		
+			if(debug) System.out.println("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
+		}
+		
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
 			case "l":
