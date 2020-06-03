@@ -52,6 +52,8 @@ public class Startup extends JPanel implements ActionListener{
 	private SoundLoader s;
 	private JButton start;
 	private JLabel pictureLabel;
+	private JLabel spriteLabel;
+	private AnimatedImage sprite;
 	private JPanel selectPanel;
 	private JRadioButton marine;
 	private JRadioButton wsb;
@@ -64,28 +66,28 @@ public class Startup extends JPanel implements ActionListener{
 	private StatusBar loadingBar;
 	private long startTime;
 
-
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
-		currentIcon = null;
 		try {
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
 			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * 0.346), (int) (MarineSplash.getHeight(null) * 0.346), Image.SCALE_SMOOTH);
-			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
-			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
-			currentIcon = new ImageIcon(MarineSplash);
+			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
+			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * 0.28), (int) (WSBSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		startTime = System.currentTimeMillis();
+
 		s = new SoundLoader();															//Start SoundLoader thread
 		s.start(isJar, debug);
 
 		i = new ImageLoader();															//Start ImageLoader thread
 		i.start(isJar, debug); 
+
+		currentIcon = new ImageIcon(MarineSplash);
 
 		//====Setup====//
 		f = new JFrame("Startup");
@@ -93,12 +95,13 @@ public class Startup extends JPanel implements ActionListener{
 		d = bounds;
 		t = title;
 		selectPanel = new JPanel();
+		JPanel anotherFuckingPanelJustForButtons = new JPanel();
 		marine = new JRadioButton("Marine");
 		wsb = new JRadioButton("WSB");
 		secret = new JRadioButton("Secret");
 		start = new JButton("Start");
-		JPanel anotherFuckingPanelJustForButtons = new JPanel();
 		pictureLabel = new JLabel(currentIcon);
+		spriteLabel = new JLabel(new ImageIcon());
 		ButtonGroup bg = new ButtonGroup();
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} 		 //Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e1) {e1.printStackTrace();}
@@ -128,10 +131,11 @@ public class Startup extends JPanel implements ActionListener{
 		anotherFuckingPanelJustForButtons.setLayout(new GridLayout(1, 3));
 		anotherFuckingPanelJustForButtons.add(marine);
 		anotherFuckingPanelJustForButtons.add(wsb);
-		anotherFuckingPanelJustForButtons.add(secret);
+		anotherFuckingPanelJustForButtons.add(secret);;
 
 		selectPanel.setLayout(new BorderLayout());
-		selectPanel.add(pictureLabel);
+		selectPanel.add(pictureLabel, BorderLayout.LINE_START);
+		selectPanel.add(spriteLabel, BorderLayout.LINE_END);
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
 
@@ -148,26 +152,13 @@ public class Startup extends JPanel implements ActionListener{
 		t.start();
 	}
 
-	
+
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponents(g);
-
-		if(i.isAlive() || s.isAlive()) { 
-			int a;
-			if(alpha > 225) {
-				a = 255;
-			}else {
-				a = alpha + 30;
-			}
-
-		}
-		 
-		
-		
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight());				//Animated black screen
-		
+
 		if(i.isAlive() || s.isAlive()) { 
 			//g.setColor(Color.BLACK);
 			loadingBar.paint(g);
@@ -177,12 +168,13 @@ public class Startup extends JPanel implements ActionListener{
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, f.getWidth()/2 - logo.getWidth(null)/2, f.getHeight()/2 - logo.getHeight(null)/2, null);
-		
+
 		if(!(i.isAlive() || s.isAlive()) && !animationFinished) {
-				loadingBar.setColor(new Color(0, 150, 0));
-				loadingBar.paint(g);
+			loadingBar.setColor(new Color(0, 150, 0));
+			loadingBar.paint(g);
 		}
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -217,13 +209,20 @@ public class Startup extends JPanel implements ActionListener{
 		if(alpha > 0 && animationFinished) alpha /= 1.2;
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
-		repaint();
-		
 		if(doneLoading && !start.isEnabled()) { 
+			sprite = new AnimatedImage(ImageLoader.MARINE_FRONTIDLE);
 			start.setEnabled(true);		
 			if(debug) System.out.println("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
-		
+
+		if(doneLoading) {
+			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame()));
+			sprite.advanceCurrentFrame();
+		}
+		repaint();
+
+
+
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
 			case "l":
@@ -236,12 +235,14 @@ public class Startup extends JPanel implements ActionListener{
 				id = Player.MARINE;
 				//pictureLabel = new ImageIcon(marineSplash)  set this later
 				currentIcon = new ImageIcon(MarineSplash);
+				sprite = new AnimatedImage(ImageLoader.MARINE_FRONTIDLE);
 				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				break;
 			case "w":
 				if(debug) System.out.println("Selected WSB");
-				currentIcon = new ImageIcon(MarineSplash);
+				currentIcon = new ImageIcon(WSBSplash);
+				sprite = new AnimatedImage(ImageLoader.WSB_FRONTIDLE);
 				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				id = Player.WSB;

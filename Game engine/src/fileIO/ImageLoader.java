@@ -1,5 +1,6 @@
 package fileIO;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +37,6 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage FEDBULLET; 
 	public static BufferedImage LASERBEAM;
 	public static BufferedImage YARIS;
-
 	private boolean isJar;
 	private static boolean debug;
 	public static int totalNumberToLoad = 36;
@@ -49,7 +49,7 @@ public class ImageLoader implements Runnable{
 			if(debug) System.out.println("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
-
+				
 				MARINE_FRONTIDLE = getImageFromJar("/img/Marine_frontIdle.png");
 				MARINESKIN[0] = MARINE_FRONTIDLE;
 				MARINE_SIDEIDLE = getImageFromJar("/img/Marine_sideIdle.png");

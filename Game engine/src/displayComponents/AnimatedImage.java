@@ -20,24 +20,6 @@ public class AnimatedImage {
 	private boolean oneTimeAnimation = false;
 	private boolean isFinished = false;	//used only with one time animation
 	
-	public AnimatedImage(String filePath, boolean isJar, int numFrames) {
-		if(filePath.equals("") || filePath == null) {
-			filePath = "src/img/noimage.png";
-			isStatic = true;
-		}
-		try {
-			if(isJar) {
-				System.out.println("Loading images from Jar (From AnimateImage)");
-				spritesheet = getImageFromJar(filePath);
-			}else {
-				System.out.println("Loading images from Folder (From AnimateImage)");
-				spritesheet = getImageFromFolder(filePath);
-			}
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}
-	
 	public AnimatedImage(BufferedImage source) {
 		if(source == null) {
 			isStatic = true;
@@ -95,22 +77,6 @@ public class AnimatedImage {
 			}
 		}
 		currentFrameY = currentFrame * 512;
-	}
-	
-	public BufferedImage getImageFromFolder(String filePath) throws IOException {
-		System.out.println(new File(filePath).getAbsolutePath());
-		BufferedImage temp = ImageIO.read(new File(filePath));
-		if(temp == null)
-			throw new IOException();
-		return temp;
-	}
-	
-	public BufferedImage getImageFromJar(String filePath) throws IOException {
-		System.out.println(filePath);
-		if(ImageLoader.class.getResourceAsStream(filePath) == null) {
-			System.err.println("Error, getClass is null");
-		}
-		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
 	}
 	
 	public boolean isStatic() {
