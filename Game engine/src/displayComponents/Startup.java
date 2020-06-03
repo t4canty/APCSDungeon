@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -210,7 +211,7 @@ public class Startup extends JPanel implements ActionListener{
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		if(doneLoading && !start.isEnabled()) { 
-			sprite = new AnimatedImage(ImageLoader.MARINE_FRONTIDLE);
+			sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
 			start.setEnabled(true);		
 			if(debug) System.out.println("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
@@ -235,14 +236,14 @@ public class Startup extends JPanel implements ActionListener{
 				id = Player.MARINE;
 				//pictureLabel = new ImageIcon(marineSplash)  set this later
 				currentIcon = new ImageIcon(MarineSplash);
-				sprite = new AnimatedImage(ImageLoader.MARINE_FRONTIDLE);
+				sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
 				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				break;
 			case "w":
 				if(debug) System.out.println("Selected WSB");
 				currentIcon = new ImageIcon(WSBSplash);
-				sprite = new AnimatedImage(ImageLoader.WSB_FRONTIDLE);
+				sprite = new AnimatedImage(ImageLoader.WSB_STARTUP);
 				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				id = Player.WSB;

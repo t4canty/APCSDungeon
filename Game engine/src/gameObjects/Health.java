@@ -1,6 +1,7 @@
 package gameObjects;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  * Class for Health potions.
@@ -23,10 +24,11 @@ public class Health extends Loot {
 	 * @param cooldown
 	 * Cooldown time of the potion in ms.
 	 */
-	public Health(int hp, String name, Image Sprite, int cooldown) {
+	public Health(int hp, String name, BufferedImage Sprite, int cooldown) {
 		this.number = hp;
 		this.Name = name;
-		this.Sprite = Sprite;
+		BufferedImage tmp[] = {Sprite};
+		this.Sprite = tmp;
 		this.cooldown = cooldown;
 		this.id = Loot.HEALTHPACK; //Special ID reserved for health potions
 	}

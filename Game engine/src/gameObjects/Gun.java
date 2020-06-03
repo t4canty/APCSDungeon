@@ -77,7 +77,7 @@ public class Gun extends Loot {
 	}
 	
 	//========Methods========//
-	private Image getSpriteFromId() {
+	private BufferedImage[] getSpriteFromId() {
 		try {
 			switch(id) {																//Uses the id to read the sprite from the jar.
 			case -2:
@@ -170,11 +170,11 @@ public class Gun extends Loot {
 	}
 	
 	@Override
-	public Image getSprite() {
+	public BufferedImage getSprite(int n) {
 		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot > cooldown) {
 			shootSound.stop();
 		}
-		return Sprite;
+		return Sprite[n];
 	}
 	
 	//reloads the gun with magic ammo that appears from nowhere

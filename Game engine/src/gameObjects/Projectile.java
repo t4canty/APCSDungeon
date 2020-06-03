@@ -65,7 +65,7 @@ public class Projectile extends GameObject {
 	private void rotateBullet(Graphics2D g2d) {
 		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
-		g2d.draw(rBox);
+		if(debug) g2d.draw(rBox);
 		g2d.rotate(-angle, rBox.getCenterX(), rBox.getCenterY());
 	}
 	//========Getters/Setters========//

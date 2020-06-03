@@ -30,6 +30,8 @@ public class Enemy extends GameObject{
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
 	private AnimatedImage[] skin = new AnimatedImage[10];
+	Random r = new Random();
+	int r1 = 1 + r.nextInt(5);
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -47,8 +49,8 @@ public class Enemy extends GameObject{
 	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
 		this.x = x;
 		this.y = y;
-		this.hp = 100;
-		this.rBox = new Rectangle(size);
+		this.hp = 100 * r1;
+		this.rBox = new Rectangle(size.width * r1, size.height *r1);
 		this.isJar = isJar;
 		rBox.x = x;
 		rBox.y = y;
@@ -69,7 +71,7 @@ public class Enemy extends GameObject{
 		rBox.y = y;
 		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.draw(rBox);
+		if(debug) g2d.draw(rBox);
 		
 		if(Math.abs(gunAngle) > 2.35) {
 			graphicsDir = LEFT;
@@ -81,7 +83,6 @@ public class Enemy extends GameObject{
 			graphicsDir = UP;
 		}
 		
-		//All of these states are the same right now as we don't have sprites for them yet
 				if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
 					
 					//moving sprites
@@ -145,9 +146,9 @@ public class Enemy extends GameObject{
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 50, -50, null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 25 * r1, -25 * r1, null);
 		}else {
-			g2d.drawImage(activeGun.getSprite(), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, 50, 50, null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, 25 * r1, 25 * r1, null);
 		}
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());

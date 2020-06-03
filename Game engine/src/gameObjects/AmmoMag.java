@@ -1,6 +1,7 @@
 package gameObjects;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  * Gun magazine Loot object.
@@ -12,9 +13,10 @@ import java.awt.Image;
 
 public class AmmoMag extends Loot {
 	
-	public AmmoMag(int ammoAmount, Image sprite) {
+	public AmmoMag(int ammoAmount, BufferedImage sprite) {
 		number = ammoAmount;
-		this.Sprite = sprite;
+		BufferedImage tmp[] = {sprite};
+		this.Sprite = tmp;
 		this.id = Loot.PISTOLMAG;
 	}
 

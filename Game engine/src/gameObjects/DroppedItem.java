@@ -40,8 +40,8 @@ public class DroppedItem extends GameObject {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.draw(rBox);
-		g2d.drawImage(item.Sprite, x, y, rBox.height, rBox.width, null);
+		if(debug) g2d.draw(rBox);
+		g2d.drawImage(item.Sprite[0], x, y, rBox.height, rBox.width, null);
 
 	}
 

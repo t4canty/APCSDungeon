@@ -18,24 +18,25 @@ import javax.imageio.ImageIO;
 public class ImageLoader implements Runnable{
 	//all stored images
 	public static BufferedImage NO_IMAGE;
+	public static BufferedImage MARINE_STARTUP, WSB_STARTUP;
 	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_DEATH;
 	public static BufferedImage[] MARINESKIN = new BufferedImage[10];
 	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT, WSB_DEATH;
 	public static BufferedImage[] WSBSKIN = new BufferedImage[10];
 	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH;
 	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
-	public static BufferedImage BADGUN;
+	public static BufferedImage BADGUN[] = new BufferedImage[4];
 	public static BufferedImage PISTOLMAG;
 	public static BufferedImage ROOM_1;
-	public static BufferedImage BETTERGUN;
-	public static BufferedImage ELPRESIDENTE;
-	public static BufferedImage TOILETPAPER;
-	public static BufferedImage FEDRESERVE;
+	public static BufferedImage BETTERGUN[] = new BufferedImage[4];
+	public static BufferedImage ELPRESIDENTE[] = new BufferedImage[4];
+	public static BufferedImage TOILETPAPER[] = new BufferedImage[4];
+	public static BufferedImage FEDRESERVE[] = new BufferedImage[4];
 	public static BufferedImage GOLDBULLET;
 	public static BufferedImage BASICBULLET; 
 	public static BufferedImage TPBULLET; 
-	public static BufferedImage FEDBULLET; 
-	public static BufferedImage LASERBEAM;
+	public static BufferedImage FEDBULLET;
+	public static BufferedImage LASERBEAM[] = new BufferedImage[4];
 	public static BufferedImage YARIS;
 	private boolean isJar;
 	private static boolean debug;
@@ -49,6 +50,9 @@ public class ImageLoader implements Runnable{
 			if(debug) System.out.println("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
+				
+				MARINE_STARTUP = getImageFromJar("/img/Marine_frontIdle_hands.png");
+				WSB_STARTUP = getImageFromJar("/img/WSB_frontIdle_hands.png");
 				
 				MARINE_FRONTIDLE = getImageFromJar("/img/Marine_frontIdle.png");
 				MARINESKIN[0] = MARINE_FRONTIDLE;
@@ -111,12 +115,35 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[8] = NPC_BACKHURT;
 				NPCSKIN[9] = null;
 				
-				BADGUN = getImageFromJar("/img/badGun.png");
-				FEDRESERVE = getImageFromJar("/img/badGun.png"); // Change later
-				TOILETPAPER = getImageFromJar("/img/badGun.png"); // Change later
-				BETTERGUN = getImageFromJar("/img/BetterGun.png");
-				ELPRESIDENTE = getImageFromJar("/img/ElPresidente.png");
-				LASERBEAM = getImageFromJar("/img/badGun.png");	//Change later
+				BADGUN[0] = getImageFromJar("/img/badGun.png");		//Gun sprites with no hand
+				FEDRESERVE[0] = getImageFromJar("/img/badGun.png"); // Change later
+				TOILETPAPER[0] = getImageFromJar("/img/badGun.png"); // Change later
+				BETTERGUN[0] = getImageFromJar("/img/BetterGun.png");
+				ELPRESIDENTE[0] = getImageFromJar("/img/ElPresidente.png");
+				LASERBEAM[0] = getImageFromJar("/img/badGun.png");	//Change later
+				
+				
+				BADGUN[1] = getImageFromJar("/img/badGun_marineHand.png");		//Gun sprites with no hand
+				FEDRESERVE[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
+				TOILETPAPER[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
+				BETTERGUN[1] = getImageFromJar("/img/BetterGun_marineHand.png");
+				ELPRESIDENTE[1] = getImageFromJar("/img/ElPresidente_marineHand.png");
+				LASERBEAM[1] = getImageFromJar("/img/badGun_marineHand.png");	//Change later
+				
+				BADGUN[2] = getImageFromJar("/img/badGun_wsb.png");		//Gun sprites with no hand
+				FEDRESERVE[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
+				TOILETPAPER[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
+				BETTERGUN[2] = getImageFromJar("/img/BetterGun_wsb.png");
+				ELPRESIDENTE[2] = getImageFromJar("/img/ElPresidente_wsb.png");
+				LASERBEAM[2] = getImageFromJar("/img/badGun_wsb.png");	//Change later
+				
+				BADGUN[3] = getImageFromJar("/img/badGun_npc.png");		//Gun sprites with no hand
+				FEDRESERVE[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
+				TOILETPAPER[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
+				BETTERGUN[3] = getImageFromJar("/img/BetterGun_npc.png");
+				ELPRESIDENTE[3] = getImageFromJar("/img/ElPresidente_npc.png");
+				LASERBEAM[3] = getImageFromJar("/img/badGun_npc.png");	//Change later
+				
 				YARIS = getImageFromJar("/img/yaris.png");
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
 				GOLDBULLET = getImageFromJar("/img/goldBullet.png");
@@ -192,13 +219,6 @@ public class ImageLoader implements Runnable{
 				NPC_BACKHURT = getImageFromFolder("src/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 				NPCSKIN[9] = null;
-
-
-				BADGUN = getImageFromFolder("src/img/badGun.png");
-				PISTOLMAG = getImageFromFolder("src/img/pistolMag.png");
-
-				ROOM_1 = getImageFromFolder("src/img/testbackground.png");
-
 			}catch(IOException e) {
 				e.printStackTrace();
 			}

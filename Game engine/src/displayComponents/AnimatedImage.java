@@ -25,7 +25,7 @@ public class AnimatedImage {
 			isStatic = true;
 			spritesheet = ImageLoader.NO_IMAGE;
 		}else {
-			this.numFrames = source.getHeight() / 512;
+			this.numFrames = source.getHeight() / source.getWidth();
 			spritesheet = source;
 		}
 	}
@@ -39,7 +39,7 @@ public class AnimatedImage {
 		if(isStatic) {
 			return (Image) spritesheet;
 		}
-		int frameY = currentFrame * 512;
+		int frameY = currentFrame * spritesheet.getWidth();
 		if(!isFinished) currentFrame++;
 		
 		if(currentFrame == numFrames-1) {
@@ -52,7 +52,7 @@ public class AnimatedImage {
 		
 		Image tmp = null;
 		try {
-			tmp = (Image) spritesheet.getSubimage(0, frameY, 512, 512);
+			tmp = (Image) spritesheet.getSubimage(0, frameY, spritesheet.getWidth(), spritesheet.getWidth());
 		}catch(RasterFormatException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +64,7 @@ public class AnimatedImage {
 		if(isStatic) {
 			return (Image) spritesheet;
 		}
-		return (Image) spritesheet.getSubimage(0, currentFrameY, 512, 512);
+		return (Image) spritesheet.getSubimage(0, currentFrameY, spritesheet.getWidth(), spritesheet.getWidth());
 	}
 	
 	public void advanceCurrentFrame() {
@@ -76,7 +76,7 @@ public class AnimatedImage {
 				currentFrame = 0;
 			}
 		}
-		currentFrameY = currentFrame * 512;
+		currentFrameY = currentFrame * spritesheet.getWidth();
 	}
 	
 	public boolean isStatic() {
