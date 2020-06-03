@@ -5,12 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.sound.sampled.Clip;
-
 import displayComponents.AnimatedImage;
 import displayComponents.SoundEffect;
 import fileIO.ImageLoader;

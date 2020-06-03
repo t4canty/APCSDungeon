@@ -23,7 +23,6 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage[] WSBSKIN = new BufferedImage[10];
 	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH;
 	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
-	public static BufferedImage BULLET = NO_IMAGE;
 	public static BufferedImage BADGUN;
 	public static BufferedImage PISTOLMAG;
 	public static BufferedImage ROOM_1;
@@ -31,6 +30,10 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage ELPRESIDENTE;
 	public static BufferedImage TOILETPAPER;
 	public static BufferedImage FEDRESERVE;
+	public static BufferedImage GOLDBULLET;
+	public static BufferedImage BASICBULLET; 
+	public static BufferedImage TPBULLET; 
+	public static BufferedImage FEDBULLET; 
 	private boolean isJar;
 	private static boolean debug;
 	public static int totalNumberToLoad = 31;
@@ -104,14 +107,17 @@ public class ImageLoader implements Runnable{
 				NPC_BACKHURT = getImageFromJar("/img/NPC_BackHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 				NPCSKIN[9] = null;
-
-
+				
 				BADGUN = getImageFromJar("/img/badGun.png");
 				FEDRESERVE = getImageFromJar("/img/badGun.png"); // Change later
 				TOILETPAPER = getImageFromJar("/img/badGun.png"); // Change later
-				BETTERGUN = getImageFromJar("/img/badGun.png"); // Change later
+				BETTERGUN = getImageFromJar("/img/BetterGun.png");
 				ELPRESIDENTE = getImageFromJar("/img/ElPresidente.png");
+				
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
+				GOLDBULLET = getImageFromJar("/img/goldBullet.png");
+				BASICBULLET = getImageFromJar("/img/basicBullet.png");
+				
 				ROOM_1 = getImageFromJar("/img/BG.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

@@ -3,6 +3,8 @@ package gameObjects;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 import displayComponents.AnimatedImage;
@@ -19,7 +21,7 @@ import fileIO.SoundLoader;
  */
 public class Gun extends Loot {
 	//========Variables========//
-	private AnimatedImage bulletSprite;
+	private BufferedImage bulletSprite;
 	private SoundEffect shootSound;
 	private SoundEffect reloadSound;
 	private long lastShot = 0;
@@ -72,7 +74,6 @@ public class Gun extends Loot {
 		Sprite = getSpriteFromId();
 		shootSound = SoundLoader.GUNSHOT;
 		reloadSound = SoundLoader.SMALLRELOAD;
-		bulletSprite = null;
 	}
 	
 	//========Methods========//
@@ -80,14 +81,19 @@ public class Gun extends Loot {
 		try {
 			switch(id) {																	//Uses the id to read the sprite from the jar.
 			case 0: //badGun
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.BADGUN;
 			case 1: //betterGun
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.BETTERGUN;
 			case 2: //federalReserve
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.FEDRESERVE;
 			case 3: //ElPresidente
+				bulletSprite = ImageLoader.GOLDBULLET;
 				return ImageLoader.ELPRESIDENTE;
 			case 4: //ToiletPaper
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.TOILETPAPER;
 			}
 		}catch (Exception e) {
@@ -108,7 +114,7 @@ public class Gun extends Loot {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
 			shootSound.play();
-			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
+			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), bulletSprite, id, isJar );
 		}
 		return null;
 	}
