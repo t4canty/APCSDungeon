@@ -11,7 +11,7 @@ public class GameInit{
 	}
 	//========Main========//
 	public static void main(String[] args) {
-		boolean debug = false;
+		boolean debug = true;
 		if(args.length != 0) {
 			if(args[0].equals("true"))
 				debug = true;

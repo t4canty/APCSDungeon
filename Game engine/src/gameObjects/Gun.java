@@ -69,50 +69,32 @@ public class Gun extends Loot {
 		this.ammoInMag = maxAmmoInMag;
 		this.bulletVelocity = bulletVelocity;
 		this.bulletSize = bulletSize;
-		Sprite = ImageLoader.BADGUN;
+		Sprite = getSpriteFromId();
 		shootSound = SoundLoader.GUNSHOT;
 		reloadSound = SoundLoader.SMALLRELOAD;
 		bulletSprite = null;
 	}
 	
 	//========Methods========//
-	private Image getSpriteFromJar() {
+	private Image getSpriteFromId() {
 		try {
 			switch(id) {																	//Uses the id to read the sprite from the jar.
 			case 0: //badGun
-				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
+				return ImageLoader.BADGUN;
 			case 1: //betterGun
-				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
+				return ImageLoader.BETTERGUN;
 			case 2: //federalReserve
-				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
+				return ImageLoader.FEDRESERVE;
 			case 3: //ElPresidente
-				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
+				return ImageLoader.ELPRESIDENTE;
 			case 4: //ToiletPaper
-				return ImageIO.read(getClass().getResourceAsStream("/img/badgun.png"));
+				return ImageLoader.TOILETPAPER;
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		return null;
-	}
-	//Fix this later
-	private Image getSpriteFromFolder() {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		switch(id){																			//Uses id to read sprite from folder using Toolkit.
-		case 0:
-			//return toolkit.getImage("src/img/badgun.png");
-		case 1: //betterGun
-			//return toolkit.getImage("betterGun.png");
-		case 2: //federalReserve
-			//return toolkit.getImage("federalReserve.png");
-		case 3: //ElPresidente
-			//return toolkit.getImage("ElPresidente.png");
-		case 4: //ToiletPaper
-			//return toolkit.getImage("ToiletPaper.png");
-		}
-		//return null;
-		return toolkit.getImage("src/img/badgun.png");
 	}
 	
 	//returns true if the gun is ready to fire
