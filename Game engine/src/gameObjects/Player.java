@@ -5,12 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.sound.sampled.Clip;
-
 import displayComponents.AnimatedImage;
 import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
@@ -45,7 +41,7 @@ public class Player extends GameObject{
 	private boolean isAlive = true;
 	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
-	private boolean[] CollectedGuns = { false, false, false, false, false};
+	private boolean[] CollectedGuns = { true, false, false, false, false};
 	private int id;
 	
 	
@@ -395,5 +391,5 @@ public class Player extends GameObject{
 	public boolean[] getOwnedGuns() { return CollectedGuns; }
 	public void ownGun(boolean b, int n ) { CollectedGuns[n] = b; }
 	public int getId() { return id; }
-	public boolean isAlive() { return isAlive;	}
+	public boolean isAlive() { return isAlive; }
 }

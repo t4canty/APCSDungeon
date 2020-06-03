@@ -57,6 +57,10 @@ public class Startup extends JPanel implements ActionListener{
 	private JRadioButton wsb;
 	private JRadioButton secret;
 	private Image logo;
+	private Image MarineSplash;
+	private Image WSBSplash;
+	private Image SecretSplash;
+	private ImageIcon currentIcon;
 	private StatusBar loadingBar;
 	private long startTime;
 
@@ -64,9 +68,13 @@ public class Startup extends JPanel implements ActionListener{
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
-		ImageIcon Placeholder = null;
+		currentIcon = null;
 		try {
-			Placeholder = new ImageIcon(ImageIO.read((Startup.class.getResourceAsStream("/img/noimage.png"))));
+			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
+			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * 0.346), (int) (MarineSplash.getHeight(null) * 0.346), Image.SCALE_SMOOTH);
+			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
+			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
+			currentIcon = new ImageIcon(MarineSplash);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +98,7 @@ public class Startup extends JPanel implements ActionListener{
 		secret = new JRadioButton("Secret");
 		start = new JButton("Start");
 		JPanel anotherFuckingPanelJustForButtons = new JPanel();
-		pictureLabel = new JLabel(Placeholder);
+		pictureLabel = new JLabel(currentIcon);
 		ButtonGroup bg = new ButtonGroup();
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} 		 //Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e1) {e1.printStackTrace();}
@@ -227,18 +235,20 @@ public class Startup extends JPanel implements ActionListener{
 				if(debug) System.out.println("Selected marine");
 				id = Player.MARINE;
 				//pictureLabel = new ImageIcon(marineSplash)  set this later
-				pictureLabel.setIcon(null);
+				currentIcon = new ImageIcon(MarineSplash);
+				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				break;
 			case "w":
 				if(debug) System.out.println("Selected WSB");
-				pictureLabel.setIcon(null);
+				currentIcon = new ImageIcon(MarineSplash);
+				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				id = Player.WSB;
 				break;
 			case "s":
 				if(debug) System.out.println("Selected Secret");
-				pictureLabel.setIcon(null);
+				pictureLabel.setIcon(currentIcon);
 				selectPanel.revalidate();
 				id = Player.SECRET;
 			}

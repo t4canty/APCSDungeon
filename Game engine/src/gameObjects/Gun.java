@@ -74,7 +74,6 @@ public class Gun extends Loot {
 		getSounds();
 
 		reloadSound = SoundLoader.SMALLRELOAD;
-		bulletSprite = null;
 	}
 	
 	//========Methods========//
@@ -82,18 +81,25 @@ public class Gun extends Loot {
 		try {
 			switch(id) {																//Uses the id to read the sprite from the jar.
 			case -2:
+				bulletSprite = ImageLoader.YARIS;
 				return ImageLoader.BADGUN;
 			case -1:
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.LASERBEAM;
 			case 0: //badGun
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.BADGUN;
 			case 1: //betterGun
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.BETTERGUN;
 			case 2: //federalReserve
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.FEDRESERVE;
 			case 3: //ElPresidente
+				bulletSprite = ImageLoader.GOLDBULLET;
 				return ImageLoader.ELPRESIDENTE;
 			case 4: //ToiletPaper
+				bulletSprite = ImageLoader.BASICBULLET;
 				return ImageLoader.TOILETPAPER;
 			}
 		}catch (Exception e) {
@@ -125,31 +131,6 @@ public class Gun extends Loot {
 			break;
 		case 4:
 			shootSound = SoundLoader.LAUNCHER_GUNSHOT;
-		}
-	}
-	
-	private void getBullets() {
-		switch(id) {
-		case -2:
-			bulletSprite = ImageLoader.YARIS;
-			break;
-		case -1:
-			bulletSprite = ImageLoader.BULLET;
-			break;
-		case 0:
-			bulletSprite = ImageLoader.BULLET;
-			break;
-		case 1:
-			bulletSprite = ImageLoader.BULLET;
-			break;
-		case 2:
-			bulletSprite = ImageLoader.BULLET;
-			break;
-		case 3:
-			bulletSprite = ImageLoader.BULLET;
-			break;
-		case 4:
-			bulletSprite = ImageLoader.BULLET;
 		}
 	}
 	

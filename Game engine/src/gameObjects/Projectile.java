@@ -6,8 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import displayComponents.AnimatedImage;
-
 /**
  * Class for different types of projectiles available - determined by id.
  * Created May 26, 2020
@@ -19,9 +17,10 @@ public class Projectile extends GameObject {
 	//========Variables========//
 	private int velocityX = 0;
 	private int velocityY = 0;
+	private double angle;
 	private int damage = 0;
 	private boolean isEnemyFire = false;
-	private AnimatedImage sprite;
+	private BufferedImage sprite;
 	
 	//========Constructor========//
 	/**
@@ -43,13 +42,14 @@ public class Projectile extends GameObject {
 		this.x = x;
 		this.y = y;
 		this.isJar = isJar;
+		this.angle = angle;
 		this.velocityX = (int)(velocity * Math.cos(angle));
 		this.velocityY = (int)(velocity * Math.sin(angle));
 		hp = -1;
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		this.sprite = new AnimatedImage(sprite);
+		this.sprite = sprite;
 	}
 	
 	//========Methods========//
@@ -59,21 +59,24 @@ public class Projectile extends GameObject {
 		y += velocityY;
 		rBox.x = x;
 		rBox.y = y;
-		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(sprite.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		rotateBullet(g2d);	
+	}
+	private void rotateBullet(Graphics2D g2d) {
+		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
+		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
 		g2d.draw(rBox);
-		
+		g2d.rotate(-angle, rBox.getCenterX(), rBox.getCenterY());
 	}
-	
-	@Override
-	public void advanceAnimationFrame() {
-		sprite.advanceCurrentFrame();
-	}
-	
 	//========Getters/Setters========//
 	public void setSize(Dimension size) {rBox = new Rectangle(size);}
 	//public void setSprite(Image Sprite) {this.idleSprite = Sprite;}
 	public boolean isEnemyFire() {return isEnemyFire;}
 	public int getDamage() {return damage;}
+
+	@Override
+	public void advanceAnimationFrame() {
+		// TODO Auto-generated method stub
+		
+	}
 }
