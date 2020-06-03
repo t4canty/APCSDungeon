@@ -52,6 +52,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private SoundEffect backgroundMusic;
 	private boolean debug;
 	private boolean isJar;
+	private int pid;
+	public static boolean doTick = true;	//track if the game should update variables & run the game
+	private boolean gamePaused = false;		//track if the game is paused with escape
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
 	
@@ -72,6 +75,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public Driver(Dimension bounds, String title, boolean debug, int pid, boolean isJar) {
 		this.bounds = bounds;
 		this.debug = debug;
+		this.pid = pid;
 		f = new JFrame();
 		f.setTitle(title);
 		f.setSize(bounds);
@@ -117,96 +121,110 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 		
-		if(player.isAlive()) {
-			//move player if any keyboard buttons are pressed
-			boolean diag = false;
-			if(playerUp) {
-				if(playerRight) {
-					player.move(player.UPRIGHT);
+		if(doTick) {
+			if(player.isAlive()) {
+				//move player if any keyboard buttons are pressed
+				boolean diag = false;
+				if(playerUp) {
+					if(playerRight) {
+						player.move(player.UPRIGHT);
+					}else if(playerLeft) {
+						player.move(player.UPLEFT);
+					}else {
+						player.move(player.UP);
+					}
+				}else if(playerDown) {
+					if(playerRight) {
+						player.move(player.DOWNRIGHT);
+					}else if(playerLeft) {
+						player.move(player.DOWNLEFT);
+					}else {
+						player.move(player.DOWN);
+					}
 				}else if(playerLeft) {
-					player.move(player.UPLEFT);
-				}else {
-					player.move(player.UP);
+					player.move(player.LEFT);
+				}else if(playerRight) {
+					player.move(player.RIGHT);
 				}
-			}else if(playerDown) {
-				if(playerRight) {
-					player.move(player.DOWNRIGHT);
-				}else if(playerLeft) {
-					player.move(player.DOWNLEFT);
-				}else {
-					player.move(player.DOWN);
+				if(playerInteract) {
+					doTick = false;
+					new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
+					playerInteract = false;
 				}
-			}else if(playerLeft) {
-				player.move(player.LEFT);
-			}else if(playerRight) {
-				player.move(player.RIGHT);
-			}
-			if(playerInteract) { 
-				new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
-				playerInteract = false;
-			}
-			if(playerReload) {
-				player.reload();
+				if(playerReload) {
+					player.reload();
+				}
+				
+				//tell player where the mouse is to update the gun
+				player.updateGunAngle(mouseX, mouseY);
+				
+				if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
+					currentRoom = currentRoom.nextRoom();
+					player.moveTo(75, player.getY());
+				}
+				
+				if(player.isColliding(currentRoom.getLeftDoor())) {
+					currentRoom = currentRoom.lastRoom();
+					player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
+				}
+				
+				//shoot the gun if the cooldown is ready and button is pressed
+				boolean canShoot = player.isShooting && player.canShootBullet();
+				//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
+				if(canShoot) {
+					currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
+				}
 			}
 			
-			//tell player where the mouse is to update the gun
-			player.updateGunAngle(mouseX, mouseY);
+			//player -> enemy projectile & player -> wall collision
+			player.checkCollision(currentRoom.getEntities());
 			
-			if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
-				currentRoom = currentRoom.nextRoom();
-				player.moveTo(75, player.getY());
-			}
+			healthBar.setValue(player.getHP());
 			
-			if(player.isColliding(currentRoom.getLeftDoor())) {
-				currentRoom = currentRoom.lastRoom();
-				player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
-			}
-			
-			//shoot the gun if the cooldown is ready and button is pressed
-			boolean canShoot = player.isShooting && player.canShootBullet();
-			//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
-			if(canShoot) {
-				currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
-			}
-		}
-		
-		//player -> enemy projectile & player -> wall collision
-		player.checkCollision(currentRoom.getEntities());
-		
-		healthBar.setValue(player.getHP());
-		
-		//enemy shooting
-		for(int i = 0; i < currentRoom.getEntities().size(); i++) {
-			GameObject o = currentRoom.getEntities().get(i);
-			if(o instanceof Enemy) {
-				((Enemy) o).runAI(player, currentRoom);
-				if(((Enemy) o).isShooting()) {
-					Projectile e = ((Enemy)o).getGunshot();
-					if(e != null) {
-						currentRoom.getEntities().add(e);
+			//enemy shooting
+			for(int i = 0; i < currentRoom.getEntities().size(); i++) {
+				GameObject o = currentRoom.getEntities().get(i);
+				if(o instanceof Enemy) {
+					((Enemy) o).runAI(player, currentRoom);
+					if(((Enemy) o).isShooting()) {
+						Projectile e = ((Enemy)o).getGunshot();
+						if(e != null) {
+							currentRoom.getEntities().add(e);
+						}
 					}
 				}
 			}
-		}
-		
-		
-		//timed spawning of enemies (temporary for now)
-		if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
-			lastEnemySpawn = System.currentTimeMillis();
-			try {
-				currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-			} catch (IOException e) {
-				e.printStackTrace();
+			
+			
+			//timed spawning of enemies (temporary for now)
+			if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
+				lastEnemySpawn = System.currentTimeMillis();
+				try {
+					currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			//update all animations at 30 fps
+			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
+				for(GameObject e : currentRoom.getEntities()) {
+					e.advanceAnimationFrame();
+				}
+				player.advanceAnimationFrame();
+				lastAnimationUpdate = System.currentTimeMillis();
 			}
 		}
-		
-		//update all animations at 30 fps
-		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
-			for(GameObject e : currentRoom.getEntities()) {
-				e.advanceAnimationFrame();
-			}
-			player.advanceAnimationFrame();
-			lastAnimationUpdate = System.currentTimeMillis();
+	}
+	
+	
+	private void respawn() {
+		currentRoom = room1;
+		try {
+			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
+			player.updateBounds(currentRoom.getBounds());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -217,17 +235,27 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);
 		
 		currentRoom.paint(g);			//background
-		currentRoom.paintEntities(g);	//all entities within the room
+		if(doTick) currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
 		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
 		g.drawString("health: " + player.getHP(), 150, 715);
 		healthBar.paint(g);
-		
+	
 		if(!player.isAlive()) {
 			g.setColor(Color.RED);
 			Font f = new Font("Electrolize", Font.PLAIN, 72);
 			g.setFont(f);
 			g.drawString("YOU DIED", 335, 450);
+			Font f2 = f.deriveFont(50f);
+			g.setFont(f2);
+			g.drawString("Press Enter to Respawn", 235, 550);
+		}
+		
+		if(gamePaused) {
+			g.setColor(Color.BLACK);
+			Font f = new Font("Electrolize", Font.PLAIN, 72);
+			g.setFont(f);
+			g.drawString("PAUSED", 335, 450);
 		}
 	}
 	
@@ -268,6 +296,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
+		System.out.println(e.getKeyCode());
 		
 		if(temp == keybindings[0]) {
 			playerUp = true;
@@ -290,6 +319,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 		}else if(temp == keybindings[5]) {
 			playerReload = true;
+		}else if(e.getKeyCode() == 10 && !player.isAlive()) {
+			respawn();
+		}else if(e.getKeyCode() == 27) {
+			if(gamePaused) {
+				backgroundMusic.play();
+			}else {
+				backgroundMusic.stop();
+			}
+			gamePaused = !gamePaused;
+			doTick = !doTick;
 		}
 	}
 	
