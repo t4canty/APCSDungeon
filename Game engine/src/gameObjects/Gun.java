@@ -76,7 +76,9 @@ public class Gun extends Loot {
 	//========Methods========//
 	private Image getSpriteFromId() {
 		try {
-			switch(id) {																	//Uses the id to read the sprite from the jar.
+			switch(id) {																//Uses the id to read the sprite from the jar.
+			case -1:
+				return ImageLoader.LASERBEAM;
 			case 0: //badGun
 				return ImageLoader.BADGUN;
 			case 1: //betterGun
@@ -97,6 +99,9 @@ public class Gun extends Loot {
 	
 	private void getSounds() {
 		switch(id) {
+		case -1:
+			shootSound = SoundLoader.LASERBEAM;
+			break;
 		case 0:
 			shootSound = SoundLoader.PISTOL_GUNSHOT;
 			break;
@@ -151,7 +156,7 @@ public class Gun extends Loot {
 	
 	@Override
 	public Image getSprite() {
-		if(id == 2 && System.currentTimeMillis() - lastShot > cooldown) {
+		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot > cooldown) {
 			shootSound.stop();
 		}
 		return Sprite;
