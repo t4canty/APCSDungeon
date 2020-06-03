@@ -29,7 +29,7 @@ public class Enemy extends GameObject{
 	private int graphicsDir;
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
-	private AnimatedImage[] skin = new AnimatedImage[9];
+	private AnimatedImage[] skin = new AnimatedImage[10];
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;

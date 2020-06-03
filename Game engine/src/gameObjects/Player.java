@@ -36,12 +36,13 @@ public class Player extends GameObject{
 	private int maxX;													
 	private int maxY;
 	private int graphicsDir;		//direction that a player is holding their gun
-	private AnimatedImage[] skin = new AnimatedImage[9];
+	private AnimatedImage[] skin = new AnimatedImage[10];
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
 	public boolean isShooting;
+	private boolean isAlive = true;
 	private int ammo = 20;
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	private boolean[] CollectedGuns = { false, false, false, false, false};
@@ -140,62 +141,65 @@ public class Player extends GameObject{
 		}
 		
 		
-		///All of these states are the same right now as we don't have sprites for them yet
-		if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
-			
-			//moving sprites
-			switch(graphicsDir) {
-			case LEFT:
-				g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case RIGHT:
-				g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-				break;
-			case UP:
-				drawGun(g2d);
-				g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case DOWN:
-				g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+		if(isAlive) {
+			if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
+				
+				//moving sprites
+				switch(graphicsDir) {
+				case LEFT:
+					g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case RIGHT:
+					g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+					break;
+				case UP:
+					drawGun(g2d);
+					g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case DOWN:
+					g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				}
+				footsteps.loop();
+				//System.out.println("moving");
+				///hurt sprites
+			} else if(System.currentTimeMillis() - lastDamageTaken < 500){
+				switch(graphicsDir) {
+				case LEFT:
+					g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case RIGHT:
+					g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+					break;
+				case UP:
+					drawGun(g2d);
+					g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case DOWN:
+					g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				}
+				//System.out.println("hurt");
+				
+				//idle sprites
+			} else {
+				switch(graphicsDir) {
+				case LEFT:
+					g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case RIGHT:
+					g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+					break;
+				case UP:
+					drawGun(g2d);
+					g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+					break;
+				case DOWN:
+					g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				}
+				footsteps.stop();
+				//System.out.println("idle");
 			}
-			footsteps.loop();
-			//System.out.println("moving");
-			///hurt sprites
-		} else if(System.currentTimeMillis() - lastDamageTaken < 500){
-			switch(graphicsDir) {
-			case LEFT:
-				g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case RIGHT:
-				g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-				break;
-			case UP:
-				drawGun(g2d);
-				g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case DOWN:
-				g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
-			//System.out.println("hurt");
-			
-			//idle sprites
-		} else {
-			switch(graphicsDir) {
-			case LEFT:
-				g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case RIGHT:
-				g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-				break;
-			case UP:
-				drawGun(g2d);
-				g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				break;
-			case DOWN:
-				g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
-			footsteps.stop();
-			//System.out.println("idle");
+		}else {
+			g2d.drawImage(skin[DEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		}
 		
 		if(graphicsDir != UP) {
@@ -224,7 +228,7 @@ public class Player extends GameObject{
 	@Override
 	public void advanceAnimationFrame() {
 		for(AnimatedImage i : skin) {
-			if(i != null) {
+			if(i != null && !i.isStatic()) {
 				i.advanceCurrentFrame();
 			}
 		}
@@ -308,7 +312,7 @@ public class Player extends GameObject{
 			if(entities.get(i).getHitbox().intersects(rBox)) {
 				if(entities.get(i) instanceof Projectile) {
 					if(((Projectile) entities.get(i)).isEnemyFire()) {
-						hp -= ((Projectile) entities.get(i)).getDamage();
+						if(isAlive) hp -= ((Projectile) entities.get(i)).getDamage();
 						lastDamageTaken = System.currentTimeMillis();
 						entities.remove(i);
 						i--;
@@ -319,6 +323,11 @@ public class Player extends GameObject{
 					i--;
 				}
 			}
+		}
+		
+		
+		if(hp <= 0) {
+			isAlive = false;
 		}
 	}
 	
@@ -353,18 +362,21 @@ public class Player extends GameObject{
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
 			hp += hp/2;
 			break;
 		case WSB:
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.WSBSKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.WSBSKIN[DEATH], true);
 			break;
 		case SECRET:
 			for(int i = 0; i < skin.length; i++) {
 				//this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
 				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
 		}
 	}
 
@@ -381,4 +393,5 @@ public class Player extends GameObject{
 	public boolean[] getOwnedGuns() { return CollectedGuns; }
 	public void ownGun(boolean b, int n ) { CollectedGuns[n] = b; }
 	public int getId() { return id; }
+	public boolean isAlive() { return isAlive;	}
 }

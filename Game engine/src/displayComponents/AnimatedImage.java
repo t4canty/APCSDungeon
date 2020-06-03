@@ -17,6 +17,8 @@ public class AnimatedImage {
 	private int currentFrame = 1;
 	private int currentFrameY = 0;
 	private boolean isStatic = false;
+	private boolean oneTimeAnimation = false;
+	private boolean isFinished = false;	//used only with one time animation
 	
 	public AnimatedImage(String filePath, boolean isJar, int numFrames) {
 		if(filePath.equals("") || filePath == null) {
@@ -46,14 +48,24 @@ public class AnimatedImage {
 		}
 	}
 	
+	public AnimatedImage(BufferedImage source, boolean onlyRunOnce) {
+		this(source);
+		oneTimeAnimation  = onlyRunOnce;
+	}
+	
 	public Image getNextFrame() {
 		if(isStatic) {
 			return (Image) spritesheet;
 		}
 		int frameY = currentFrame * 512;
-		currentFrame++;
+		if(!isFinished) currentFrame++;
+		
 		if(currentFrame == numFrames-1) {
-			currentFrame = 0;
+			if(oneTimeAnimation) {
+				isFinished = true;
+			}else {
+				currentFrame = 0;
+			}
 		}
 		
 		Image tmp = null;
@@ -74,9 +86,13 @@ public class AnimatedImage {
 	}
 	
 	public void advanceCurrentFrame() {
-		currentFrame++;
+		if(!isFinished) currentFrame++;
 		if(currentFrame == numFrames-1) {
-			currentFrame = 0;
+			if(oneTimeAnimation) {
+				isFinished = true;
+			}else {
+				currentFrame = 0;
+			}
 		}
 		currentFrameY = currentFrame * 512;
 	}
@@ -95,5 +111,9 @@ public class AnimatedImage {
 			System.err.println("Error, getClass is null");
 		}
 		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
+	}
+	
+	public boolean isStatic() {
+		return isStatic;
 	}
 }
