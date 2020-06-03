@@ -35,10 +35,7 @@ public class Gun extends Loot {
 	public final int FEDRESERVE = 2;
 	public final int PRESIDENTE = 3;
 	public final int TP = 4;
-			
-			
-			
-			
+				
 	
 	
 	//========Constructor========//
@@ -70,7 +67,7 @@ public class Gun extends Loot {
 		this.bulletVelocity = bulletVelocity;
 		this.bulletSize = bulletSize;
 		Sprite = ImageLoader.BADGUN;
-		shootSound = SoundLoader.GUNSHOT;
+		getSounds();
 		reloadSound = SoundLoader.SMALLRELOAD;
 		bulletSprite = null;
 	}
@@ -115,6 +112,25 @@ public class Gun extends Loot {
 		return toolkit.getImage("src/img/badgun.png");
 	}
 	
+	private void getSounds() {
+		switch(id) {
+		case 0:
+			shootSound = SoundLoader.PISTOL_GUNSHOT;
+			break;
+		case 1:
+			shootSound = SoundLoader.AR15_GUNSHOT;
+			break;
+		case 2:
+			shootSound = SoundLoader.MONEYSHOOTER;
+			break;
+		case 3:
+			shootSound = SoundLoader.DEAGLE_GUNSHOT;
+			break;
+		case 4:
+			shootSound = SoundLoader.LAUNCHER_GUNSHOT;
+		}
+	}
+	
 	//returns true if the gun is ready to fire
 	public boolean canShoot() {
 		return System.currentTimeMillis() - lastShot > cooldown && ammoInMag > 0;
@@ -128,6 +144,7 @@ public class Gun extends Loot {
 			shootSound.play();
 			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
 		}
+		
 		return null;
 	}
 	
@@ -147,6 +164,14 @@ public class Gun extends Loot {
 		}
 		
 		return totalAmmo;
+	}
+	
+	@Override
+	public Image getSprite() {
+		if(id == 2 && System.currentTimeMillis() - lastShot > cooldown) {
+			shootSound.stop();
+		}
+		return Sprite;
 	}
 	
 	//reloads the gun with magic ammo that appears from nowhere

@@ -12,7 +12,7 @@ import displayComponents.SoundEffect;
 public class SoundLoader implements Runnable {
 
 	public static SoundEffect FOOTSTEP;
-	public static SoundEffect GUNSHOT;
+	public static SoundEffect PISTOL_GUNSHOT, AR15_GUNSHOT, MONEYSHOOTER, DEAGLE_GUNSHOT, LAUNCHER_GUNSHOT;
 	public static SoundEffect SMALLRELOAD;
 	public static SoundEffect ACTIONMUSIC;
 
@@ -25,12 +25,22 @@ public class SoundLoader implements Runnable {
 
 	private static void loadAllSounds(boolean isJar) {
 		if(!isJar) {
-			GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			PISTOL_GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			AR15_GUNSHOT = new SoundEffect("src/sound/ar15gunshot.wav", isJar, debug, 0.5);
+			MONEYSHOOTER = new SoundEffect("src/sound/moneeshooter.wav", isJar, debug, 0.5, true);
+			DEAGLE_GUNSHOT = new SoundEffect("src/sound/thiccgunshot.wav", isJar, debug, 0.5);
+			LAUNCHER_GUNSHOT = new SoundEffect("src/sound/grenadelauncher.wav", isJar, debug, 0.5);
+			
 			SMALLRELOAD = new SoundEffect("src/sound/smallReload.wav", isJar, debug, 0.5);
 			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug, 0.75);
 			ACTIONMUSIC = new SoundEffect("src/sound/gamemusic alleyway loop.wav", isJar, debug);
 		}else {
-			GUNSHOT = new SoundEffect("/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			PISTOL_GUNSHOT = new SoundEffect("/sound/pistolgunshot.wav", isJar, debug, 0.5);
+			AR15_GUNSHOT = new SoundEffect("/sound/ar15gunshot.wav", isJar, debug, 0.5);
+			MONEYSHOOTER = new SoundEffect("/sound/moneeshooter.wav", isJar, debug, 0.5, true);
+			DEAGLE_GUNSHOT = new SoundEffect("/sound/thiccgunshot.wav", isJar, debug, 0.5);
+			LAUNCHER_GUNSHOT = new SoundEffect("/sound/grenadelauncher.wav", isJar, debug, 0.5);
+			
 			SMALLRELOAD = new SoundEffect("/sound/smallReload.wav", isJar, debug, 0.5);
 
 			FOOTSTEP = new SoundEffect("/sound/footsteps.wav", isJar, debug, 0.75);
