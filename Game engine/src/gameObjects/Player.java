@@ -362,18 +362,21 @@ public class Player extends GameObject{
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
 			hp += hp/2;
 			break;
 		case WSB:
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.WSBSKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.WSBSKIN[DEATH], true);
 			break;
 		case SECRET:
 			for(int i = 0; i < skin.length; i++) {
 				//this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
 				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
 			}
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
 		}
 	}
 
