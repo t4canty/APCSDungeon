@@ -233,6 +233,8 @@ public class Enemy extends GameObject{
 	
 	public void runAI(Player player, Room room) {
 		
+		if(activeGun.getAmmoInMag() == 0) activeGun.reload();
+		
 		//first determine which state the AI will operate within
 		int currentState = 0;
 		int distFromPlayer = (int)getDistanceFrom(player.getCenterX(), player.getCenterY());

@@ -179,7 +179,7 @@ public class Gun extends Loot {
 	
 	//reloads the gun with magic ammo that appears from nowhere
 	public void reload() {
-		ammoInMag = maxAmmoInMag;
+		reload(maxAmmoInMag);
 	}
 	
 	// getters / setters

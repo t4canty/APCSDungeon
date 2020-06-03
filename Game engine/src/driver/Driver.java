@@ -242,6 +242,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		healthBar.paint(g);
 	
 		if(!player.isAlive()) {
+			doTick = false;
 			g.setColor(Color.RED);
 			Font f = new Font("Electrolize", Font.PLAIN, 72);
 			g.setFont(f);
@@ -296,8 +297,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
-		System.out.println(e.getKeyCode());
-		
 		if(temp == keybindings[0]) {
 			playerUp = true;
 			
@@ -320,6 +319,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}else if(temp == keybindings[5]) {
 			playerReload = true;
 		}else if(e.getKeyCode() == 10 && !player.isAlive()) {
+			doTick = true;
 			respawn();
 		}else if(e.getKeyCode() == 27) {
 			if(gamePaused) {
