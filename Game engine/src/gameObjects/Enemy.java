@@ -186,7 +186,7 @@ public class Enemy extends GameObject{
 			activeGun = (Gun) drop;
 			break;
 		case 5:																//Health Item
-			drop = new Health(-10, "Small Heath Potion", null, 2000);
+			drop = new Health(100, "Small Heath Potion", null, 2000);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
 			break;
 		case 6:

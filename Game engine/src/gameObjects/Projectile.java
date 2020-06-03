@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import displayComponents.AnimatedImage;
@@ -19,6 +20,7 @@ public class Projectile extends GameObject {
 	//========Variables========//
 	private int velocityX = 0;
 	private int velocityY = 0;
+	private double angle;
 	private int damage = 0;
 	private boolean isEnemyFire = false;
 	private BufferedImage sprite;
@@ -43,6 +45,7 @@ public class Projectile extends GameObject {
 		this.x = x;
 		this.y = y;
 		this.isJar = isJar;
+		this.angle = angle;
 		this.velocityX = (int)(velocity * Math.cos(angle));
 		this.velocityY = (int)(velocity * Math.sin(angle));
 		hp = -1;
@@ -59,11 +62,14 @@ public class Projectile extends GameObject {
 		y += velocityY;
 		rBox.x = x;
 		rBox.y = y;
-		
 		Graphics2D g2d = (Graphics2D) g;
+		rotateBullet(g2d);	
+	}
+	private void rotateBullet(Graphics2D g2d) {
+		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
 		g2d.draw(rBox);
-		
+		g2d.rotate(-angle, rBox.getCenterX(), rBox.getCenterY());
 	}
 	//========Getters/Setters========//
 	public void setSize(Dimension size) {rBox = new Rectangle(size);}
