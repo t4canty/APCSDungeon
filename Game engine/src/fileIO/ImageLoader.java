@@ -17,12 +17,12 @@ import javax.imageio.ImageIO;
 public class ImageLoader implements Runnable{
 	//all stored images
 	public static BufferedImage NO_IMAGE;
-	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT;
-	public static BufferedImage[] MARINESKIN = new BufferedImage[9];
-	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT;
-	public static BufferedImage[] WSBSKIN = new BufferedImage[9];
-	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT;
-	public static BufferedImage[] NPCSKIN = new BufferedImage[9];
+	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_DEATH;
+	public static BufferedImage[] MARINESKIN = new BufferedImage[10];
+	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT, WSB_DEATH;
+	public static BufferedImage[] WSBSKIN = new BufferedImage[10];
+	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH;
+	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
 	public static BufferedImage BULLET = NO_IMAGE;
 	public static BufferedImage BADGUN;
 	public static BufferedImage PISTOLMAG;
@@ -58,6 +58,7 @@ public class ImageLoader implements Runnable{
 				MARINESKIN[7] = MARINE_SIDEHURT;
 				MARINE_BACKHURT = getImageFromJar("/img/Marine_backHurt.png");
 				MARINESKIN[8] = MARINE_BACKHURT;
+				MARINESKIN[9] = null;
 
 
 				WSB_FRONTIDLE = getImageFromJar("/img/WSB_frontIdle.png");
@@ -78,6 +79,7 @@ public class ImageLoader implements Runnable{
 				WSBSKIN[7] = WSB_SIDEHURT;
 				WSB_BACKHURT = getImageFromJar("/img/WSB_backHurt.png");
 				WSBSKIN[8] = WSB_BACKHURT;
+				WSBSKIN[9] = null;
 
 				NPC_FRONTIDLE = getImageFromJar("/img/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
@@ -97,6 +99,7 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[7] = NPC_SIDEHURT;
 				NPC_BACKHURT = getImageFromJar("/img/NPC_BackHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
+				NPCSKIN[9] = null;
 
 
 				BADGUN = getImageFromJar("/img/badGun.png");
@@ -129,6 +132,8 @@ public class ImageLoader implements Runnable{
 				MARINE_SIDEHURT = getImageFromFolder("src/img/Marine_sideHurt.png");
 				MARINESKIN[7] = MARINE_SIDEHURT;
 				MARINE_BACKHURT = getImageFromFolder("src/img/Marine_backHurt.png");
+				MARINESKIN[8] = MARINE_BACKHURT;
+				MARINESKIN[9] = null;
 
 
 				WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
@@ -148,6 +153,8 @@ public class ImageLoader implements Runnable{
 				WSB_SIDEHURT = getImageFromFolder("src/img/WSB_sideHurt.png");
 				WSBSKIN[7] = WSB_SIDEHURT;
 				WSB_BACKHURT = getImageFromFolder("src/img/WSB_backHurt.png");
+				WSBSKIN[8] = WSB_BACKHURT;
+				WSBSKIN[9] = null;
 
 				NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
@@ -167,6 +174,7 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[7] = NPC_SIDEHURT;
 				NPC_BACKHURT = getImageFromFolder("src/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
+				NPCSKIN[9] = null;
 
 
 				BADGUN = getImageFromFolder("src/img/badGun.png");

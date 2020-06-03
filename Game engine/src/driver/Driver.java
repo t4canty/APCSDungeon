@@ -117,59 +117,61 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 		
-		//move player if any keyboard buttons are pressed
-		boolean diag = false;
-		if(playerUp) {
-			if(playerRight) {
-				player.move(player.UPRIGHT);
+		if(player.isAlive()) {
+			//move player if any keyboard buttons are pressed
+			boolean diag = false;
+			if(playerUp) {
+				if(playerRight) {
+					player.move(player.UPRIGHT);
+				}else if(playerLeft) {
+					player.move(player.UPLEFT);
+				}else {
+					player.move(player.UP);
+				}
+			}else if(playerDown) {
+				if(playerRight) {
+					player.move(player.DOWNRIGHT);
+				}else if(playerLeft) {
+					player.move(player.DOWNLEFT);
+				}else {
+					player.move(player.DOWN);
+				}
 			}else if(playerLeft) {
-				player.move(player.UPLEFT);
-			}else {
-				player.move(player.UP);
+				player.move(player.LEFT);
+			}else if(playerRight) {
+				player.move(player.RIGHT);
 			}
-		}else if(playerDown) {
-			if(playerRight) {
-				player.move(player.DOWNRIGHT);
-			}else if(playerLeft) {
-				player.move(player.DOWNLEFT);
-			}else {
-				player.move(player.DOWN);
+			if(playerInteract) { 
+				new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
+				playerInteract = false;
 			}
-		}else if(playerLeft) {
-			player.move(player.LEFT);
-		}else if(playerRight) {
-			player.move(player.RIGHT);
+			if(playerReload) {
+				player.reload();
+			}
+			
+			//tell player where the mouse is to update the gun
+			player.updateGunAngle(mouseX, mouseY);
+			
+			if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
+				currentRoom = currentRoom.nextRoom();
+				player.moveTo(75, player.getY());
+			}
+			
+			if(player.isColliding(currentRoom.getLeftDoor())) {
+				currentRoom = currentRoom.lastRoom();
+				player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
+			}
+			
+			//shoot the gun if the cooldown is ready and button is pressed
+			boolean canShoot = player.isShooting && player.canShootBullet();
+			//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
+			if(canShoot) {
+				currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
+			}
 		}
-		if(playerInteract) { 
-			new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
-			playerInteract = false;
-		}
-		if(playerReload) {
-			player.reload();
-		}
-		
-		//tell player where the mouse is to update the gun
-		player.updateGunAngle(mouseX, mouseY);
 		
 		//player -> enemy projectile & player -> wall collision
 		player.checkCollision(currentRoom.getEntities());
-		
-		if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
-			currentRoom = currentRoom.nextRoom();
-			player.moveTo(75, player.getY());
-		}
-		
-		if(player.isColliding(currentRoom.getLeftDoor())) {
-			currentRoom = currentRoom.lastRoom();
-			player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
-		}
-		
-		//shoot the gun if the cooldown is ready and button is pressed
-		boolean canShoot = player.isShooting && player.canShootBullet();
-		//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
-		if(canShoot) {
-			currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
-		}
 		
 		healthBar.setValue(player.getHP());
 		
@@ -220,6 +222,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
 		g.drawString("health: " + player.getHP(), 150, 715);
 		healthBar.paint(g);
+		
+		if(!player.isAlive()) {
+			g.setColor(Color.RED);
+			Font f = new Font("Electrolize", Font.PLAIN, 72);
+			g.setFont(f);
+			g.drawString("YOU DIED", 335, 450);
+		}
 	}
 	
 	

@@ -38,6 +38,7 @@ public abstract class GameObject {
 	final public int FRONTHURT = 6;
 	final public int SIDEHURT = 7;
 	final public int BACKHURT = 8;
+	final public int DEATH = 9;
 	//========Variables========//
 	protected Rectangle rBox;
 	protected int x, y;
