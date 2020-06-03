@@ -91,7 +91,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		try {
 			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
 			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOM_1, null, new ArrayList<GameObject>(), true, f.getSize());
-			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.NO_IMAGE, room1, new ArrayList<GameObject>(), true, f.getSize());
+			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.ROOM_2, room1, new ArrayList<GameObject>(), true, f.getSize());
 			currentRoom = room1;
 			currentRoom.getEntities().add(new Chest(400, 200, new Dimension(128,  64), new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar), ImageLoader.NO_IMAGE));
 			player.updateBounds(currentRoom.getBounds());

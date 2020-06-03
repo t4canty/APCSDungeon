@@ -27,7 +27,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
 	public static BufferedImage BADGUN[] = new BufferedImage[4];
 	public static BufferedImage PISTOLMAG;
-	public static BufferedImage ROOM_1;
+	public static BufferedImage ROOMS[] = new BufferedImage[6];
 	public static BufferedImage BETTERGUN[] = new BufferedImage[4];
 	public static BufferedImage ELPRESIDENTE[] = new BufferedImage[4];
 	public static BufferedImage TOILETPAPER[] = new BufferedImage[4];
@@ -43,17 +43,17 @@ public class ImageLoader implements Runnable{
 	public static int totalNumberToLoad = 36;
 	public static int totalNumberLoaded = 0;
 	Thread t;
-	
+
 	//called at beginning of program, loads all images
 	private static void loadAllImages(boolean isJar) {
 		if(isJar) {
 			if(debug) System.out.println("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
-				
+
 				MARINE_STARTUP = getImageFromJar("/img/Marine_frontIdle_hands.png");
 				WSB_STARTUP = getImageFromJar("/img/WSB_frontIdle_hands.png");
-				
+
 				MARINE_FRONTIDLE = getImageFromJar("/img/Marine_frontIdle.png");
 				MARINESKIN[0] = MARINE_FRONTIDLE;
 				MARINE_SIDEIDLE = getImageFromJar("/img/Marine_sideIdle.png");
@@ -114,42 +114,47 @@ public class ImageLoader implements Runnable{
 				NPC_BACKHURT = getImageFromJar("/img/NPC_BackHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 				NPCSKIN[9] = null;
-				
+
 				BADGUN[0] = getImageFromJar("/img/badGun.png");		//Gun sprites with no hand
 				FEDRESERVE[0] = getImageFromJar("/img/badGun.png"); // Change later
 				TOILETPAPER[0] = getImageFromJar("/img/badGun.png"); // Change later
 				BETTERGUN[0] = getImageFromJar("/img/BetterGun.png");
 				ELPRESIDENTE[0] = getImageFromJar("/img/ElPresidente.png");
 				LASERBEAM[0] = getImageFromJar("/img/badGun.png");	//Change later
-				
-				
+
+
 				BADGUN[1] = getImageFromJar("/img/badGun_marineHand.png");		//Gun sprites with no hand
 				FEDRESERVE[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
 				TOILETPAPER[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
 				BETTERGUN[1] = getImageFromJar("/img/BetterGun_marineHand.png");
 				ELPRESIDENTE[1] = getImageFromJar("/img/ElPresidente_marineHand.png");
 				LASERBEAM[1] = getImageFromJar("/img/badGun_marineHand.png");	//Change later
-				
+
 				BADGUN[2] = getImageFromJar("/img/badGun_wsb.png");		//Gun sprites with no hand
 				FEDRESERVE[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
 				TOILETPAPER[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
 				BETTERGUN[2] = getImageFromJar("/img/BetterGun_wsb.png");
 				ELPRESIDENTE[2] = getImageFromJar("/img/ElPresidente_wsb.png");
 				LASERBEAM[2] = getImageFromJar("/img/badGun_wsb.png");	//Change later
-				
+
 				BADGUN[3] = getImageFromJar("/img/badGun_npc.png");		//Gun sprites with no hand
 				FEDRESERVE[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
 				TOILETPAPER[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
 				BETTERGUN[3] = getImageFromJar("/img/BetterGun_npc.png");
 				ELPRESIDENTE[3] = getImageFromJar("/img/ElPresidente_npc.png");
 				LASERBEAM[3] = getImageFromJar("/img/badGun_npc.png");	//Change later
-				
+
 				YARIS = getImageFromJar("/img/yaris.png");
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
 				GOLDBULLET = getImageFromJar("/img/goldBullet.png");
 				BASICBULLET = getImageFromJar("/img/basicBullet.png");
-				
-				ROOM_1 = getImageFromJar("/img/BG.png");
+
+				ROOMS[0] = getImageFromJar("/img/room1.png");
+				ROOMS[1] = getImageFromJar("/img/room2.png");
+				ROOMS[3] = getImageFromJar("/img/room3.png");
+				ROOMS[4] = getImageFromJar("/img/room4.png");
+				ROOMS[5] = getImageFromJar("/img/room5.png");
+				ROOMS[6] = getImageFromJar("/img/room6.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -243,14 +248,14 @@ public class ImageLoader implements Runnable{
 		}
 		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
 	}
-	
+
 	//multithread stuff
 	@Override
 	public void run() {
 		if(debug) System.out.println("Running ImageLoad Thread");
 		loadAllImages(isJar);
 	}
-	
+
 	public void start(boolean isJar, boolean debug) {
 		this.debug = debug;
 		if(debug) System.out.println("Starting ImageLoad Thread");
