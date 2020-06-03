@@ -3,6 +3,8 @@ package gameObjects;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 import displayComponents.AnimatedImage;
@@ -19,7 +21,7 @@ import fileIO.SoundLoader;
  */
 public class Gun extends Loot {
 	//========Variables========//
-	private AnimatedImage bulletSprite;
+	private BufferedImage bulletSprite;
 	private SoundEffect shootSound;
 	private SoundEffect reloadSound;
 	private long lastShot = 0;
@@ -30,6 +32,8 @@ public class Gun extends Loot {
 	private int maxAmmoInMag = 10;
 	private boolean isJar;
 	
+	public final int YARISGUN = -2;
+	public final int LASERBEAM = -1;
 	public final int BADGUN = 0;
 	public final int BETTERGUN = 1;
 	public final int FEDRESERVE = 2;
@@ -77,6 +81,8 @@ public class Gun extends Loot {
 	private Image getSpriteFromId() {
 		try {
 			switch(id) {																//Uses the id to read the sprite from the jar.
+			case -2:
+				return ImageLoader.BADGUN;
 			case -1:
 				return ImageLoader.LASERBEAM;
 			case 0: //badGun
@@ -99,6 +105,9 @@ public class Gun extends Loot {
 	
 	private void getSounds() {
 		switch(id) {
+		case -2:
+			shootSound = SoundLoader.B;
+			break;
 		case -1:
 			shootSound = SoundLoader.LASERBEAM;
 			break;
@@ -119,6 +128,31 @@ public class Gun extends Loot {
 		}
 	}
 	
+	private void getBullets() {
+		switch(id) {
+		case -2:
+			bulletSprite = ImageLoader.YARIS;
+			break;
+		case -1:
+			bulletSprite = ImageLoader.BULLET;
+			break;
+		case 0:
+			bulletSprite = ImageLoader.BULLET;
+			break;
+		case 1:
+			bulletSprite = ImageLoader.BULLET;
+			break;
+		case 2:
+			bulletSprite = ImageLoader.BULLET;
+			break;
+		case 3:
+			bulletSprite = ImageLoader.BULLET;
+			break;
+		case 4:
+			bulletSprite = ImageLoader.BULLET;
+		}
+	}
+	
 	//returns true if the gun is ready to fire
 	public boolean canShoot() {
 		return System.currentTimeMillis() - lastShot > cooldown && ammoInMag > 0;
@@ -130,7 +164,7 @@ public class Gun extends Loot {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
 			shootSound.play();
-			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), ImageLoader.BULLET, id, isJar );
+			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), bulletSprite, id, isJar );
 		}
 		
 		return null;

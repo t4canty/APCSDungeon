@@ -12,7 +12,7 @@ import displayComponents.SoundEffect;
 public class SoundLoader implements Runnable {
 
 	public static SoundEffect FOOTSTEP;
-	public static SoundEffect PISTOL_GUNSHOT, AR15_GUNSHOT, MONEYSHOOTER, DEAGLE_GUNSHOT, LAUNCHER_GUNSHOT, LASERBEAM;
+	public static SoundEffect PISTOL_GUNSHOT, AR15_GUNSHOT, MONEYSHOOTER, DEAGLE_GUNSHOT, LAUNCHER_GUNSHOT, LASERBEAM, B;
 	public static SoundEffect SMALLRELOAD;
 	public static SoundEffect ACTIONMUSIC;
 
@@ -31,6 +31,7 @@ public class SoundLoader implements Runnable {
 			DEAGLE_GUNSHOT = new SoundEffect("src/sound/thiccgunshot.wav", isJar, debug, 0.5);
 			LAUNCHER_GUNSHOT = new SoundEffect("src/sound/grenadelauncher.wav", isJar, debug, 0.5);
 			LASERBEAM = new SoundEffect("src/sound/laserbeam.wav", isJar, debug, 0.7, true);
+			B = new SoundEffect("src/sound/b.wav", isJar, debug, 1);
 			
 			SMALLRELOAD = new SoundEffect("src/sound/smallReload.wav", isJar, debug, 0.5);
 			FOOTSTEP = new SoundEffect("src/sound/footsteps.wav", isJar, debug, 0.75);
@@ -42,6 +43,7 @@ public class SoundLoader implements Runnable {
 			DEAGLE_GUNSHOT = new SoundEffect("/sound/thiccgunshot.wav", isJar, debug, 0.5);
 			LAUNCHER_GUNSHOT = new SoundEffect("/sound/grenadelauncher.wav", isJar, debug, 0.5);
 			LASERBEAM = new SoundEffect("/sound/laserbeam.wav", isJar, debug, 0.7, true);
+			B = new SoundEffect("/sound/b.wav", isJar, debug, 1);
 			
 			SMALLRELOAD = new SoundEffect("/sound/smallReload.wav", isJar, debug, 0.5);
 

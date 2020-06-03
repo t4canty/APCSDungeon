@@ -103,8 +103,10 @@ public class Player extends GameObject{
 	public Player(int x, int y, Dimension size, int pid, boolean isJar, boolean debug) throws IOException {
 		this(x, y, size, pid, isJar);
 		this.debug = debug;
-		if(debug)
+		if(debug) {
 			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, "EZ Death Lazer", super.isJar));
+			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, "Yaris", super.isJar));
+		}
 	}
 	/**
 	 * Player constructor with debug option

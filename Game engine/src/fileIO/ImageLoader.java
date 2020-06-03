@@ -32,6 +32,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage TOILETPAPER;
 	public static BufferedImage FEDRESERVE;
 	public static BufferedImage LASERBEAM;
+	public static BufferedImage YARIS;
 	private boolean isJar;
 	private static boolean debug;
 	public static int totalNumberToLoad = 36;
@@ -113,6 +114,7 @@ public class ImageLoader implements Runnable{
 				BETTERGUN = getImageFromJar("/img/badGun.png"); // Change later
 				ELPRESIDENTE = getImageFromJar("/img/ElPresidente.png");
 				LASERBEAM = getImageFromJar("/img/badGun.png");	//Change later
+				YARIS = getImageFromJar("/img/yaris.png");
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
 				ROOM_1 = getImageFromJar("/img/BG.png");
 			} catch (IOException e) {
