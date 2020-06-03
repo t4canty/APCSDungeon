@@ -19,6 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import driver.Driver;
 import gameObjects.Gun;
 import gameObjects.Player;
 
@@ -31,7 +33,7 @@ import gameObjects.Player;
  */
 @SuppressWarnings("serial")
 public class Inventory extends JFrame implements ActionListener, KeyListener {
-
+	private Timer t;
 	/**
 	 * Spawns a new JFrame object to manage inventory, which self destructs when finished. 
 	 * @param items
@@ -45,7 +47,7 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		JLabel Title = new JLabel("Inventory", SwingConstants.CENTER);
 		ButtonGroup inventoryB = new ButtonGroup();
 		JScrollPane scrollBar = new JScrollPane(i);
-		Timer t = new Timer(34,this);
+		t = new Timer(34,this);
 
 		//========Setup========//
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} 		 //Replace later with custom buttons - but for now better than the ugly default
@@ -87,8 +89,12 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(!this.isFocused())															//Disposes of the JFrame when focus is lost
+		if(!this.isFocused()) {															//Disposes of the JFrame when focus is lost
+			Driver.doTick = true;
+			System.out.println("bee");
 			dispose();
+			t.stop();
+		}
 	}
 
 	@Override
@@ -98,7 +104,10 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == 69 || e.getKeyCode() == 27) {
+			Driver.doTick = true;
+			System.out.println("sauce");
 			dispose();
+			t.stop();
 		}
 		
 	}
