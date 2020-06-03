@@ -34,9 +34,11 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage BASICBULLET; 
 	public static BufferedImage TPBULLET; 
 	public static BufferedImage FEDBULLET; 
+	public static BufferedImage LASERBEAM;
+
 	private boolean isJar;
 	private static boolean debug;
-	public static int totalNumberToLoad = 31;
+	public static int totalNumberToLoad = 36;
 	public static int totalNumberLoaded = 0;
 	Thread t;
 	
@@ -113,7 +115,7 @@ public class ImageLoader implements Runnable{
 				TOILETPAPER = getImageFromJar("/img/badGun.png"); // Change later
 				BETTERGUN = getImageFromJar("/img/BetterGun.png");
 				ELPRESIDENTE = getImageFromJar("/img/ElPresidente.png");
-				
+				LASERBEAM = getImageFromJar("/img/badGun.png");	//Change later
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
 				GOLDBULLET = getImageFromJar("/img/goldBullet.png");
 				BASICBULLET = getImageFromJar("/img/basicBullet.png");

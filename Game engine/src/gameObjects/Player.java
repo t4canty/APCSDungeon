@@ -100,7 +100,7 @@ public class Player extends GameObject{
 		this(x, y, size, pid, isJar);
 		this.debug = debug;
 		if(debug)
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, "EZ Death Lazer", super.isJar));
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, "EZ Death Lazer", super.isJar));
 	}
 	/**
 	 * Player constructor with debug option

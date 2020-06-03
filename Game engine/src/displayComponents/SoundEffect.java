@@ -21,6 +21,7 @@ public class SoundEffect implements LineListener{
 	private ArrayList<Clip> clips = new ArrayList<Clip>();
 	private byte[] clipData;
 	private float gain = 1.0f;
+	private boolean isContinuousEffect = false;
 	
 	
 	public SoundEffect(String filepath, boolean isJar, boolean debug) {
@@ -40,6 +41,16 @@ public class SoundEffect implements LineListener{
 		this(filepath, isJar, debug);
 		setVolume(volume);
 	}
+	
+	public SoundEffect(String filepath, boolean isJar, boolean debug, double volume, boolean isLoop) {
+		this(filepath, isJar, debug, volume);
+		isContinuousEffect = isLoop;
+	}
+	
+	public SoundEffect(String filepath, boolean isJar, boolean debug, boolean isLoop) {
+		this(filepath, isJar, debug);
+		isContinuousEffect = isLoop;
+	}
 	   
 	private byte[] getClipFromJar(String fPath) throws IOException {
 		return IOUtils.toByteArray(SoundEffect.class.getResourceAsStream(fPath));
@@ -49,18 +60,24 @@ public class SoundEffect implements LineListener{
 	}
 	
    	public void play() {
-   		ByteArrayInputStream bStream = new ByteArrayInputStream(clipData);
-   		try {
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(bStream);
-			clips.add(AudioSystem.getClip());
-			clips.get(clips.size()-1).open(audioStream);
-			FloatControl gainControl = (FloatControl) clips.get(clips.size()-1).getControl(FloatControl.Type.MASTER_GAIN);
-			gainControl.setValue(gain);
-		} catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
-			e.printStackTrace();
-		}
-   		clips.get(clips.size()-1).start();
-   		clips.get(clips.size()-1).addLineListener(this);
+   		if(!isContinuousEffect || clips.size() == 0) {
+	   		ByteArrayInputStream bStream = new ByteArrayInputStream(clipData);
+	   		try {
+				AudioInputStream audioStream = AudioSystem.getAudioInputStream(bStream);
+				clips.add(AudioSystem.getClip());
+				clips.get(clips.size()-1).open(audioStream);
+				FloatControl gainControl = (FloatControl) clips.get(clips.size()-1).getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl.setValue(gain);
+			} catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+				e.printStackTrace();
+			}
+	   		if(isContinuousEffect) {
+	   			clips.get(clips.size()-1).loop(Clip.LOOP_CONTINUOUSLY);
+	   		}else {
+	   			clips.get(clips.size()-1).start();
+	   		}
+	   		clips.get(clips.size()-1).addLineListener(this);
+   		}
 	}
    	
    	public void loop() {
