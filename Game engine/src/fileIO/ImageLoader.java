@@ -102,7 +102,7 @@ public class ImageLoader implements Runnable{
 				BADGUN = getImageFromJar("/img/badGun.png");
 				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
 
-				ROOM_1 = getImageFromJar("/img/testbackground.png");
+				ROOM_1 = getImageFromJar("/img/BG.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

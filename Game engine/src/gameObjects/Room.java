@@ -1,5 +1,6 @@
 package gameObjects;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -27,6 +28,7 @@ public class Room {
 	protected boolean doorOpen = false;		 	//if the door to the next room can be walked through
 	protected ArrayList<GameObject> entities;	//list of entities within the room
 	public boolean isJar = false;				//change image loading if image is a jar file
+	private Dimension screenSize;
 	
 	/**
 	 * Room Constructor
@@ -46,7 +48,7 @@ public class Room {
 	 * Sets whether or not the right door can be used
 	 * @throws IOException
 	 */
-	public Room(Rectangle usableArea, Rectangle leftDoorHitbox, Rectangle rightDoorHitbox, Image background, Room leftRoom, ArrayList<GameObject> entities, boolean doorOpen) throws IOException {
+	public Room(Rectangle usableArea, Rectangle leftDoorHitbox, Rectangle rightDoorHitbox, Image background, Room leftRoom, ArrayList<GameObject> entities, boolean doorOpen, Dimension screenSize) throws IOException {
 		leftBound = usableArea.x;
 		topBound = usableArea.y;
 		bottomBound = usableArea.y + usableArea.height;
@@ -57,6 +59,7 @@ public class Room {
 		leftDoor = leftDoorHitbox;
 		this.doorOpen = doorOpen;
 		backgroundSprite = background;
+		this.screenSize = screenSize;
 		
 		if(leftRoom != null) {
 			leftRoom.setRightRoom(this);
@@ -64,7 +67,7 @@ public class Room {
 	}
 	
 	public void paint(Graphics g) {
-		g.drawImage(backgroundSprite, 0, 0, null);
+		g.drawImage(backgroundSprite, 0, 0, screenSize.width, screenSize.height, null);
 	}
 	
 	public void paintEntities(Graphics g) {
