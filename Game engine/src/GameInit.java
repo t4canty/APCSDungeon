@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import displayComponents.Startup;
@@ -16,6 +17,7 @@ public class GameInit{
 			if(args[0].equals("true"))
 				debug = true;
 		}
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true);
 	}
 }

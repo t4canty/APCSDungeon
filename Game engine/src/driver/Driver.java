@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -198,14 +199,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			
 			//timed spawning of enemies (temporary for now)
-			/*if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
+			if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 				lastEnemySpawn = System.currentTimeMillis();
 				try {
 					currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}*/
+			}
 			
 			//update all animations at 30 fps
 			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
@@ -300,7 +301,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[5] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[4].setLeftRoom(rooms[5]);
 		rooms[5].setRightRoom(rooms[4]);
+		addchests();
 	}
+	private void addchests() {
+		Random rand = new Random();
+		for(Room r : rooms) {
+			int[] bounds = r.getBounds();
+			if(rand.nextBoolean()) {
+				if(debug) System.out.println("Added a chest in a room.");
+				r.addProp(new Chest(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40 , ImageLoader.CHEST));
+			}
+		}
+	}
+	
 	
 	
 	

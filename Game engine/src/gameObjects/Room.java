@@ -198,4 +198,5 @@ public class Room {
 	
 	public boolean isDoorOpen() { return doorOpen; }
 	public ArrayList<GameObject> getEntities(){ return entities; }
+	public void addProp(Prop p) { entities.add(p);}
 }

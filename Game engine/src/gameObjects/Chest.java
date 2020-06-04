@@ -1,9 +1,12 @@
 package gameObjects;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.util.Random;
+
+import fileIO.ImageLoader;
 
 /**
  * Basic chest entity, drops loot when hit
@@ -12,27 +15,54 @@ import java.awt.image.BufferedImage;
  *
  */
 
-public class Chest extends GameObject {
-	private BufferedImage sprite;
+public class Chest extends Prop {
 	private Loot item;
 	private boolean isOpen;
 	
-	public Chest(int x, int y, Dimension size, Loot item, BufferedImage sprite) {
-		rBox = new Rectangle(size);
-		rBox.x = x;
-		rBox.y = y;
-		this.hp = 10;
-		this.x = x;
-		this.y = y;
-		this.item = item;
-		this.sprite = sprite;
+	public Chest(int x, int y, Image sprite) {
+		super(x, y, sprite);
 		isOpen = false;
+		computeDrop();
 	}
 	
+	private void computeDrop() {
+		int rand = new Random().nextInt(7);
+		switch (rand) {
+		case 0:																//BadGun
+			item = new Gun(10, 300, 5, 5, 15, 0, "Bad Gun", isJar);
+			break;
+		case 1:																//BetterGun
+			item = new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar);
+			
+			break;
+		case 2:																//FederalReserve
+			item = new Gun(10, 50, 30, 10, 30, 2, "Federal Reserve", isJar);
+			
+			break;
+		case 3:																//ElPresidente
+			item = new Gun(40, 600, 8, 15, 20, 3, "El Presidente", isJar);
+			
+			break;
+		case 4:																//ToiletPaper
+			item = new Gun(100, 10000, 3, 7, 50, 4, "Toilet Paper", isJar);
+			
+			break;
+		case 5:																//Health Item
+			item = new Health(100, "Small Heath Potion", null, 2000);	
+			break;
+		case 6:
+			rand = new Random().nextInt(100);
+			item = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
+		}
+		if(debug) System.out.println("Random number in chest ComputeDrop():" + rand + " Drop:" + item.getName());
+	}
 	
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(sprite, x, y, rBox.width, rBox.height, null);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(Color.black);
+		g2d.draw(rBox);
+		g.drawImage(Sprite, x, y, rBox.width, rBox.height, null);
 	}
 
 	@Override

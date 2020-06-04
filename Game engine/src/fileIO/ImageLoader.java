@@ -38,6 +38,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage FEDBULLET;
 	public static BufferedImage LASERBEAM[] = new BufferedImage[4];
 	public static BufferedImage YARIS;
+	public static BufferedImage CHEST;
 	private boolean isJar;
 	private static boolean debug;
 	public static int totalNumberToLoad = 36;
@@ -50,6 +51,7 @@ public class ImageLoader implements Runnable{
 			if(debug) System.out.println("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
+				CHEST = getImageFromJar("/img/chest.png");
 
 				MARINE_STARTUP = getImageFromJar("/img/Marine_frontIdle_hands.png");
 				WSB_STARTUP = getImageFromJar("/img/WSB_frontIdle_hands.png");
