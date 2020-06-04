@@ -29,6 +29,7 @@ import gameObjects.Chest;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Gun;
+import gameObjects.Health;
 import gameObjects.Player;
 import gameObjects.Projectile;
 import gameObjects.Room;
@@ -47,7 +48,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Timer t;
 	private Player player;
 	private Room currentRoom;
-	private Room[] rooms = new Room[6];
+	private Room[] rooms = new Room[7];
 	private StatusBar healthBar;
 	private SoundEffect backgroundMusic;
 	public static boolean debug;
@@ -199,10 +200,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			
 			//timed spawning of enemies (temporary for now)
-			if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
+			if(System.currentTimeMillis() - lastEnemySpawn > 15000) {
 				lastEnemySpawn = System.currentTimeMillis();
 				try {
-					currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+					Random rand = new Random();
+					currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -286,21 +288,45 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[1].setLeftRoom(rooms[0]);
 		rooms[0].setRightRoom(rooms[1]);
 		
+		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		
 		rooms[2] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[2].setLeftRoom(rooms[1]);
 		rooms[1].setRightRoom(rooms[2]);
+		
+		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health(100, "", null, 0)));
 		
 		rooms[3] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[3].setTopRoom(rooms[1]);
 		rooms[1].setBottomRoom(rooms[3]);
 		
+		rooms[3].getEntities().add(new Enemy(450, 500, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		rooms[3].getEntities().add(new Enemy(450, 800, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		
 		rooms[4] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[4], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[3].setBottomRoom(rooms[4]);
 		rooms[4].setTopRoom(rooms[3]);
 		
+		rooms[4].getEntities().add(new Enemy(250, 500, 60, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		rooms[4].getEntities().add(new Enemy(450, 800, 60, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
+		
 		rooms[5] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[4].setLeftRoom(rooms[5]);
 		rooms[5].setRightRoom(rooms[4]);
+		
+		rooms[5].getEntities().add(new Enemy(250, 500, 50, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		rooms[5].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
+		rooms[5].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		
+		rooms[6] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[5].setBottomRoom(rooms[6]);
+		rooms[6].setTopRoom(rooms[5]);
+		
+		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
+		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		
 		addchests();
 	}
 	private void addchests() {

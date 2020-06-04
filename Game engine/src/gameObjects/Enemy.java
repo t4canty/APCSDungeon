@@ -31,7 +31,7 @@ public class Enemy extends GameObject{
 	private long lastWalk = 0;
 	private AnimatedImage[] skin = new AnimatedImage[10];
 	Random r = new Random();
-	int r1 = 1 + r.nextInt(5);
+	double r1 = Math.random() + 1;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -49,8 +49,8 @@ public class Enemy extends GameObject{
 	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
 		this.x = x;
 		this.y = y;
-		this.hp = 100 * r1;
-		this.rBox = new Rectangle(size.width * r1, size.height *r1);
+		this.hp = (int) (hp * r1);
+		this.rBox = new Rectangle((int)(size.width * r1), (int)(size.height *r1));
 		this.isJar = isJar;
 		rBox.x = x;
 		rBox.y = y;
@@ -146,9 +146,9 @@ public class Enemy extends GameObject{
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, 25 * r1, -25 * r1, null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)(25*r1), (int)(-25 * r1), null);
 		}else {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, 25 * r1, 25 * r1, null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, (int)(25 * r1), (int)(25 * r1), null);
 		}
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -164,33 +164,26 @@ public class Enemy extends GameObject{
 	
 	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
-		int rand = new Random().nextInt(7);
-		switch (rand) {
-		case 0:																//BadGun
+		int rand = new Random().nextInt(100);
+		if(rand < 15) {															//BadGun
 			drop = new Gun(10, 300, 5, 5, 15, 0, "Bad Gun", isJar);
 			activeGun = (Gun) drop;
-			break;
-		case 1:																//BetterGun
+		}else if(rand < 40) {//BetterGun
 			drop = new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar);
 			activeGun = (Gun) drop;
-			break;
-		case 2:																//FederalReserve
+		}else if(rand < 45) {												//FederalReserve
 			drop = new Gun(10, 50, 30, 10, 30, 2, "Federal Reserve", isJar);
 			activeGun = (Gun) drop;
-			break;
-		case 3:																//ElPresidente
+		}else if(rand < 55) {										//ElPresidente
 			drop = new Gun(40, 600, 8, 15, 20, 3, "El Presidente", isJar);
 			activeGun = (Gun) drop;
-			break;
-		case 4:																//ToiletPaper
+		}else if(rand < 60) {										//ToiletPaper
 			drop = new Gun(100, 10000, 3, 7, 50, 4, "Toilet Paper", isJar);
 			activeGun = (Gun) drop;
-			break;
-		case 5:																//Health Item
+		}else if(rand < 75) {										//Health Item
 			drop = new Health(100, "Small Heath Potion", null, 2000);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
-			break;
-		case 6:
+		}else {
 			rand = new Random().nextInt(100);
 			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);

@@ -91,7 +91,6 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent arg0) {
 		if(!this.isFocused()) {															//Disposes of the JFrame when focus is lost
 			Driver.doTick = true;
-			System.out.println("bee");
 			dispose();
 			t.stop();
 		}
@@ -105,7 +104,6 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == 69 || e.getKeyCode() == 27) {
 			Driver.doTick = true;
-			System.out.println("sauce");
 			dispose();
 			t.stop();
 		}

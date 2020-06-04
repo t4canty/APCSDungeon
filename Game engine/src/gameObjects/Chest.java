@@ -25,6 +25,11 @@ public class Chest extends Prop {
 		computeDrop();
 	}
 	
+	public Chest(int x, int y, Image sprite, Loot l) {
+		this(x,y,sprite);
+		item = l;
+	}
+	
 	private void computeDrop() {
 		int rand = new Random().nextInt(7);
 		switch (rand) {
