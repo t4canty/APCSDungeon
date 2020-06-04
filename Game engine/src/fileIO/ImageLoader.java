@@ -151,10 +151,10 @@ public class ImageLoader implements Runnable{
 
 				ROOMS[0] = getImageFromJar("/img/room1.png");
 				ROOMS[1] = getImageFromJar("/img/room2.png");
-				ROOMS[3] = getImageFromJar("/img/room3.png");
-				ROOMS[4] = getImageFromJar("/img/room4.png");
-				ROOMS[5] = getImageFromJar("/img/room5.png");
-				ROOMS[6] = getImageFromJar("/img/room6.png");
+				ROOMS[2] = getImageFromJar("/img/room3.png");
+				ROOMS[3] = getImageFromJar("/img/room4.png");
+				ROOMS[4] = getImageFromJar("/img/room5.png");
+				ROOMS[5] = getImageFromJar("/img/room6.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
