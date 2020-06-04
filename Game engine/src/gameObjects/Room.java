@@ -1,11 +1,15 @@
 package gameObjects;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import driver.Driver;
 
 /**
  * Container for all entities and map properties
@@ -23,8 +27,12 @@ public class Room {
 	protected Image backgroundSprite;			//image for background
 	protected Room rightRoom;					//linked room to the right
 	protected Room leftRoom;					//linked room to the left
+	protected Room topRoom;
+	protected Room bottomRoom;
 	protected Rectangle leftDoor;				//hitboxes for room portals (doors)
 	protected Rectangle rightDoor;
+	protected Rectangle topDoor;
+	protected Rectangle bottomDoor;
 	protected boolean doorOpen = false;		 	//if the door to the next room can be walked through
 	protected ArrayList<GameObject> entities;	//list of entities within the room
 	public boolean isJar = false;				//change image loading if image is a jar file
@@ -48,26 +56,32 @@ public class Room {
 	 * Sets whether or not the right door can be used
 	 * @throws IOException
 	 */
-	public Room(Rectangle usableArea, Rectangle leftDoorHitbox, Rectangle rightDoorHitbox, Image background, Room leftRoom, ArrayList<GameObject> entities, boolean doorOpen, Dimension screenSize) throws IOException {
+	public Room(Rectangle usableArea, Image background, ArrayList<GameObject> entities, boolean doorOpen, Dimension screenSize) throws IOException {
 		leftBound = usableArea.x;
 		topBound = usableArea.y;
 		bottomBound = usableArea.y + usableArea.height;
 		rightBound = usableArea.x + usableArea.width;
-		this.leftRoom = leftRoom;
 		this.entities = entities;
-		rightDoor = rightDoorHitbox;
-		leftDoor = leftDoorHitbox;
 		this.doorOpen = doorOpen;
 		backgroundSprite = background;
 		this.screenSize = screenSize;
 		
-		if(leftRoom != null) {
+		/*if(leftRoom != null) {
 			leftRoom.setRightRoom(this);
-		}
+		}*/
 	}
 	
 	public void paint(Graphics g) {
 		g.drawImage(backgroundSprite, 0, 0, screenSize.width, screenSize.height, null);
+		
+		if(Driver.debug) {
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(Color.BLACK);
+			if(leftDoor != null) g2d.draw(leftDoor);
+			if(rightDoor != null) g2d.draw(rightDoor);
+			if(topDoor != null) g2d.draw(topDoor);
+			if(bottomDoor != null) g2d.draw(bottomDoor);
+		}
 	}
 	
 	public void paintEntities(Graphics g) {
@@ -155,9 +169,33 @@ public class Room {
 	public Rectangle getRectBounds() { return new Rectangle(leftBound, topBound, bottomBound-topBound, rightBound-leftBound); }
 	public Rectangle getLeftDoor() { return leftDoor; }
 	public Rectangle getRightDoor() { return rightDoor; }
-	public Room nextRoom() { return rightRoom; }
-	public void setRightRoom(Room r) { rightRoom = r; }
-	public Room lastRoom() { return leftRoom; }
+	public Rectangle getTopDoor() { return topDoor; }
+	public Rectangle getBottomDoor() { return bottomDoor; }
+	public void setLeftDoor(Rectangle r) { leftDoor = r;}
+	public void setRightDoor(Rectangle r) { rightDoor = r;}
+	public void setTopDoor(Rectangle r) { topDoor = r;}
+	public void setBottomDoor(Rectangle r) { bottomDoor = r;}
+	public Room topRoom() { return topRoom; }
+	public Room bottomRoom() {return bottomRoom; }
+	public Room leftRoom() { return leftRoom; }
+	public Room rightRoom() { return rightRoom; }
+	public void setRightRoom(Room r) { 
+		rightRoom = r; 
+		rightDoor = new Rectangle(950, 430, 40, 128);
+	}
+	public void setBottomRoom(Room r) {
+		bottomRoom = r;
+		bottomDoor = new Rectangle(440, 900, 128, 40);
+	}
+	public void setLeftRoom(Room r) {
+		leftRoom = r;
+		leftDoor = new Rectangle(0, 430, 50, 128);
+	}
+	public void setTopRoom(Room r) {
+		topRoom = r;
+		topDoor = new Rectangle(440, 10, 128, 40);
+	}
+	
 	public boolean isDoorOpen() { return doorOpen; }
 	public ArrayList<GameObject> getEntities(){ return entities; }
 }
