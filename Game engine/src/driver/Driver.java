@@ -46,11 +46,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Timer t;
 	private Player player;
 	private Room currentRoom;
-	private Room room1;
-	private Room room2; //temporary testing room
+	private Room[] rooms = new Room[6];
 	private StatusBar healthBar;
 	private SoundEffect backgroundMusic;
-	private boolean debug;
+	public static boolean debug;
 	private boolean isJar;
 	private int pid;
 	public static boolean doTick = true;	//track if the game should update variables & run the game
@@ -90,10 +89,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//===========Temporary player initialization for testing===========//
 		try {
 			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
-			room1 = new Room(new Rectangle(50, 50, 900, 900), null, new Rectangle(925, 375, 75, 100), ImageLoader.ROOMS[0], null, new ArrayList<GameObject>(), true, f.getSize());
-			room2 = new Room(new Rectangle(50, 50, 900, 900), new Rectangle(0, 375, 75, 100), null,  ImageLoader.ROOMS[1], room1, new ArrayList<GameObject>(), true, f.getSize());
-			currentRoom = room1;
-			currentRoom.getEntities().add(new Chest(400, 200, new Dimension(128,  64), new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar), ImageLoader.NO_IMAGE));
+			initializeRooms();
+			currentRoom = rooms[0];
 			player.updateBounds(currentRoom.getBounds());
 			backgroundMusic = SoundLoader.ACTIONMUSIC;
 			backgroundMusic.setVolume(0.1);
@@ -159,13 +156,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				player.updateGunAngle(mouseX, mouseY);
 				
 				if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
-					currentRoom = currentRoom.nextRoom();
+					currentRoom = currentRoom.rightRoom();
 					player.moveTo(75, player.getY());
-				}
-				
-				if(player.isColliding(currentRoom.getLeftDoor())) {
-					currentRoom = currentRoom.lastRoom();
+				}else if(player.isColliding(currentRoom.getLeftDoor())) {
+					currentRoom = currentRoom.leftRoom();
 					player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
+				}else if(player.isColliding(currentRoom.getTopDoor())){
+					currentRoom = currentRoom.topRoom();
+					player.moveTo(player.getX(), 750);
+				}else if(player.isColliding(currentRoom.getBottomDoor())) {
+					currentRoom = currentRoom.bottomRoom();
+					player.moveTo(player.getX(), 80);
 				}
 				
 				//shoot the gun if the cooldown is ready and button is pressed
@@ -197,14 +198,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			
 			//timed spawning of enemies (temporary for now)
-			if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
+			/*if(System.currentTimeMillis() - lastEnemySpawn > 10000) {
 				lastEnemySpawn = System.currentTimeMillis();
 				try {
 					currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 			
 			//update all animations at 30 fps
 			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
@@ -219,7 +220,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	
 	private void respawn() {
-		currentRoom = room1;
+		currentRoom = rooms[0];
 		try {
 			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
 			player.updateBounds(currentRoom.getBounds());
@@ -239,6 +240,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		player.paint(g);
 		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
 		g.drawString("health: " + player.getHP(), 150, 715);
+		if(debug) g.drawString(player.getX() + "   " + player.getY(), 150, 730);
+		if(debug) g.drawString(mouseX + "    " + mouseY, 150, 745);
 		healthBar.paint(g);
 	
 		if(!player.isAlive()) {
@@ -258,6 +261,45 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.setFont(f);
 			g.drawString("PAUSED", 335, 450);
 		}
+		
+	}
+	
+	
+	//================ Room initializer (hard coded for now) ==============//
+	
+	//bottom : 782, right 830, left: 45, top 40
+	/*	left hitbox	 -(0, 430, 50, 128)
+	 * 	right hitbox -(950, 430, 40, 128)
+	 * 	bottom hitbox-(440, 900, 128, 40)
+	 * 	top hitbox   -(440, 10, 128, 40)
+	 * 
+	 */
+	
+	
+	private void initializeRooms() throws IOException {
+		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+		//temp.add()
+		rooms[0] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[0], new ArrayList<GameObject>(), true, f.getSize());
+		
+		rooms[1] = new Room(new Rectangle(48, 40, 905, 870),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[1].setLeftRoom(rooms[0]);
+		rooms[0].setRightRoom(rooms[1]);
+		
+		rooms[2] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[2].setLeftRoom(rooms[1]);
+		rooms[1].setRightRoom(rooms[2]);
+		
+		rooms[3] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[3].setTopRoom(rooms[1]);
+		rooms[1].setBottomRoom(rooms[3]);
+		
+		rooms[4] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[4], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[3].setBottomRoom(rooms[4]);
+		rooms[4].setTopRoom(rooms[3]);
+		
+		rooms[5] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[4].setLeftRoom(rooms[5]);
+		rooms[5].setRightRoom(rooms[4]);
 	}
 	
 	
