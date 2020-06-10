@@ -20,7 +20,7 @@ import fileIO.SoundLoader;
  *
  */
 public class Player extends GameObject{
-	//Finals
+	//========Final Variables========//
 	final public static int MARINE = 0;
 	final public static int WSB = 1;
 	final public static int SECRET = 2;
@@ -43,10 +43,7 @@ public class Player extends GameObject{
 	ArrayList<Gun> inventory = new ArrayList<Gun>();											//List of guns currently in the player's inventory
 	private boolean[] CollectedGuns = { true, false, false, false, false};
 	private int id;
-	
-	
-	
-	
+
 	//========Constructors========//
 	/**
 	 * Player constructor with x and y inputs;

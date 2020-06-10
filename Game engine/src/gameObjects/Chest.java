@@ -5,31 +5,45 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.Random;
-
 import fileIO.ImageLoader;
 
 /**
- * Basic chest entity, drops loot when hit
+ * Basic chest entity, drops loot when hit.
  * @author TJ178
  * @author t4canty
  *
  */
-
 public class Chest extends Prop {
+	//========Variables========//
 	private Loot item;
 	private boolean isOpen;
 	
+	//========Constructors========//
+	/**
+	 * Creates a chest at the given x and y coords. 
+	 * @param x
+	 * @param y
+	 * @param sprite
+	 */
 	public Chest(int x, int y, Image sprite) {
 		super(x, y, sprite);
 		isOpen = false;
 		computeDrop();
 	}
-	
+	/**
+	 * Creates a chest at the given x and y coords with a specific item. 
+	 * @param x
+	 * @param y
+	 * @param sprite
+	 */
 	public Chest(int x, int y, Image sprite, Loot l) {
-		this(x,y,sprite);
+		super(x, y, sprite);
+		isOpen = false;
 		item = l;
 	}
 	
+	//========Methods========//
+	//private method to fill a chest with a random item. 
 	private void computeDrop() {
 		int rand = new Random().nextInt(7);
 		switch (rand) {
@@ -69,23 +83,20 @@ public class Chest extends Prop {
 		g2d.draw(rBox);
 		g.drawImage(Sprite, x, y, rBox.width, rBox.height, null);
 	}
-
+	
+	//we don't care about this.
 	@Override
-	public void advanceAnimationFrame() {
-	}
+	public void advanceAnimationFrame() {}
 	
 	public void openChest(Player p) {
 		item.use(p);
 		isOpen = true;
 	}
 	
+	//========Getters/Setters========//
 	public Loot getDrop() {
 		isOpen = true;
 		return item;
 	}
-	
-	public void damage(int hp) {
-		this.hp -= hp;
-	}
-
+	public void damage(int hp) {this.hp -= hp;}
 }

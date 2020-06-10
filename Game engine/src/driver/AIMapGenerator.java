@@ -5,8 +5,13 @@ import java.util.ArrayList;
 
 import gameObjects.*;
 
+/**
+ * Class for AI maps.
+ * Comments added on Jun 10, 2020
+ * @author TJ178
+ *
+ */
 public class AIMapGenerator {
-	
 	/*
 	 * Map codes
 	 * n -> null	//this shouldn't exist in finished map
@@ -17,7 +22,16 @@ public class AIMapGenerator {
 	 * . -> empty
 	 */
 	
-	
+	/**
+	 * Generates a map of the given room for the enemy AI to use. 
+	 * @param player
+	 * Player object.
+	 * @param room
+	 * Room to generate a map for.
+	 * @param screenSize
+	 * Size of the given Jframe. 
+	 * @return
+	 */
 	public static char[][] generateMap(Player player, Room room, int screenSize){
 		int scannerSize = screenSize / 64;
 		
@@ -55,7 +69,7 @@ public class AIMapGenerator {
 								}else if(e instanceof Projectile && !((Projectile)e).isEnemyFire()) {
 									map[i][j] = 'o';
 								}else {
-									System.out.println("this is a different gameObject");
+									System.err.println("this is a different gameObject, somthing is wrong.");
 								}
 								entityFound = true;
 								break;
@@ -70,8 +84,6 @@ public class AIMapGenerator {
 				}
 			}
 		}
-		
-		
 		return map;
 	}
 }

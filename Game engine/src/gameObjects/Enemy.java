@@ -12,12 +12,13 @@ import displayComponents.AnimatedImage;
 import fileIO.ImageLoader;
 
 /**
- * 
+ * Class for Enemy Objects, including fields such as health, item drops, and position - as well as necessary paint methods and bg methods.
+ * Inherits health, position, hitbox, and sprites from GameObject parent.
+ * <br> 
  * Created May 26, 2020
  * @author t4canty
  * @author TJ178
- * Class for Enemy Objects, including fields such as health, item drops, and position - as well as necessary paint methods and bg methods.
- * Inherits health, position, hitbox, and sprites from GameObject parent.  
+ *  
  */
 public class Enemy extends GameObject{
 	//========Variables========//
@@ -57,22 +58,19 @@ public class Enemy extends GameObject{
 		for(int i = 0; i < skin.length; i++) {
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
-		//activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
-		
 		computeDrop();
-		
 	}
-	
-	
+
+
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
 		rBox.x = x;
 		rBox.y = y;
-		
+
 		Graphics2D g2d = (Graphics2D) g;
 		if(debug) g2d.draw(rBox);
-		
+
 		if(Math.abs(gunAngle) > 2.35) {
 			graphicsDir = LEFT;
 		}else if(Math.abs(gunAngle) < .79) {
@@ -82,66 +80,66 @@ public class Enemy extends GameObject{
 		}else {
 			graphicsDir = UP;
 		}
-		
-				if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
-					
-					//moving sprites
-					switch(graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					}
-					
-					///hurt sprites
-				} else if(System.currentTimeMillis() - lastDamageTaken < 20){
-					switch(graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					}
-					
-					//idle sprites
-				} else {
-					switch(graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					}
-				}
-		
+
+		if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
+
+			//moving sprites
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				drawGun(g2d);
+				g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case DOWN:
+				g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+
+			///hurt sprites
+		} else if(System.currentTimeMillis() - lastDamageTaken < 20){
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				drawGun(g2d);
+				g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case DOWN:
+				g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+
+			//idle sprites
+		} else {
+			switch(graphicsDir) {
+			case LEFT:
+				g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				drawGun(g2d);
+				g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case DOWN:
+				g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
+		}
+
 		if(graphicsDir != UP) {
 			drawGun(g2d);
 		}
-		
+
 	}
-	
+
 	//draw gun on the screen dependent on the angle it's aiming
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -153,7 +151,7 @@ public class Enemy extends GameObject{
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
-	
+
 	//update all of the animations
 	@Override
 	public void advanceAnimationFrame() {
@@ -161,7 +159,7 @@ public class Enemy extends GameObject{
 			i.advanceCurrentFrame();
 		}
 	}
-	
+
 	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
 		int rand = new Random().nextInt(100);
@@ -190,18 +188,18 @@ public class Enemy extends GameObject{
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
-	
+
 	//get a new projectile from the gun
 	public Projectile getGunshot() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, true);
 	}
-	
+
 	//damage this enemy
 	public void damage(int hp) {
 		this.hp -= hp;
 		lastDamageTaken = System.currentTimeMillis(); //keep track of when damage is taken to show hurt animation
 	}
-	
+
 	/*
 	 * Three different states for AI
 	 * 1) running towards player until a certain range
@@ -223,11 +221,11 @@ public class Enemy extends GameObject{
 	 * 2) probably just move away from a certain radius of a projectile if one gets close
 	 * 3) perhaps a sort of risk/reward system where small bullets are less likely to get it to run rather than fight
 	 */
-	
+
 	public void runAI(Player player, Room room) {
-		
+
 		if(activeGun.getAmmoInMag() == 0) activeGun.reload();
-		
+
 		//first determine which state the AI will operate within
 		int currentState = 0;
 		int distFromPlayer = (int)getDistanceFrom(player.getCenterX(), player.getCenterY());
@@ -240,7 +238,7 @@ public class Enemy extends GameObject{
 		}else {
 			currentState = 2;
 		}
-		
+
 		//check if this enemy is intersecting others, if so move away from the other enemies
 		int eX = 0;
 		int eY = 0;
@@ -252,7 +250,7 @@ public class Enemy extends GameObject{
 				distFromPlayer = (int)getDistanceFrom(eX, eY);
 			}
 		}
-		
+
 		//act accordingly based on that state
 		switch(currentState) {
 		case 0:
@@ -282,19 +280,19 @@ public class Enemy extends GameObject{
 			y -= movementSpeed * (eY - getCenterY()) / distFromPlayer;
 			lastWalk = System.currentTimeMillis();
 		}
-		
+
 		//make sure to stay within room bounds
 		if(y < room.topBound) y = room.topBound;
 		if(y > room.bottomBound - rBox.height) y = room.bottomBound - rBox.height;
 		if(x < room.leftBound) x = room.leftBound;
 		if(x > room.rightBound - rBox.width) x = room.rightBound - rBox.width;;
-		
+
 		//update angle of held gun
 		gunAngle = Math.atan2(player.getCenterY() - rBox.getCenterY(), player.getCenterX() - rBox.getCenterX());
 	}
-	
-	
-	// Getters / Setters
+
+
+	//========Getters/Setters========//
 	public boolean isShooting() { return isShooting; }
 	public Loot getDrop() { return drop; } 
 }

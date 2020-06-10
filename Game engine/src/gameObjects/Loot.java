@@ -1,6 +1,5 @@
 package gameObjects;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 /**
  * Superclass for all game objects that don't really exist, like potions and guns. Superclassed
@@ -10,10 +9,9 @@ import java.awt.image.BufferedImage;
  * @author TJ178
  *
  */
-
 public abstract class Loot {
 	//========Variables========//
-	protected int id;		//type number
+	protected int id;		//id of loot.
 	protected BufferedImage Sprite[];
 	protected String Name;
 	protected int number;	//number of hp, ammo, etc
@@ -23,6 +21,11 @@ public abstract class Loot {
 	public static int PISTOLMAG = 1;
 	public static int GUN = 2;
 	
+	/**
+	 * Action preformed when the player interacts with the object. 
+	 * @param p
+	 * Player object. 
+	 */
 	public abstract void use(Player p);
 	
 	//========Getters/Setters========//

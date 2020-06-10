@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 
 /**
@@ -13,8 +12,8 @@ import java.awt.Rectangle;
  *
  */
 
-
 public class StatusBar {
+	//========Variables========//
 	private int maxValue;
 	private int minValue;
 	
@@ -39,6 +38,7 @@ public class StatusBar {
 	private int height;
 	private Rectangle outline;
 	
+	//========Constructors========//
 	/**
 	 * Constructor for an outlined status bar.
 	 * @param x
@@ -65,12 +65,8 @@ public class StatusBar {
 	 * Maximum value of the status bar
 	 * @param value
 	 * Preset current value for status bar to display
-	 */
-	
-	
-	public StatusBar(int x, int y, Dimension bounds, Color barColor, boolean changeColors, boolean isVertical, int labelPosition, String label, boolean showLimits, 
-			int min, int max, int value) {
-		
+	 */	
+	public StatusBar(int x, int y, Dimension bounds, Color barColor, boolean changeColors, boolean isVertical, int labelPosition, String label, boolean showLimits, int min, int max, int value) {
 		xCoord = x;
 		yCoord  = y;
 		width = bounds.width;
@@ -78,7 +74,6 @@ public class StatusBar {
 		outline = new Rectangle(bounds);
 		outline.x = x;
 		outline.y = y;
-		
 		
 		this.barColor = barColor;
 		this.changeColor = changeColors;
@@ -90,24 +85,8 @@ public class StatusBar {
 		maxValue = max;
 		currentValue = value;
 	}
-	
-	public void setValue(int v){
-		currentValue = v;
-	}
-	
-	public double getValue() {
-		return currentValue;
-	}
-	
-	public void setColor(Color c) {
-		barColor = c;
-	}
-	
-	public Color getColor() {
-		return barColor;
-	}
 
-
+	//========Methods========//
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -171,4 +150,10 @@ public class StatusBar {
 		g2d.setColor(Color.black);
 		g2d.draw(outline);
 	}
+	
+	//========Getters/Setters========//
+	public void setValue(int v){currentValue = v;}
+	public double getValue() {return currentValue;}
+	public void setColor(Color c) {barColor = c;}
+	public Color getColor() {return barColor;}
 }

@@ -1,13 +1,7 @@
 package gameObjects;
 
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-
-import displayComponents.AnimatedImage;
 import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
 import fileIO.SoundLoader;
@@ -20,6 +14,15 @@ import fileIO.SoundLoader;
  *
  */
 public class Gun extends Loot {
+	//========Final Variables========//
+	public final int YARISGUN = -2;
+	public final int LASERBEAM = -1;
+	public final int BADGUN = 0;
+	public final int BETTERGUN = 1;
+	public final int FEDRESERVE = 2;
+	public final int PRESIDENTE = 3;
+	public final int TP = 4;
+	
 	//========Variables========//
 	private BufferedImage bulletSprite;
 	private SoundEffect shootSound;
@@ -31,16 +34,6 @@ public class Gun extends Loot {
 	private int ammoInMag = 10;
 	private int maxAmmoInMag = 10;
 	private boolean isJar;
-
-	public final int YARISGUN = -2;
-	public final int LASERBEAM = -1;
-	public final int BADGUN = 0;
-	public final int BETTERGUN = 1;
-	public final int FEDRESERVE = 2;
-	public final int PRESIDENTE = 3;
-	public final int TP = 4;
-
-
 
 	//========Constructor========//
 	/**
@@ -185,10 +178,6 @@ public class Gun extends Loot {
 		}
 	}
 
-	// getters / setters
-	public int getAmmoInMag() { return ammoInMag; }
-	public int getMaxAmmoInMag() { return maxAmmoInMag; }
-
 	@Override
 	public void use(Player p) {
 		boolean[] bArr = p.getOwnedGuns();
@@ -203,4 +192,8 @@ public class Gun extends Loot {
 			p.addAmmo(ammoInMag);
 		}
 	}
+	
+	//========Getters/Setters========//
+	public int getAmmoInMag() { return ammoInMag; }
+	public int getMaxAmmoInMag() { return maxAmmoInMag; }
 }

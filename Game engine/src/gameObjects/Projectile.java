@@ -62,6 +62,7 @@ public class Projectile extends GameObject {
 		Graphics2D g2d = (Graphics2D) g;
 		rotateBullet(g2d);	
 	}
+	
 	private void rotateBullet(Graphics2D g2d) {
 		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
@@ -70,13 +71,10 @@ public class Projectile extends GameObject {
 	}
 	//========Getters/Setters========//
 	public void setSize(Dimension size) {rBox = new Rectangle(size);}
-	//public void setSprite(Image Sprite) {this.idleSprite = Sprite;}
 	public boolean isEnemyFire() {return isEnemyFire;}
 	public int getDamage() {return damage;}
-
+	
+	//Methods we don't care about.
 	@Override
-	public void advanceAnimationFrame() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void advanceAnimationFrame() {}
 }

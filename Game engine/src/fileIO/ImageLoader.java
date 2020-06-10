@@ -1,10 +1,8 @@
 package fileIO;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 /**
@@ -16,7 +14,7 @@ import javax.imageio.ImageIO;
  */
 
 public class ImageLoader implements Runnable{
-	//all stored images
+	//========Static Variables========//
 	public static BufferedImage NO_IMAGE;
 	public static BufferedImage MARINE_STARTUP, WSB_STARTUP;
 	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_DEATH;
@@ -39,12 +37,15 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage LASERBEAM[] = new BufferedImage[4];
 	public static BufferedImage YARIS;
 	public static BufferedImage CHEST;
-	private boolean isJar;
-	private static boolean debug;
+	
+	//========Variables========//
 	public static int totalNumberToLoad = 36;
 	public static int totalNumberLoaded = 0;
-	Thread t;
-
+	private static boolean debug;
+	private boolean isJar;	
+	private Thread t;
+	
+	//========Methods========//
 	//called at beginning of program, loads all images
 	private static void loadAllImages(boolean isJar) {
 		if(isJar) {
@@ -241,6 +242,7 @@ public class ImageLoader implements Runnable{
 			throw new IOException();
 		return temp;
 	}
+	
 	//get Image from jar
 	public static BufferedImage getImageFromJar(String filePath) throws IOException {
 		totalNumberLoaded++;
@@ -266,7 +268,7 @@ public class ImageLoader implements Runnable{
 			t = new Thread(this, "ImageLoader");
 		t.start();
 	}
-	public boolean isAlive() {
-		return t.isAlive();
-	}
+	
+	//========Getter========//
+	public boolean isAlive() {return t.isAlive();}
 }

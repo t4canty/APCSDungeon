@@ -11,14 +11,13 @@ import java.awt.Rectangle;
  * @author TJ178
  * @author t4canty
  */
-
-
 public class DroppedItem extends GameObject {
-	
+	//========Variables========//
 	private Loot item;
 
+	//========Constructors========//
 	/**
-	 * Constructor
+	 * Constructor for a dropped item.
 	 * @param x X position on map
 	 * @param y Y position on map
 	 * @param item Item that this entity contains
@@ -33,10 +32,7 @@ public class DroppedItem extends GameObject {
 		rBox.y = y;
 	}
 	
-	public Loot getItem() {
-		return item;
-	}
-	
+	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -44,9 +40,11 @@ public class DroppedItem extends GameObject {
 		g2d.drawImage(item.Sprite[0], x, y, rBox.height, rBox.width, null);
 
 	}
-
+	
+	//don't need to care about this.
 	@Override
-	public void advanceAnimationFrame() {
-	}
-
+	public void advanceAnimationFrame() {}
+	
+	//========Getter========//
+	public Loot getItem() {return item;}
 }

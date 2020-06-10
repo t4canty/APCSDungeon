@@ -15,11 +15,9 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
 import displayComponents.Inventory;
 import displayComponents.SoundEffect;
 import displayComponents.StatusBar;
@@ -28,7 +26,6 @@ import fileIO.SoundLoader;
 import gameObjects.Chest;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
-import gameObjects.Gun;
 import gameObjects.Health;
 import gameObjects.Player;
 import gameObjects.Projectile;
@@ -43,6 +40,7 @@ import gameObjects.Room;
  */
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener{
+	//========Variables========//
 	private Dimension bounds;
 	private JFrame f;
 	private Timer t;
@@ -62,8 +60,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
 	
-	
-	
+	//========Constructors========//
 	/**
 	 * Driver object allows for a set size to be passed in, allowing for a method to create the jframe and resize it in a settings method.
 	 * @param bounds
@@ -123,7 +120,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(doTick) {
 			if(player.isAlive()) {
 				//move player if any keyboard buttons are pressed
-				boolean diag = false;
 				if(playerUp) {
 					if(playerRight) {
 						player.move(player.UPRIGHT);
@@ -233,8 +229,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 	
 	
-	//=================== Paint function =====================//
-	
+	//===================Paint function=====================//
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		
@@ -277,8 +272,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * 	top hitbox   -(440, 10, 128, 40)
 	 * 
 	 */
-	
-	
+
 	private void initializeRooms() throws IOException {
 		ArrayList<GameObject> temp = new ArrayList<GameObject>();
 		//temp.add()
@@ -332,17 +326,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private void addchests() {
 		Random rand = new Random();
 		for(Room r : rooms) {
-			int[] bounds = r.getBounds();
 			if(rand.nextBoolean()) {
 				if(debug) System.out.println("Added a chest in a room.");
 				r.addProp(new Chest(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40 , ImageLoader.CHEST));
 			}
 		}
 	}
-	
-	
-	
-	
+
 	//================ Mouse / Keyboard input ================//
 	
 	//variables for movement and interaction keys
@@ -474,8 +464,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
-	
-	
 	
 	//methods we don't care about
 	

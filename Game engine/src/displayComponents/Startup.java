@@ -69,7 +69,8 @@ public class Startup extends JPanel implements ActionListener{
 	private ImageIcon currentIcon;
 	private StatusBar loadingBar;
 	private long startTime;
-
+	
+	//========Constructors========//
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
@@ -157,15 +158,14 @@ public class Startup extends JPanel implements ActionListener{
 		t.start();
 	}
 
-
+	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponents(g);
 		g.setColor(new Color(0, 0, 0, alpha));
-		g.fillRect(0, 0, f.getWidth(), f.getHeight());				//Animated black screen
+		g.fillRect(0, 0, f.getWidth(), f.getHeight());								//Animated black screen
 
 		if(i.isAlive() || s.isAlive()) { 
-			//g.setColor(Color.BLACK);
 			loadingBar.paint(g);
 		}
 		g.setColor(new Color(0, 0, 0, alpha));
@@ -203,15 +203,15 @@ public class Startup extends JPanel implements ActionListener{
 				a2 = 0f;
 			}
 		}
-
+		if(a2 > 1) { a2 = (float) 1; }												//Error correction
+		
 		if(animationFinished && alpha == 0) {										//Re-enable buttons after the animation completes
 			secret.setEnabled(true);
 			wsb.setEnabled(true);
 			marine.setEnabled(true);
 		}
-
-		if(a2 > 1) { a2 = (float) 1; }												//Error correction
 		if(alpha > 0 && animationFinished) alpha /= 1.2;
+		
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		if(doneLoading && !start.isEnabled()) { 
@@ -226,8 +226,7 @@ public class Startup extends JPanel implements ActionListener{
 		}
 		repaint();
 
-
-
+		//==Buttons==//
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
 			case "l":
@@ -276,7 +275,8 @@ public class Startup extends JPanel implements ActionListener{
 			}
 		}
 	}
-	private void readUnlock(File f) throws IOException {
+	
+	private void readUnlock(File f) throws IOException {									//Private method to read the unlock file.
 		if(f.exists()) {
 			Scanner s = new Scanner(f);
 			if(s.nextLine().equals("1")) wsbUnlock = true;
@@ -284,6 +284,7 @@ public class Startup extends JPanel implements ActionListener{
 				wsbUnlock = true;
 				secretUnlok = true;
 			}
+			s.close();
 		}
 	}
 }

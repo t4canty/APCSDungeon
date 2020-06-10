@@ -10,19 +10,21 @@ import displayComponents.SoundEffect;
  *
  */
 public class SoundLoader implements Runnable {
-
+	//========Static Variables========//
 	public static SoundEffect FOOTSTEP;
 	public static SoundEffect PISTOL_GUNSHOT, AR15_GUNSHOT, MONEYSHOOTER, DEAGLE_GUNSHOT, LAUNCHER_GUNSHOT, LASERBEAM, B;
 	public static SoundEffect SMALLRELOAD;
 	public static SoundEffect ACTIONMUSIC;
-
+	
+	//========Variables========//
 	private Thread t;
 	private boolean isJar;
 	private static boolean debug;
 	public static boolean finished = false;
 	public static int totalNumberToLoad = 8;
 	public static int totalNumberLoaded = 0;
-
+	
+	//========Methods========//
 	private static void loadAllSounds(boolean isJar) {
 		if(!isJar) {
 			PISTOL_GUNSHOT = new SoundEffect("src/sound/pistolgunshot.wav", isJar, debug, 0.5);
@@ -54,6 +56,7 @@ public class SoundLoader implements Runnable {
 		finished = true;
 	}
 
+	//multithread stuff.
 	@Override
 	public void run() {
 		if(debug) System.out.println("Loading Audio Files");
@@ -68,5 +71,7 @@ public class SoundLoader implements Runnable {
 			t = new Thread(this, "AudioLoad");
 		t.start();
 	}
+	
+	//========Getter========//
 	public boolean isAlive() {return t.isAlive();}
 }

@@ -8,17 +8,15 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import driver.Driver;
 
 /**
- * Container for all entities and map properties
+ * Container for all entities and map properties.
  * Created May 26, 2020
  * @author TJ178
  * @author t4canty
  *
  */
-
 public class Room {
 	protected int leftBound;
 	protected int topBound;
@@ -67,10 +65,11 @@ public class Room {
 		this.screenSize = screenSize;
 		
 		/*if(leftRoom != null) {
-			leftRoom.setRightRoom(this);
+			leftRoom.setRightRoom(this);	//Use this is procedural generation maybe?
 		}*/
 	}
 	
+	//========Methods========//
 	public void paint(Graphics g) {
 		g.drawImage(backgroundSprite, 0, 0, screenSize.width, screenSize.height, null);
 		
@@ -83,19 +82,17 @@ public class Room {
 			if(bottomDoor != null) g2d.draw(bottomDoor);
 		}
 	}
-	
+	//Method for paiting all the enetities in the room.
 	public void paintEntities(Graphics g) {
 		collision();
-		
 		for(int i = 0; i < entities.size(); i++) {
 			GameObject o = entities.get(i);
 			o.paint(g);
 		}
 	}
 	
-	
 	///check if any objects are colliding with each other on the map
-	public void collision() {
+	private void collision() {
 		for(int i = 0; i < entities.size(); i++) {
 			GameObject temp = entities.get(i);
 			for(int j = 0; j < entities.size(); j++) {
@@ -145,7 +142,6 @@ public class Room {
 		}
 	}
 	
-	
 	public boolean isCloseToPlayerProjectile(int x, int y) {
 		for(GameObject e : entities) {
 			if(e instanceof Projectile && !((Projectile)e).isEnemyFire())
@@ -156,15 +152,12 @@ public class Room {
 		return false;
 	}
 	
-	
-	//============ Getters / Setters =============//
-	
+	//============Getters/Setters=============//
 	//get the bounds as an array
 	public int[] getBounds() {
 		int[] bounds = {topBound, rightBound, bottomBound, leftBound};
 		return bounds;
 	}
-	
 	//get the bounds as a rectangle
 	public Rectangle getRectBounds() { return new Rectangle(leftBound, topBound, bottomBound-topBound, rightBound-leftBound); }
 	public Rectangle getLeftDoor() { return leftDoor; }

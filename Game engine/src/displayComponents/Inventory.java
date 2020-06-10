@@ -19,15 +19,14 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import driver.Driver;
 import gameObjects.Gun;
 import gameObjects.Player;
 
-
 /**
- * 
+ * Created May 30, 2020
  * @author t4canty
+ * @author TJ178
  * Inventory class that launches a separate JFrame to manage inventory, and self-destructs when not in focus.
  *
  */
@@ -60,8 +59,8 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 				public void actionPerformed(ActionEvent arg0) {
 					player.setActiveGun(l);
 					System.out.println("tick");
-					requestFocusInWindow();		//set focus back to jFrame so keyListener can work
-				} //Each button sets the active weapon to their corresponding weapon
+					requestFocusInWindow();												//set focus back to jFrame so keyListener can work
+				} 																		//Each button sets the active weapon to their corresponding weapon
 			});
 			i.add(tmp);
 			inventoryB.add(tmp);
@@ -113,6 +112,5 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 }
