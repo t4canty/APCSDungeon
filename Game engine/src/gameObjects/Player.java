@@ -340,7 +340,7 @@ public class Player extends GameObject{
 	
 	public void reload() {
 		if(activeGun.id == 0)
-			ammo = activeGun.reload(activeGun.getMaxAmmoInMag());
+			activeGun.reload();
 		else 
 			ammo = activeGun.reload(ammo);
 	}

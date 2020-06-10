@@ -181,7 +181,7 @@ public class Enemy extends GameObject{
 			drop = new Gun(100, 10000, 3, 7, 50, 4, "Toilet Paper", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 75) {										//Health Item
-			drop = new Health(100, "Small Heath Potion", null, 2000);
+			drop = new Health(100, "Small Heath Potion", ImageLoader.NO_IMAGE);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
 		}else {
 			rand = new Random().nextInt(100);

@@ -1,6 +1,5 @@
 package gameObjects;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
@@ -14,22 +13,19 @@ public class Health extends Loot {
 	
 	//========Constructor========//
 	/**
-	 * Health items: when a key is pressed, add heath to the player. Cooldown still applies.
+	 * Health items: when a key is pressed, add heath to the player.
 	 * @param damage
-	 * Pass in any negative number to add heath to the player.
+	 * Pass in any number to add heath to the player.
 	 * @param name
 	 * Name of the potion
 	 * @param Sprite
 	 * Sprite of the potion
-	 * @param cooldown
-	 * Cooldown time of the potion in ms.
 	 */
-	public Health(int hp, String name, BufferedImage Sprite, int cooldown) {
+	public Health(int hp, String name, BufferedImage Sprite) {
 		this.number = hp;
 		this.Name = name;
 		BufferedImage tmp[] = {Sprite};
 		this.Sprite = tmp;
-		this.cooldown = cooldown;
 		this.id = Loot.HEALTHPACK; //Special ID reserved for health potions
 	}
 

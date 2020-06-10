@@ -31,7 +31,7 @@ public class Gun extends Loot {
 	private int ammoInMag = 10;
 	private int maxAmmoInMag = 10;
 	private boolean isJar;
-	
+
 	public final int YARISGUN = -2;
 	public final int LASERBEAM = -1;
 	public final int BADGUN = 0;
@@ -39,9 +39,9 @@ public class Gun extends Loot {
 	public final int FEDRESERVE = 2;
 	public final int PRESIDENTE = 3;
 	public final int TP = 4;
-				
-	
-	
+
+
+
 	//========Constructor========//
 	/**
 	 * Each loot object represents a gun in the game, with a different sprite and name to display in the Inventory.
@@ -75,7 +75,7 @@ public class Gun extends Loot {
 
 		reloadSound = SoundLoader.SMALLRELOAD;
 	}
-	
+
 	//========Methods========//
 	private BufferedImage[] getSpriteFromId() {
 		try {
@@ -108,7 +108,7 @@ public class Gun extends Loot {
 		}
 		return null;
 	}
-	
+
 	private void getSounds() {
 		switch(id) {
 		case -2:
@@ -133,12 +133,12 @@ public class Gun extends Loot {
 			shootSound = SoundLoader.LAUNCHER_GUNSHOT;
 		}
 	}
-	
+
 	//returns true if the gun is ready to fire
 	public boolean canShoot() {
 		return System.currentTimeMillis() - lastShot > cooldown && ammoInMag > 0;
 	}
-	
+
 	//returns a Projectile from the gun if the gun is able to fire- otherwise returns null
 	public Projectile getGunshot(int x, int y, double angle, boolean isEnemy) {
 		if(canShoot()) {
@@ -147,10 +147,10 @@ public class Gun extends Loot {
 			shootSound.play();
 			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), bulletSprite, id, isJar );
 		}
-		
+
 		return null;
 	}
-	
+
 	//reloads ammo given a stash to take from- returns the leftover amount of ammo
 	public int reload(int totalAmmo) {
 		int ammoNeeded = maxAmmoInMag - ammoInMag;
@@ -165,10 +165,10 @@ public class Gun extends Loot {
 		if(temp != totalAmmo) {
 			reloadSound.play();
 		}
-		
+
 		return totalAmmo;
 	}
-	
+
 	@Override
 	public BufferedImage getSprite(int n) {
 		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot > cooldown) {
@@ -176,12 +176,15 @@ public class Gun extends Loot {
 		}
 		return Sprite[n];
 	}
-	
+
 	//reloads the gun with magic ammo that appears from nowhere
 	public void reload() {
-		reload(maxAmmoInMag);
+		if(ammoInMag != maxAmmoInMag) {
+			ammoInMag = maxAmmoInMag;
+			reloadSound.play();
+		}
 	}
-	
+
 	// getters / setters
 	public int getAmmoInMag() { return ammoInMag; }
 	public int getMaxAmmoInMag() { return maxAmmoInMag; }
@@ -191,15 +194,13 @@ public class Gun extends Loot {
 		boolean[] bArr = p.getOwnedGuns();
 		if(bArr[id] == false) {
 			if(p.getId() == Player.WSB && id == FEDRESERVE) {
-				cooldown = 7;
-				bulletVelocity += 20;
-				damage += 10;
+				bulletVelocity += 5;
+				damage += 20;
 			}
 			p.getInventory().add(this);
 			p.ownGun(true, id);
 		}else {
 			p.addAmmo(ammoInMag);
 		}
-		
 	}
 }

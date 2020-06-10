@@ -53,7 +53,7 @@ public class Chest extends Prop {
 			
 			break;
 		case 5:																//Health Item
-			item = new Health(100, "Small Heath Potion", null, 2000);	
+			item = new Health(100, "Small Heath Potion", ImageLoader.NO_IMAGE);	
 			break;
 		case 6:
 			rand = new Random().nextInt(100);
