@@ -59,10 +59,12 @@ public class Startup extends JPanel implements ActionListener{
 	private JLabel spriteLabel;
 	private AnimatedImage sprite;
 	private JPanel selectPanel;
+	private JPanel anotherFuckingPanelJustForButtons;
 	private JRadioButton marine;
 	private JRadioButton wsb;
 	private JRadioButton secret;
 	private Image logo;
+	private Image bgImg;
 	private Image MarineSplash;
 	private Image WSBSplash;
 	private Image SecretSplash;
@@ -80,6 +82,7 @@ public class Startup extends JPanel implements ActionListener{
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
 			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * 0.28), (int) (WSBSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
+			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
 			readUnlock(new File(path + "unlocks.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -98,10 +101,12 @@ public class Startup extends JPanel implements ActionListener{
 		//====Setup====//
 		f = new JFrame("Startup");
 		this.debug = debug;
+		this.setBackground(new Color(255,255,255,50));
 		d = bounds;
 		t = title;
 		selectPanel = new JPanel();
-		JPanel anotherFuckingPanelJustForButtons = new JPanel();
+		selectPanel.setBackground(new Color(255,255,255,50));
+		anotherFuckingPanelJustForButtons = new JPanel();
 		marine = new JRadioButton("Marine");
 		wsb = new JRadioButton("WSB");
 		secret = new JRadioButton("Secret");
@@ -114,7 +119,6 @@ public class Startup extends JPanel implements ActionListener{
 
 		//====Component setup====//
 		f.setResizable(false);
-		f.setBackground(Color.white);
 		f.setSize(800, 800);
 
 		start.setActionCommand("l");
@@ -146,12 +150,14 @@ public class Startup extends JPanel implements ActionListener{
 
 
 		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
-
+		
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
 		this.add(start, BorderLayout.PAGE_END);
-
+		
+		
 		f.add(this);
+		f.setBackground(Color.green);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Timer t = new Timer(30, this);
@@ -159,21 +165,33 @@ public class Startup extends JPanel implements ActionListener{
 	}
 
 	//========Methods========//
+
+	@Override
+	public void paintComponents(Graphics g) {
+		g.drawImage(bgImg, 0, 0, f.getWidth(), f.getHeight(), null);
+		g.setColor(new Color(0, 0, 0, 100));
+		g.drawRect(0, 0, f.getWidth(), f.getHeight());
+		anotherFuckingPanelJustForButtons.setBackground(new Color(0, 0, 0, 0));
+		marine.setBackground(new Color(200, 200, 200, 100));
+		wsb.setBackground(new Color(200, 200, 200, 100));
+		secret.setBackground(new Color(200, 200, 200, 100));
+		super.paintComponents(g);
+	}
 	@Override
 	public void paint(Graphics g) {
-		super.paintComponents(g);
+		paintComponents(g);
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, f.getWidth(), f.getHeight());								//Animated black screen
 
 		if(i.isAlive() || s.isAlive()) { 
 			loadingBar.paint(g);
 		}
-		g.setColor(new Color(0, 0, 0, alpha));
+		
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, f.getWidth()/2 - logo.getWidth(null)/2, f.getHeight()/2 - logo.getHeight(null)/2, null);
-
+		
 		if(!(i.isAlive() || s.isAlive()) && !animationFinished) {
 			loadingBar.setColor(new Color(0, 150, 0));
 			loadingBar.paint(g);

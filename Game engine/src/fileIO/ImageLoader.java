@@ -26,6 +26,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage BADGUN[] = new BufferedImage[4];
 	public static BufferedImage PISTOLMAG;
 	public static BufferedImage ROOMS[] = new BufferedImage[6];
+	public static BufferedImage BOSSROOM;
 	public static BufferedImage BETTERGUN[] = new BufferedImage[4];
 	public static BufferedImage ELPRESIDENTE[] = new BufferedImage[4];
 	public static BufferedImage TOILETPAPER[] = new BufferedImage[4];
@@ -158,6 +159,7 @@ public class ImageLoader implements Runnable{
 				ROOMS[3] = getImageFromJar("/img/room4.png");
 				ROOMS[4] = getImageFromJar("/img/room5.png");
 				ROOMS[5] = getImageFromJar("/img/room6.png");
+				BOSSROOM = getImageFromJar("/img/bossroom.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
