@@ -10,8 +10,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -43,6 +44,8 @@ public class Startup extends JPanel implements ActionListener{
 	private boolean maxed = false;
 	private boolean animationFinished = false;
 	private boolean isJar;
+	private boolean wsbUnlock = false;
+	private boolean secretUnlok = false;
 	private int id = Player.MARINE;
 	private int alpha = 255;
 	private float a2 = 0.0f;
@@ -67,7 +70,7 @@ public class Startup extends JPanel implements ActionListener{
 	private StatusBar loadingBar;
 	private long startTime;
 
-	public Startup(Dimension bounds, String title, boolean debug, boolean isJar) {
+	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
 		try {
@@ -76,6 +79,7 @@ public class Startup extends JPanel implements ActionListener{
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
 			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * 0.28), (int) (WSBSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
+			readUnlock(new File(path + "unlocks.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,7 +238,7 @@ public class Startup extends JPanel implements ActionListener{
 			case "m":
 				if(debug) System.out.println("Selected marine");
 				id = Player.MARINE;
-				//pictureLabel = new ImageIcon(marineSplash)  set this later
+				pictureLabel.setText("");
 				currentIcon = new ImageIcon(MarineSplash);
 				sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
 				pictureLabel.setIcon(currentIcon);
@@ -242,17 +246,43 @@ public class Startup extends JPanel implements ActionListener{
 				break;
 			case "w":
 				if(debug) System.out.println("Selected WSB");
-				currentIcon = new ImageIcon(WSBSplash);
-				sprite = new AnimatedImage(ImageLoader.WSB_STARTUP);
-				pictureLabel.setIcon(currentIcon);
-				selectPanel.revalidate();
-				id = Player.WSB;
+				if(wsbUnlock) {
+					pictureLabel.setText("");
+					currentIcon = new ImageIcon(WSBSplash);
+					sprite = new AnimatedImage(ImageLoader.WSB_STARTUP);
+					pictureLabel.setIcon(currentIcon);
+					selectPanel.revalidate();
+					id = Player.WSB;
+				}else {
+					pictureLabel.setIcon(null);
+					sprite = new AnimatedImage(ImageLoader.NPC_FRONTIDLE);
+					pictureLabel.setText("Not unlocked");
+					selectPanel.revalidate();
+				}
 				break;
 			case "s":
 				if(debug) System.out.println("Selected Secret");
-				pictureLabel.setIcon(currentIcon);
-				selectPanel.revalidate();
-				id = Player.SECRET;
+				if(secretUnlok) {
+					pictureLabel.setText("");
+					pictureLabel.setIcon(currentIcon);
+					selectPanel.revalidate();
+					id = Player.SECRET;
+				}else {
+					pictureLabel.setIcon(null);
+					sprite = new AnimatedImage(ImageLoader.NPC_FRONTIDLE);
+					pictureLabel.setText("Not unlocked");
+					selectPanel.revalidate();
+				}
+			}
+		}
+	}
+	private void readUnlock(File f) throws IOException {
+		if(f.exists()) {
+			Scanner s = new Scanner(f);
+			if(s.nextLine().equals("1")) wsbUnlock = true;
+			else if(s.nextLine().equals("2")) {
+				wsbUnlock = true;
+				secretUnlok = true;
 			}
 		}
 	}
