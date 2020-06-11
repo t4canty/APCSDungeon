@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 public class ImageLoader implements Runnable{
 	//========Static Variables========//
 	public static BufferedImage NO_IMAGE;
-	public static BufferedImage MARINE_STARTUP, WSB_STARTUP;
+	public static BufferedImage MARINE_STARTUP, WSB_STARTUP, SECRET_STARTUP, NPC_STARTUP;
 	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_DEATH;
 	public static BufferedImage[] MARINESKIN = new BufferedImage[10];
 	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT, WSB_DEATH;
@@ -57,6 +57,7 @@ public class ImageLoader implements Runnable{
 
 				MARINE_STARTUP = getImageFromJar("/img/Marine_frontIdle_hands.png");
 				WSB_STARTUP = getImageFromJar("/img/WSB_frontIdle_hands.png");
+				NPC_STARTUP = getImageFromJar("/img/NPC_frontIdle_hands.png");
 
 				MARINE_FRONTIDLE = getImageFromJar("/img/Marine_frontIdle.png");
 				MARINESKIN[0] = MARINE_FRONTIDLE;

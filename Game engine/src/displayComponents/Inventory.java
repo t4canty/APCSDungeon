@@ -58,7 +58,6 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					player.setActiveGun(l);
-					System.out.println("tick");
 					requestFocusInWindow();												//set focus back to jFrame so keyListener can work
 				} 																		//Each button sets the active weapon to their corresponding weapon
 			});

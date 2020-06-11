@@ -17,7 +17,14 @@ public abstract class Loot {
 	protected int number;	//number of hp, ammo, etc
 	protected int cooldown;
 	
-	public static int HEALTHPACK = 0;
+	public final static int YARISGUN = -2;
+	public final static int LASERBEAM = -1;
+	public final static int BADGUN = 0;
+	public final static int BETTERGUN = 1;
+	public final static int FEDRESERVE = 2;
+	public final static int PRESIDENTE = 3;
+	public final static int TP = 4;
+	public static int HEALTHPACK = 5;
 	public static int PISTOLMAG = 1;
 	public static int GUN = 2;
 	

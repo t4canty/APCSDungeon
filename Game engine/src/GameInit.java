@@ -13,10 +13,10 @@ public class GameInit{
 	}
 	//========Main========//
 	public static void main(String[] args) {
-		boolean debug = true;
+		boolean debug = false;
 		if(args.length != 0) {
-			if(args[0].equals("true"))
-				debug = true;
+			if(args[0].equals("true")) debug = true;
+			else debug = false;
 		}
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		String env;

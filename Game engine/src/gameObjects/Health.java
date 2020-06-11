@@ -21,8 +21,8 @@ public class Health extends Loot {
 	 * @param Sprite
 	 * Sprite of the potion
 	 */
-	public Health(int hp, String name, BufferedImage Sprite) {
-		this.number = hp;
+	public Health(String name, BufferedImage Sprite) {
+		this.number = super.HEALTHPACK;
 		this.Name = name;
 		BufferedImage tmp[] = {Sprite};
 		this.Sprite = tmp;
@@ -31,6 +31,7 @@ public class Health extends Loot {
 
 	@Override
 	public void use(Player p) {
-		p.hp += number;
+		if(p.getId() == Player.MARINE) p.hp = 150;
+		else p.hp = 100;
 	}
 }

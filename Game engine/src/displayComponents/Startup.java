@@ -248,7 +248,7 @@ public class Startup extends JPanel implements ActionListener{
 		if(e.getActionCommand() != null) {
 			switch(e.getActionCommand()) {
 			case "l":
-				System.out.println("Creating Driver");
+				if(debug) System.out.println("Creating Driver");
 				new Driver(d, t, debug, id, isJar);
 				f.dispose();
 				break;
@@ -272,7 +272,7 @@ public class Startup extends JPanel implements ActionListener{
 					id = Player.WSB;
 				}else {
 					pictureLabel.setIcon(null);
-					sprite = new AnimatedImage(ImageLoader.NPC_FRONTIDLE);
+					sprite = new AnimatedImage(ImageLoader.NPC_STARTUP);
 					pictureLabel.setText("Not unlocked");
 					selectPanel.revalidate();
 				}
@@ -286,7 +286,7 @@ public class Startup extends JPanel implements ActionListener{
 					id = Player.SECRET;
 				}else {
 					pictureLabel.setIcon(null);
-					sprite = new AnimatedImage(ImageLoader.NPC_FRONTIDLE);
+					sprite = new AnimatedImage(ImageLoader.NPC_STARTUP);
 					pictureLabel.setText("Not unlocked");
 					selectPanel.revalidate();
 				}

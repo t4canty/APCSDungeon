@@ -15,13 +15,7 @@ import fileIO.SoundLoader;
  */
 public class Gun extends Loot {
 	//========Final Variables========//
-	public final int YARISGUN = -2;
-	public final int LASERBEAM = -1;
-	public final int BADGUN = 0;
-	public final int BETTERGUN = 1;
-	public final int FEDRESERVE = 2;
-	public final int PRESIDENTE = 3;
-	public final int TP = 4;
+	
 	
 	//========Variables========//
 	private BufferedImage bulletSprite;

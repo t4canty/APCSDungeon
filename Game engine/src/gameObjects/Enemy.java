@@ -164,22 +164,22 @@ public class Enemy extends GameObject{
 	private void computeDrop() {
 		int rand = new Random().nextInt(100);
 		if(rand < 15) {															//BadGun
-			drop = new Gun(10, 300, 5, 5, 15, 0, "Bad Gun", isJar);
+			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 40) {//BetterGun
-			drop = new Gun(20, 200, 15, 8, 15, 1, "Better Gun", isJar);
+			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, "Better Gun", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 45) {												//FederalReserve
-			drop = new Gun(10, 50, 30, 10, 30, 2, "Federal Reserve", isJar);
+			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, "Federal Reserve", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 55) {										//ElPresidente
-			drop = new Gun(40, 600, 8, 15, 20, 3, "El Presidente", isJar);
+			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, "El Presidente", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 60) {										//ToiletPaper
-			drop = new Gun(100, 10000, 3, 7, 50, 4, "Toilet Paper", isJar);
+			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, "Toilet Paper", isJar);
 			activeGun = (Gun) drop;
 		}else if(rand < 75) {										//Health Item
-			drop = new Health(100, "Small Heath Potion", ImageLoader.NO_IMAGE);
+			drop = new Health("Small Heath Potion", ImageLoader.NO_IMAGE);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
 		}else {
 			rand = new Random().nextInt(100);

@@ -290,7 +290,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[1].setRightRoom(rooms[2]);
 		
 		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
-		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health(100, "", ImageLoader.NO_IMAGE)));
+		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health("", ImageLoader.NO_IMAGE)));
 		
 		rooms[3] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[3].setTopRoom(rooms[1]);
