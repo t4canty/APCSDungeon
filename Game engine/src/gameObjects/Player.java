@@ -371,10 +371,9 @@ public class Player extends GameObject{
 			break;
 		case SECRET:
 			for(int i = 0; i < skin.length; i++) {
-				//this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
-				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
+				this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
 			}
-			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
+			this.skin[DEATH] = new AnimatedImage(ImageLoader.SECRETSKIN[DEATH], true);
 		}
 	}
 

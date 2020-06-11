@@ -23,6 +23,8 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage[] WSBSKIN = new BufferedImage[10];
 	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH;
 	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
+	public static BufferedImage  SECRET_FRONTIDLE, SECRET_SIDEIDLE, SECRET_BACKIDLE, SECRET_FRONTMOVE, SECRET_SIDEMOVE, SECRET_BACKMOVE, SECRET_FRONTHURT, SECRET_SIDEHURT, SECRET_BACKHURT, SECRET_DEATH;
+	public static BufferedImage[] SECRETSKIN = new BufferedImage[10];
 	public static BufferedImage BADGUN[] = new BufferedImage[4];
 	public static BufferedImage PISTOLMAG;
 	public static BufferedImage ROOMS[] = new BufferedImage[6];
@@ -40,7 +42,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage CHEST;
 	
 	//========Variables========//
-	public static int totalNumberToLoad = 36;
+	public static int totalNumberToLoad = 78;
 	public static int totalNumberLoaded = 0;
 	private static boolean debug;
 	private boolean isJar;	
@@ -55,112 +57,133 @@ public class ImageLoader implements Runnable{
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
 				CHEST = getImageFromJar("/img/chest.png");
 
-				MARINE_STARTUP = getImageFromJar("/img/Marine_frontIdle_hands.png");
-				WSB_STARTUP = getImageFromJar("/img/WSB_frontIdle_hands.png");
-				NPC_STARTUP = getImageFromJar("/img/NPC_frontIdle_hands.png");
+				MARINE_STARTUP = getImageFromJar("/img/spritesheets/Marine/Marine_frontIdle_hands.png");
+				WSB_STARTUP = getImageFromJar("/img/spritesheets/WSB/WSB_frontIdle_hands.png");
+				NPC_STARTUP = getImageFromJar("/img/spritesheets/NPC/NPC_frontIdle_hands.png");
+				SECRET_STARTUP = getImageFromJar("/img/spritesheets/Secret/Secret_frontIdle_hands.png");
 
-				MARINE_FRONTIDLE = getImageFromJar("/img/Marine_frontIdle.png");
+				MARINE_FRONTIDLE = getImageFromJar("/img/spritesheets/Marine/Marine_frontIdle.png");
 				MARINESKIN[0] = MARINE_FRONTIDLE;
-				MARINE_SIDEIDLE = getImageFromJar("/img/Marine_sideIdle.png");
+				MARINE_SIDEIDLE = getImageFromJar("/img/spritesheets/Marine/Marine_sideIdle.png");
 				MARINESKIN[1] = MARINE_SIDEIDLE;
-				MARINE_BACKIDLE = getImageFromJar("/img/Marine_backIdle.png");
+				MARINE_BACKIDLE = getImageFromJar("/img/spritesheets/Marine/Marine_backIdle.png");
 				MARINESKIN[2] = MARINE_BACKIDLE;
-				MARINE_FRONTMOVE = getImageFromJar("/img/Marine_frontMove.png");
+				MARINE_FRONTMOVE = getImageFromJar("/img/spritesheets/Marine/Marine_frontMove.png");
 				MARINESKIN[3] = MARINE_FRONTMOVE;
-				MARINE_SIDEMOVE = getImageFromJar("/img/Marine_sideMove.png");
+				MARINE_SIDEMOVE = getImageFromJar("/img/spritesheets/Marine/Marine_sideMove.png");
 				MARINESKIN[4] = MARINE_SIDEMOVE;
-				MARINE_BACKMOVE = getImageFromJar("/img/Marine_backMove.png");
+				MARINE_BACKMOVE = getImageFromJar("/img/spritesheets/Marine/Marine_backMove.png");
 				MARINESKIN[5] = MARINE_BACKMOVE;
-				MARINE_FRONTHURT = getImageFromJar("/img/Marine_frontHurt.png");
+				MARINE_FRONTHURT = getImageFromJar("/img/spritesheets/Marine/Marine_frontHurt.png");
 				MARINESKIN[6] = MARINE_FRONTHURT;
-				MARINE_SIDEHURT = getImageFromJar("/img/Marine_sideHurt.png");
+				MARINE_SIDEHURT = getImageFromJar("/img/spritesheets/Marine/Marine_sideHurt.png");
 				MARINESKIN[7] = MARINE_SIDEHURT;
-				MARINE_BACKHURT = getImageFromJar("/img/Marine_backHurt.png");
+				MARINE_BACKHURT = getImageFromJar("/img/spritesheets/Marine/Marine_backHurt.png");
 				MARINESKIN[8] = MARINE_BACKHURT;
 				MARINESKIN[9] = null;
 
 
-				WSB_FRONTIDLE = getImageFromJar("/img/WSB_frontIdle.png");
+				WSB_FRONTIDLE = getImageFromJar("/img/spritesheets/WSB/WSB_frontIdle.png");
 				WSBSKIN[0] = WSB_FRONTIDLE;
-				WSB_SIDEIDLE = getImageFromJar("/img/WSB_sideIdle.png");
+				WSB_SIDEIDLE = getImageFromJar("/img/spritesheets/WSB/WSB_sideIdle.png");
 				WSBSKIN[1] = WSB_SIDEIDLE;
-				WSB_BACKIDLE = getImageFromJar("/img/WSB_backIdle.png");
+				WSB_BACKIDLE = getImageFromJar("/img/spritesheets/WSB/WSB_backIdle.png");
 				WSBSKIN[2] = WSB_BACKIDLE;
-				WSB_FRONTMOVE = getImageFromJar("/img/WSB_frontMove.png");
+				WSB_FRONTMOVE = getImageFromJar("/img/spritesheets/WSB/WSB_frontMove.png");
 				WSBSKIN[3] = WSB_FRONTMOVE;
-				WSB_SIDEMOVE = getImageFromJar("/img/WSB_sideMove.png");
+				WSB_SIDEMOVE = getImageFromJar("/img/spritesheets/WSB/WSB_sideMove.png");
 				WSBSKIN[4] = WSB_SIDEMOVE;
-				WSB_BACKMOVE = getImageFromJar("/img/WSB_backMove.png");
+				WSB_BACKMOVE = getImageFromJar("/img/spritesheets/WSB/WSB_backMove.png");
 				WSBSKIN[5] = WSB_BACKMOVE;
-				WSB_FRONTHURT = getImageFromJar("/img/WSB_frontHurt.png");
+				WSB_FRONTHURT = getImageFromJar("/img/spritesheets/WSB/WSB_frontHurt.png");
 				WSBSKIN[6] = WSB_FRONTHURT;
-				WSB_SIDEHURT = getImageFromJar("/img/WSB_sideHurt.png");
+				WSB_SIDEHURT = getImageFromJar("/img/spritesheets/WSB/WSB_sideHurt.png");
 				WSBSKIN[7] = WSB_SIDEHURT;
-				WSB_BACKHURT = getImageFromJar("/img/WSB_backHurt.png");
+				WSB_BACKHURT = getImageFromJar("/img/spritesheets/WSB/WSB_backHurt.png");
 				WSBSKIN[8] = WSB_BACKHURT;
 				WSBSKIN[9] = null;
 
-				NPC_FRONTIDLE = getImageFromJar("/img/NPC_frontIdle.png");
+				NPC_FRONTIDLE = getImageFromJar("/img/spritesheets/NPC/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
-				NPC_SIDEIDLE = getImageFromJar("/img/NPC_sideIdle.png");
+				NPC_SIDEIDLE = getImageFromJar("/img/spritesheets/NPC/NPC_sideIdle.png");
 				NPCSKIN[1] = NPC_SIDEIDLE;
-				NPC_BACKIDLE = getImageFromJar("/img/NPC_backIdle.png");
+				NPC_BACKIDLE = getImageFromJar("/img/spritesheets/NPC/NPC_backIdle.png");
 				NPCSKIN[2] = NPC_BACKIDLE;
-				NPC_FRONTMOVE = getImageFromJar("/img/NPC_frontMove.png");
+				NPC_FRONTMOVE = getImageFromJar("/img/spritesheets/NPC/NPC_frontMove.png");
 				NPCSKIN[3] = NPC_FRONTMOVE;
-				NPC_SIDEMOVE = getImageFromJar("/img/NPC_sideMove.png");
+				NPC_SIDEMOVE = getImageFromJar("/img/spritesheets/NPC/NPC_sideMove.png");
 				NPCSKIN[4] = NPC_SIDEMOVE;
-				NPC_BACKMOVE = getImageFromJar("/img/NPC_backMove.png");
+				NPC_BACKMOVE = getImageFromJar("/img/spritesheets/NPC/NPC_backMove.png");
 				NPCSKIN[5] = NPC_BACKMOVE;
-				NPC_FRONTHURT = getImageFromJar("/img/NPC_frontHurt.png");
+				NPC_FRONTHURT = getImageFromJar("/img/spritesheets/NPC/NPC_frontHurt.png");
 				NPCSKIN[6] = NPC_FRONTHURT;
-				NPC_SIDEHURT = getImageFromJar("/img/NPC_sideHurt.png");;
+				NPC_SIDEHURT = getImageFromJar("/img/spritesheets/NPC/NPC_sideHurt.png");;
 				NPCSKIN[7] = NPC_SIDEHURT;
-				NPC_BACKHURT = getImageFromJar("/img/NPC_BackHurt.png");
+				NPC_BACKHURT = getImageFromJar("/img/spritesheets/NPC/NPC_BackHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
 				NPCSKIN[9] = null;
+				
+				SECRET_FRONTIDLE = getImageFromJar("/img/spritesheets/Secret/Secret_frontIdle.png");
+				SECRETSKIN[0] = SECRET_FRONTIDLE;
+				SECRET_SIDEIDLE = getImageFromJar("/img/spritesheets/Secret/Secret_sideIdle.png");
+				SECRETSKIN[1] = SECRET_SIDEIDLE;
+				SECRET_BACKIDLE = getImageFromJar("/img/spritesheets/Secret/Secret_backIdle.png");
+				SECRETSKIN[2] = SECRET_BACKIDLE;
+				SECRET_FRONTMOVE = getImageFromJar("/img/spritesheets/Secret/Secret_frontMove.png");
+				SECRETSKIN[3] = SECRET_FRONTMOVE;
+				SECRET_SIDEMOVE = getImageFromJar("/img/spritesheets/Secret/Secret_sideMove.png");
+				SECRETSKIN[4] = SECRET_SIDEMOVE;
+				SECRET_BACKMOVE = getImageFromJar("/img/spritesheets/Secret/Secret_backMove.png");
+				SECRETSKIN[5] = SECRET_BACKMOVE;
+				SECRET_FRONTHURT = getImageFromJar("/img/spritesheets/Secret/Secret_frontHurt.png");
+				SECRETSKIN[6] = SECRET_FRONTHURT;
+				SECRET_SIDEHURT = getImageFromJar("/img/spritesheets/Secret/Secret_sideHurt.png");;
+				SECRETSKIN[7] = SECRET_SIDEHURT;
+				SECRET_BACKHURT = getImageFromJar("/img/spritesheets/Secret/Secret_BackHurt.png");
+				SECRETSKIN[8] = SECRET_BACKHURT;
+				SECRETSKIN[9] = null;
 
-				BADGUN[0] = getImageFromJar("/img/badGun.png");		//Gun sprites with no hand
-				FEDRESERVE[0] = getImageFromJar("/img/badGun.png"); // Change later
-				TOILETPAPER[0] = getImageFromJar("/img/badGun.png"); // Change later
-				BETTERGUN[0] = getImageFromJar("/img/BetterGun.png");
-				ELPRESIDENTE[0] = getImageFromJar("/img/ElPresidente.png");
-				LASERBEAM[0] = getImageFromJar("/img/badGun.png");	//Change later
+				BADGUN[0] = getImageFromJar("/img/guns/badGun.png");		//Gun sprites with no hand
+				FEDRESERVE[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
+				TOILETPAPER[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
+				BETTERGUN[0] = getImageFromJar("/img/guns/BetterGun.png");
+				ELPRESIDENTE[0] = getImageFromJar("/img/guns/ElPresidente.png");
+				LASERBEAM[0] = getImageFromJar("/img/guns/badGun.png");	//Change later
 
 
-				BADGUN[1] = getImageFromJar("/img/badGun_marineHand.png");		//Gun sprites with no hand
-				FEDRESERVE[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
-				TOILETPAPER[1] = getImageFromJar("/img/badGun_marineHand.png"); // Change later
-				BETTERGUN[1] = getImageFromJar("/img/BetterGun_marineHand.png");
-				ELPRESIDENTE[1] = getImageFromJar("/img/ElPresidente_marineHand.png");
-				LASERBEAM[1] = getImageFromJar("/img/badGun_marineHand.png");	//Change later
+				BADGUN[1] = getImageFromJar("/img/guns/badGun_marineHand.png");		//Gun sprites with no hand
+				FEDRESERVE[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Change later
+				TOILETPAPER[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Change later
+				BETTERGUN[1] = getImageFromJar("/img/guns/BetterGun_marineHand.png");
+				ELPRESIDENTE[1] = getImageFromJar("/img/guns/ElPresidente_marineHand.png");
+				LASERBEAM[1] = getImageFromJar("/img/guns/badGun_marineHand.png");	//Change later
 
-				BADGUN[2] = getImageFromJar("/img/badGun_wsb.png");		//Gun sprites with no hand
-				FEDRESERVE[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
-				TOILETPAPER[2] = getImageFromJar("/img/badGun_wsb.png"); // Change later
-				BETTERGUN[2] = getImageFromJar("/img/BetterGun_wsb.png");
-				ELPRESIDENTE[2] = getImageFromJar("/img/ElPresidente_wsb.png");
-				LASERBEAM[2] = getImageFromJar("/img/badGun_wsb.png");	//Change later
+				BADGUN[2] = getImageFromJar("/img/guns/badGun_wsb.png");		//Gun sprites with no hand
+				FEDRESERVE[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Change later
+				TOILETPAPER[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Change later
+				BETTERGUN[2] = getImageFromJar("/img/guns/BetterGun_wsb.png");
+				ELPRESIDENTE[2] = getImageFromJar("/img/guns/ElPresidente_wsb.png");
+				LASERBEAM[2] = getImageFromJar("/img/guns/badGun_wsb.png");	//Change later
 
-				BADGUN[3] = getImageFromJar("/img/badGun_npc.png");		//Gun sprites with no hand
-				FEDRESERVE[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
-				TOILETPAPER[3] = getImageFromJar("/img/badGun_npc.png"); // Change later
-				BETTERGUN[3] = getImageFromJar("/img/BetterGun_npc.png");
-				ELPRESIDENTE[3] = getImageFromJar("/img/ElPresidente_npc.png");
-				LASERBEAM[3] = getImageFromJar("/img/badGun_npc.png");	//Change later
+				BADGUN[3] = getImageFromJar("/img/guns/badGun_npc.png");		//Gun sprites with no hand
+				FEDRESERVE[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Change later
+				TOILETPAPER[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Change later
+				BETTERGUN[3] = getImageFromJar("/img/guns/BetterGun_npc.png");
+				ELPRESIDENTE[3] = getImageFromJar("/img/guns/ElPresidente_npc.png");
+				LASERBEAM[3] = getImageFromJar("/img/guns/badGun_npc.png");	//Change later
 
-				YARIS = getImageFromJar("/img/yaris.png");
-				PISTOLMAG = getImageFromJar("/img/pistolMag.png");
-				GOLDBULLET = getImageFromJar("/img/goldBullet.png");
-				BASICBULLET = getImageFromJar("/img/basicBullet.png");
+				YARIS = getImageFromJar("/img/guns/yaris.png");
+				PISTOLMAG = getImageFromJar("/img/guns/pistolMag.png");
+				GOLDBULLET = getImageFromJar("/img/guns/goldBullet.png");
+				BASICBULLET = getImageFromJar("/img/guns/basicBullet.png");
 
-				ROOMS[0] = getImageFromJar("/img/room1.png");
-				ROOMS[1] = getImageFromJar("/img/room2.png");
-				ROOMS[2] = getImageFromJar("/img/room3.png");
-				ROOMS[3] = getImageFromJar("/img/room4.png");
-				ROOMS[4] = getImageFromJar("/img/room5.png");
-				ROOMS[5] = getImageFromJar("/img/room6.png");
-				BOSSROOM = getImageFromJar("/img/bossroom.png");
+				ROOMS[0] = getImageFromJar("/img/rooms/room1.png");
+				ROOMS[1] = getImageFromJar("/img/rooms/room2.png");
+				ROOMS[2] = getImageFromJar("/img/rooms/room3.png");
+				ROOMS[3] = getImageFromJar("/img/rooms/room4.png");
+				ROOMS[4] = getImageFromJar("/img/rooms/room5.png");
+				ROOMS[5] = getImageFromJar("/img/rooms/room6.png");
+				BOSSROOM = getImageFromJar("/img/rooms/bossroom.png");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

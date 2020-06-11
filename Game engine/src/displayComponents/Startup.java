@@ -45,7 +45,7 @@ public class Startup extends JPanel implements ActionListener{
 	private boolean animationFinished = false;
 	private boolean isJar;
 	private boolean wsbUnlock = false;
-	private boolean secretUnlok = false;
+	private boolean secretUnlock = false;
 	private int id = Player.MARINE;
 	private int alpha = 255;
 	private float a2 = 0.0f;
@@ -81,6 +81,8 @@ public class Startup extends JPanel implements ActionListener{
 			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * 0.346), (int) (MarineSplash.getHeight(null) * 0.346), Image.SCALE_SMOOTH);
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
 			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * 0.28), (int) (WSBSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
+			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/secret_splash.png")));
+			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * 0.28), (int) (SecretSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
 			readUnlock(new File(path + "unlocks.txt"));
@@ -279,8 +281,10 @@ public class Startup extends JPanel implements ActionListener{
 				break;
 			case "s":
 				if(debug) System.out.println("Selected Secret");
-				if(secretUnlok) {
+				if(secretUnlock) {
 					pictureLabel.setText("");
+					currentIcon = new ImageIcon(SecretSplash);
+					sprite = new AnimatedImage(ImageLoader.SECRET_STARTUP);
 					pictureLabel.setIcon(currentIcon);
 					selectPanel.revalidate();
 					id = Player.SECRET;
@@ -297,10 +301,11 @@ public class Startup extends JPanel implements ActionListener{
 	private void readUnlock(File f) throws IOException {									//Private method to read the unlock file.
 		if(f.exists()) {
 			Scanner s = new Scanner(f);
-			if(s.nextLine().equals("1")) wsbUnlock = true;
-			else if(s.nextLine().equals("2")) {
+			String u = s.nextLine();
+			if(u.equals("1")) wsbUnlock = true;
+			else if(u.equals("2")) {
 				wsbUnlock = true;
-				secretUnlok = true;
+				secretUnlock = true;
 			}
 			s.close();
 		}
