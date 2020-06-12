@@ -4,6 +4,8 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -12,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -72,11 +75,13 @@ public class Startup extends JPanel implements ActionListener{
 	private StatusBar loadingBar;
 	private long startTime;
 	private double ratio;
+	private Font font;
 	
 	//========Constructors========//
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
+		f = new JFrame("Startup");
 		ratio = bounds.height/(double)800;
 		try {
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
@@ -87,10 +92,12 @@ public class Startup extends JPanel implements ActionListener{
 			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * (ratio*0.425)), (int) (SecretSplash.getHeight(null) *(0.425 * ratio)), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
+			InputStream is = Startup.class.getResourceAsStream("/fonts/ARCADECLASSIC.TTF");
+			font = Font.createFont(Font.TRUETYPE_FONT,is);
 			readUnlock(new File(path + "unlocks.txt"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
+			f.dispose();
 		}
 		startTime = System.currentTimeMillis();
 
@@ -101,15 +108,14 @@ public class Startup extends JPanel implements ActionListener{
 		i.start(isJar, debug); 
 
 		currentIcon = new ImageIcon(MarineSplash);
-
 		//====Setup====//
-		f = new JFrame("Startup");
+		
 		this.debug = debug;
 		this.setBackground(new Color(255,255,255,50));
 		d = bounds;
 		t = title;
 		selectPanel = new JPanel();
-		selectPanel.setBackground(new Color(255,255,255,50));
+		selectPanel.setBackground(new Color(0, 0, 0, 0));
 		anotherFuckingPanelJustForButtons = new JPanel();
 		marine = new JRadioButton("Marine");
 		wsb = new JRadioButton("WSB");
@@ -119,12 +125,17 @@ public class Startup extends JPanel implements ActionListener{
 		spriteLabel = new JLabel(new ImageIcon());
 		ButtonGroup bg = new ButtonGroup();
 		try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());} 		 //Replace later with custom buttons - but for now better than the ugly default
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e1) {e1.printStackTrace();}
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e1) {e1.printStackTrace(); f.dispose();}
 
 		//====Component setup====//
 		f.setResizable(false);
 		f.setSize(bounds);
-
+		
+		start.setFont(font.deriveFont(40f));
+		marine.setFont(font.deriveFont(40f));
+		wsb.setFont(font.deriveFont(40f));
+		secret.setFont(font.deriveFont(40f));
+		pictureLabel.setFont(font.deriveFont(40f));
 		start.setActionCommand("l");
 		start.addActionListener(this);
 		start.setEnabled(false);
@@ -137,6 +148,7 @@ public class Startup extends JPanel implements ActionListener{
 		secret.setEnabled(false);
 		wsb.setEnabled(false);
 		marine.setEnabled(false);
+		
 
 		bg.add(marine);
 		bg.add(wsb);
@@ -254,7 +266,7 @@ public class Startup extends JPanel implements ActionListener{
 			case "l":
 				if(debug) System.out.println("Creating Driver");
 				i.unloadImages(id);
-				new Driver(d, t, debug, id, isJar);
+				new Driver(d, t, debug, id, isJar, font);
 				f.dispose();
 				break;
 			case "m":

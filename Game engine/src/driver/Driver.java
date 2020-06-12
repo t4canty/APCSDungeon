@@ -57,6 +57,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
 	private double ratio;
+	private Font font;
+
+	private int debugFrames = 0;
 
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
@@ -71,7 +74,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * @param debug
 	 * Enable debug console printouts
 	 */
-	public Driver(Dimension bounds, String title, boolean debug, int pid, boolean isJar) {
+	public Driver(Dimension bounds, String title, boolean debug, int pid, boolean isJar, Font font) {
 		this.bounds = bounds;
 		this.debug = debug;
 		this.pid = pid;
@@ -87,7 +90,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(debug)System.out.println("Bounds:" + bounds.height);
 		ratio = ( bounds.height / (double) 1000 );
 		if(debug)System.out.println("ratio: " + ratio);
-
+		this.font = font;
 		//===========Temporary player initialization for testing===========//
 		try {
 			player = new Player(100, 100, new Dimension((int)(128 * ratio),(int)(128 * ratio)), pid, isJar, ratio, debug);
@@ -145,7 +148,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 				if(playerInteract) {
 					doTick = false;
-					new Inventory(player.getInventory(), player);	//open inventory when key is pressed 
+					new Inventory(player.getInventory(), player, font);	//open inventory when key is pressed 
 					playerInteract = false;
 				}
 				if(playerReload) {
@@ -200,28 +203,24 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			//timed spawning of enemies (temporary for now)
 			if(System.currentTimeMillis() - lastEnemySpawn > 15000) {
 				lastEnemySpawn = System.currentTimeMillis();
-				try {
-					Random rand = new Random();
-					currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64 , 64), ImageLoader.NPCSKIN, isJar, ratio));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				Random rand = new Random();
+				currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64 , 64), ImageLoader.NPCSKIN, isJar, ratio));
 			}
-		}
 
-		//update all animations at 30 fps
-		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
-			if(doTick) {
-				for(GameObject e : currentRoom.getEntities()) {
-					e.advanceAnimationFrame();
+			//update all animations at 30 fps
+			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
+				if(doTick) {
+					for(GameObject e : currentRoom.getEntities()) {
+						e.advanceAnimationFrame();
+					}
 				}
-			}
-			if(player.isAlive())
-				player.advanceAnimationFrame();
-			else
-				player.advanceDeathAnimationFrame();
+				if(player.isAlive())
+					player.advanceAnimationFrame();
+				else
+					player.advanceDeathAnimationFrame();
 
-			lastAnimationUpdate = System.currentTimeMillis();
+				lastAnimationUpdate = System.currentTimeMillis();
+			}
 		}
 	}
 
@@ -239,20 +238,27 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	//===================Paint function=====================//
 	public void paint(Graphics g) {
+		debugFrames++;
+
 		super.paintComponent(g);
 
 		currentRoom.paint(g);			//background
-		
+
+		g.setColor(Color.red);
+		g.drawString("F" + debugFrames, f.getWidth()-100, 0);
+		g.setColor(Color.black);
+
 		if(debug) {
 			g.setColor(new Color(0, 255, 0, 100));
 			g.fillRect(currentRoom.getRectBounds().x, currentRoom.getRectBounds().y,currentRoom.getRectBounds().width, currentRoom.getRectBounds().height);
 			g.setColor(Color.black);
 		}
-		
+
 		if(doTick) currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
-		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), (int)(150 * ratio), (int)(ratio*700));
-		g.drawString("health: " + player.getHP(), (int)(150 * ratio), (int) (715 * ratio));
+		g.setFont(font.deriveFont((float)(20 * ratio)));
+		g.drawString(player.getAmmoInMag() + " / " + player.getTotalAmmo(), (int)(140 * ratio), (int)(ratio*700));
+		g.drawString("health | " + player.getHP(), (int)(140 * ratio), (int) (715 * ratio));
 		if(debug) g.drawString(player.getX() + "   " + player.getY(), (int)(150*ratio), (int)(730*ratio));
 		if(debug) g.drawString(mouseX + "    " + mouseY, (int)(150 * ratio), (int)(745 * ratio));
 		healthBar.paint(g);
@@ -260,17 +266,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(!player.isAlive()) {
 			doTick = false;
 			g.setColor(Color.RED);
-			Font f = new Font("Electrolize", Font.PLAIN,(int)( 72 * ratio));
+			Font f = font.deriveFont((float)(72 * ratio));
 			g.setFont(f);
 			g.drawString("YOU DIED", (int)(335 * ratio), (int)(450* ratio));
 			Font f2 = f.deriveFont((float) (50 * ratio));
 			g.setFont(f2);
-			g.drawString("Press Enter to Respawn", (int)(235 * ratio) , (int)(550 *ratio));
+			g.drawString("Press Enter  to Respawn", (int)(235 * ratio) , (int)(550 *ratio));
 		}
 
 		if(gamePaused) {
 			g.setColor(Color.BLACK);
-			Font f = new Font("Electrolize", Font.PLAIN, (int)(72 * ratio));
+			Font f = font.deriveFont((float)(72 * ratio));
 			g.setFont(f);
 			g.drawString("PAUSED", (int)(335 * ratio), (int)(450* ratio));
 		}
@@ -289,8 +295,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 */
 
 	private void initializeRooms() throws IOException {
-//		ArrayList<GameObject> temp = new ArrayList<GameObject>();
-//		//temp.add()
+		//		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+		//		//temp.add()
 		rooms[0] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[0], new ArrayList<GameObject>(), true, f.getSize(), ratio);
 
 		rooms[1] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize() , ratio);

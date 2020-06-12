@@ -3,6 +3,7 @@ package displayComponents;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,10 +41,11 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 	 * @param player
 	 * The player object. 
 	 */
-	public Inventory(ArrayList<Gun> items, Player player) {
+	public Inventory(ArrayList<Gun> items, Player player, Font font) {
 		//========Variables========//
 		JPanel i = new JPanel();
 		JLabel Title = new JLabel("Inventory", SwingConstants.CENTER);
+		Title.setFont(font.deriveFont(40f));
 		ButtonGroup inventoryB = new ButtonGroup();
 		JScrollPane scrollBar = new JScrollPane(i);
 		t = new Timer(34,this);
@@ -61,6 +63,7 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 					requestFocusInWindow();												//set focus back to jFrame so keyListener can work
 				} 																		//Each button sets the active weapon to their corresponding weapon
 			});
+			tmp.setFont(font.deriveFont(30f));
 			i.add(tmp);
 			inventoryB.add(tmp);
 		}

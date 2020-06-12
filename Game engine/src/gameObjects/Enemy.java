@@ -31,7 +31,7 @@ public class Enemy extends GameObject{
 	private int graphicsDir;
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
-	private AnimatedImage[] skin = new AnimatedImage[9];
+	protected AnimatedImage[] skin = new AnimatedImage[9];
 	Random r = new Random();
 	double r1 = Math.random() + 1;
 	private double sFactor;
@@ -49,7 +49,7 @@ public class Enemy extends GameObject{
 	 * @param skin
 	 * Skin of sprites to use
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio) throws IOException {
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio) {
 		this.x = (int)(x * ratio);
 		this.y = (int)(y * ratio);
 		this.hp = (int) (hp * r1);
