@@ -39,6 +39,7 @@ public class Player extends GameObject{
 	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
+	private double scaleFactor;
 	public boolean isShooting;
 	private boolean isAlive = true;
 	private int ammo = 20;
@@ -59,17 +60,19 @@ public class Player extends GameObject{
 	 * Player skin to use
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, int pid, boolean isJar) throws IOException {
+	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio) throws IOException {
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
 		this.rBox = new Rectangle(size);
 		this.isJar = isJar;
 		this.id = pid;
+		scaleFactor = ratio;
 		getPlayerSkin(pid);
-		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
+		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar, scaleFactor);
 		inventory.add(activeGun);
 		if(pid == SECRET) velocity = 15;
+		velocity = (int) (velocity * scaleFactor);
 	}
 	/**
 	 * Bare Player constructor
@@ -78,8 +81,8 @@ public class Player extends GameObject{
 	 * @param skin
 	 * Player skin to use
 	 */
-	public Player(Dimension size, int pid, boolean isJar) throws IOException {
-		this(0, 0, size, pid, isJar);
+	public Player(Dimension size, int pid, boolean isJar, double ratio) throws IOException {
+		this(0, 0, size, pid, isJar, ratio);
 	}
 	/**
 	 * 
@@ -96,12 +99,12 @@ public class Player extends GameObject{
 	 * Sets debug flag
 	 * 
 	 */
-	public Player(int x, int y, Dimension size, int pid, boolean isJar, boolean debug) throws IOException {
-		this(x, y, size, pid, isJar);
+	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio, boolean debug) throws IOException {
+		this(x, y, size, pid, isJar, ratio);
 		this.debug = debug;
 		if(debug) {
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, "EZ Death Lazer", super.isJar));
-			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, "Yaris", super.isJar));
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, "Yaris", super.isJar, scaleFactor));
 		}
 	}
 	/**
@@ -113,11 +116,11 @@ public class Player extends GameObject{
 	 * @param debug
 	 * Sets debug flag
 	 */
-	public Player(Dimension size,int pid, boolean isJar, boolean debug) throws IOException {
-		this(size, pid, isJar);
+	public Player(Dimension size,int pid, boolean isJar, double ratio, boolean debug) throws IOException {
+		this(size, pid, isJar, ratio);
 		this.debug = debug;
 		if(debug)
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, "EZ Death Lazer", super.isJar));
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, "EZ Death Lazer", super.isJar, scaleFactor));
 	}
 
 	//========Methods========//
@@ -225,9 +228,9 @@ public class Player extends GameObject{
 		if(isAlive) {
 			g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 			if(Math.abs(gunAngle) > 1.07) {
-				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, 50, -50, null);
+				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, (int) (50 * scaleFactor), (int)(-50 * scaleFactor), null);
 			}else {
-				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, 50, 50, null);
+				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor), null);
 			}
 
 			//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));

@@ -32,9 +32,9 @@ public class Enemy extends GameObject{
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
 	private AnimatedImage[] skin = new AnimatedImage[9];
-	private AnimatedImage[] death = new AnimatedImage[3];
 	Random r = new Random();
 	double r1 = Math.random() + 1;
+	private double sFactor;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -49,14 +49,16 @@ public class Enemy extends GameObject{
 	 * @param skin
 	 * Skin of sprites to use
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar) throws IOException {
-		this.x = x;
-		this.y = y;
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio) throws IOException {
+		this.x = (int)(x * ratio);
+		this.y = (int)(y * ratio);
 		this.hp = (int) (hp * r1);
-		this.rBox = new Rectangle((int)(size.width * r1), (int)(size.height *r1));
+		this.rBox = new Rectangle((int)((size.width * r1) * ratio), (int)((size.height *r1) * ratio));
 		this.isJar = isJar;
+		sFactor = ratio;
 		rBox.x = x;
 		rBox.y = y;
+		movementSpeed = (int)(movementSpeed * ratio);
 		for(int i = 0; i < skin.length; i++) {
 			this.skin[i] = new AnimatedImage(skin[i]);
 		}
@@ -146,9 +148,9 @@ public class Enemy extends GameObject{
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)(25*r1), (int)(-25 * r1), null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)((25*r1) * sFactor), (int)((-25 * r1) * sFactor), null);
 		}else {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, (int)(25 * r1), (int)(25 * r1), null);
+			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, (int)((25 * r1) * sFactor), (int)((25 * r1) * sFactor), null);
 		}
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -166,27 +168,27 @@ public class Enemy extends GameObject{
 	private void computeDrop() {
 		int rand = new Random().nextInt(100);
 		if(rand < 15) {															//BadGun
-			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar);
+			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 40) {//BetterGun
-			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, "Better Gun", isJar);
+			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 45) {												//FederalReserve
-			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, "Federal Reserve", isJar);
+			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, "Federal Reserve", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 55) {										//ElPresidente
-			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, "El Presidente", isJar);
+			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, "El Presidente", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 60) {										//ToiletPaper
-			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, "Toilet Paper", isJar);
+			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, "Toilet Paper", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 75) {										//Health Item
 			drop = new Health("Small Heath Potion", ImageLoader.NO_IMAGE);
-			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);											//TODO Fix later to include actual sprite
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar, sFactor);											//TODO Fix later to include actual sprite
 		}else {
 			rand = new Random().nextInt(100);
 			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
-			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar);
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar, sFactor);
 		}
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
@@ -231,7 +233,7 @@ public class Enemy extends GameObject{
 		//first determine which state the AI will operate within
 		int currentState = 0;
 		int distFromPlayer = (int)getDistanceFrom(player.getCenterX(), player.getCenterY());
-		if(distFromPlayer > 250) {
+		if(distFromPlayer > (250 * sFactor)) {
 			currentState = 0;
 		}else if(distFromPlayer < rBox.height * 2) {
 			currentState = 1;

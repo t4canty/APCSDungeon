@@ -25,6 +25,7 @@ public class GameInit{
 		}else {
 			env = System.getenv("HOME") + "/";
 		}
-		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(1000, 1000), true, env);
+		//For now, the game fills up the max area of a screen, but the scale code should theoretically allow for any square resolution.
+		GameInit gameInit = new GameInit(Paths.get(".").toAbsolutePath(), "test", debug, new Dimension(screenSize.height - 50, screenSize.height -50), true, env);
 	}
 }

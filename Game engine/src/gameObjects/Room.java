@@ -35,6 +35,7 @@ public class Room {
 	protected ArrayList<GameObject> entities;	//list of entities within the room
 	public boolean isJar = false;				//change image loading if image is a jar file
 	private Dimension screenSize;
+	private double ratio;
 	
 	/**
 	 * Room Constructor
@@ -54,7 +55,7 @@ public class Room {
 	 * Sets whether or not the right door can be used
 	 * @throws IOException
 	 */
-	public Room(Rectangle usableArea, Image background, ArrayList<GameObject> entities, boolean doorOpen, Dimension screenSize) throws IOException {
+	public Room(Rectangle usableArea, Image background, ArrayList<GameObject> entities, boolean doorOpen, Dimension screenSize, double ratio) throws IOException {
 		leftBound = usableArea.x;
 		topBound = usableArea.y;
 		bottomBound = usableArea.y + usableArea.height;
@@ -63,6 +64,7 @@ public class Room {
 		this.doorOpen = doorOpen;
 		backgroundSprite = background;
 		this.screenSize = screenSize;
+		this.ratio = ratio;
 		
 		/*if(leftRoom != null) {
 			leftRoom.setRightRoom(this);	//Use this is procedural generation maybe?
@@ -145,7 +147,7 @@ public class Room {
 	public boolean isCloseToPlayerProjectile(int x, int y) {
 		for(GameObject e : entities) {
 			if(e instanceof Projectile && !((Projectile)e).isEnemyFire())
-			if(e.getDistanceFrom(x, y) < 75){
+			if(e.getDistanceFrom(x, y) < (75 * ratio)){
 				return true;
 			}
 		}
@@ -164,29 +166,30 @@ public class Room {
 	public Rectangle getRightDoor() { return rightDoor; }
 	public Rectangle getTopDoor() { return topDoor; }
 	public Rectangle getBottomDoor() { return bottomDoor; }
-	public void setLeftDoor(Rectangle r) { leftDoor = r;}
-	public void setRightDoor(Rectangle r) { rightDoor = r;}
-	public void setTopDoor(Rectangle r) { topDoor = r;}
-	public void setBottomDoor(Rectangle r) { bottomDoor = r;}
+//	public void setLeftDoor(Rectangle r) { leftDoor = r;}
+//	public void setRightDoor(Rectangle r) { rightDoor = r;}
+//	public void setTopDoor(Rectangle r) { topDoor = r;}
+//	public void setBottomDoor(Rectangle r) { bottomDoor = r;}
 	public Room topRoom() { return topRoom; }
 	public Room bottomRoom() {return bottomRoom; }
 	public Room leftRoom() { return leftRoom; }
 	public Room rightRoom() { return rightRoom; }
 	public void setRightRoom(Room r) { 
 		rightRoom = r; 
-		rightDoor = new Rectangle(950, 430, 40, 128);
+		rightDoor = new Rectangle((int)(950 * ratio), (int)(430 * ratio), (int)(40 * ratio), (int)(128 * ratio));
 	}
 	public void setBottomRoom(Room r) {
 		bottomRoom = r;
-		bottomDoor = new Rectangle(440, 900, 128, 40);
+		bottomDoor = new Rectangle((int)(440 * ratio), (int)(900 * ratio), (int)(128 * ratio), (int)(40 *ratio));
 	}
 	public void setLeftRoom(Room r) {
 		leftRoom = r;
-		leftDoor = new Rectangle(0, 430, 50, 128);
+		leftDoor = new Rectangle(0, (int)(430 * ratio), (int)(50 * ratio), (int)(128 * ratio));
 	}
 	public void setTopRoom(Room r) {
 		topRoom = r;
-		topDoor = new Rectangle(440, 10, 128, 40);
+		//topDoor = new Rectangle((int)(440 * ratio), (int)(10 * ratio), (int)(128 * ratio), (int)(40 * ratio));
+		topDoor = new Rectangle((int)(440 * ratio), (int)(10 * ratio), (int)(128 * ratio), (int)(40 * ratio));
 	}
 	
 	public boolean isDoorOpen() { return doorOpen; }

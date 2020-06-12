@@ -56,6 +56,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean gamePaused = false;		//track if the game is paused with escape
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
+	private double ratio;
 
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
@@ -83,11 +84,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
-
+		System.out.println("Bounds:" + bounds.height);
+		ratio = ( bounds.height / (double) 1000 );
+		System.out.println("ratio: " + ratio);
 
 		//===========Temporary player initialization for testing===========//
 		try {
-			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
+			player = new Player(100, 100, new Dimension((int)(128 * ratio),(int)(128 * ratio)), pid, isJar, ratio, debug);
 			initializeRooms();
 			currentRoom = rooms[0];
 			player.updateBounds(currentRoom.getBounds());
@@ -100,7 +103,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			e.printStackTrace();
 		}
 
-		healthBar = new StatusBar(10, 10, new Dimension(200, 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
+		healthBar = new StatusBar(10, 10, new Dimension((int)((player.getHP() * 2) * ratio), 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
 		backgroundMusic.loop();
 
 		//Adding ticking timer
@@ -154,16 +157,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 				if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
 					currentRoom = currentRoom.rightRoom();
-					player.moveTo(75, player.getY());
+					player.moveTo((int)(75 * ratio), player.getY());
 				}else if(player.isColliding(currentRoom.getLeftDoor())) {
 					currentRoom = currentRoom.leftRoom();
-					player.moveTo(bounds.width - 100 - player.getHitbox().width, player.getY());
+					player.moveTo(bounds.width - (int)(100 *ratio) - player.getHitbox().width, player.getY());
 				}else if(player.isColliding(currentRoom.getTopDoor())){
 					currentRoom = currentRoom.topRoom();
-					player.moveTo(player.getX(), 750);
+					player.moveTo(player.getX(), (int)(750 * ratio));
 				}else if(player.isColliding(currentRoom.getBottomDoor())) {
 					currentRoom = currentRoom.bottomRoom();
-					player.moveTo(player.getX(), 80);
+					player.moveTo(player.getX(), (int)(80 * ratio));
 				}
 
 				//shoot the gun if the cooldown is ready and button is pressed
@@ -199,13 +202,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				lastEnemySpawn = System.currentTimeMillis();
 				try {
 					Random rand = new Random();
-					currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+					currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64 , 64), ImageLoader.NPCSKIN, isJar, ratio));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		//update all animations at 30 fps
 		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
 			if(doTick) {
@@ -226,7 +229,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private void respawn() {
 		currentRoom = rooms[0];
 		try {
-			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
+			player = new Player(100, 100, new Dimension((int)(128 * ratio),(int)(128 * ratio)), pid, isJar, ratio, debug);
 			player.updateBounds(currentRoom.getBounds());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -239,30 +242,37 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);
 
 		currentRoom.paint(g);			//background
+		
+		if(debug) {
+			g.setColor(new Color(0, 255, 0, 100));
+			g.fillRect(currentRoom.getRectBounds().x, currentRoom.getRectBounds().y,currentRoom.getRectBounds().width, currentRoom.getRectBounds().height);
+			g.setColor(Color.black);
+		}
+		
 		if(doTick) currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
-		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), 150, 700);
-		g.drawString("health: " + player.getHP(), 150, 715);
-		if(debug) g.drawString(player.getX() + "   " + player.getY(), 150, 730);
-		if(debug) g.drawString(mouseX + "    " + mouseY, 150, 745);
+		g.drawString(player.getAmmoInMag() + "/" + player.getTotalAmmo(), (int)(150 * ratio), (int)(ratio*700));
+		g.drawString("health: " + player.getHP(), (int)(150 * ratio), (int) (715 * ratio));
+		if(debug) g.drawString(player.getX() + "   " + player.getY(), (int)(150*ratio), (int)(730*ratio));
+		if(debug) g.drawString(mouseX + "    " + mouseY, (int)(150 * ratio), (int)(745 * ratio));
 		healthBar.paint(g);
 
 		if(!player.isAlive()) {
 			doTick = false;
 			g.setColor(Color.RED);
-			Font f = new Font("Electrolize", Font.PLAIN, 72);
+			Font f = new Font("Electrolize", Font.PLAIN,(int)( 72 * ratio));
 			g.setFont(f);
-			g.drawString("YOU DIED", 335, 450);
-			Font f2 = f.deriveFont(50f);
+			g.drawString("YOU DIED", (int)(335 * ratio), (int)(450* ratio));
+			Font f2 = f.deriveFont((float) (50 * ratio));
 			g.setFont(f2);
-			g.drawString("Press Enter to Respawn", 235, 550);
+			g.drawString("Press Enter to Respawn", (int)(235 * ratio) , (int)(550 *ratio));
 		}
 
 		if(gamePaused) {
 			g.setColor(Color.BLACK);
-			Font f = new Font("Electrolize", Font.PLAIN, 72);
+			Font f = new Font("Electrolize", Font.PLAIN, (int)(72 * ratio));
 			g.setFont(f);
-			g.drawString("PAUSED", 335, 450);
+			g.drawString("PAUSED", (int)(335 * ratio), (int)(450* ratio));
 		}
 
 	}
@@ -279,53 +289,53 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 */
 
 	private void initializeRooms() throws IOException {
-		ArrayList<GameObject> temp = new ArrayList<GameObject>();
-		//temp.add()
-		rooms[0] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[0], new ArrayList<GameObject>(), true, f.getSize());
+//		ArrayList<GameObject> temp = new ArrayList<GameObject>();
+//		//temp.add()
+		rooms[0] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[0], new ArrayList<GameObject>(), true, f.getSize(), ratio);
 
-		rooms[1] = new Room(new Rectangle(48, 40, 905, 870),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[1] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize() , ratio);
 		rooms[1].setLeftRoom(rooms[0]);
 		rooms[0].setRightRoom(rooms[1]);
 
-		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
 
-		rooms[2] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[2] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize() , ratio);
 		rooms[2].setLeftRoom(rooms[1]);
 		rooms[1].setRightRoom(rooms[2]);
 
-		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
-		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health("", ImageLoader.NO_IMAGE)));
+		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128,128), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health("", ImageLoader.NO_IMAGE), ratio));
 
-		rooms[3] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[3] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize(), ratio);
 		rooms[3].setTopRoom(rooms[1]);
 		rooms[1].setBottomRoom(rooms[3]);
 
-		rooms[3].getEntities().add(new Enemy(450, 500, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-		rooms[3].getEntities().add(new Enemy(450, 800, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
+		rooms[3].getEntities().add(new Enemy(450, 500, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[3].getEntities().add(new Enemy(450, 800, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
 
-		rooms[4] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[4], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[4] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[4], new ArrayList<GameObject>(), true, f.getSize(), ratio);
 		rooms[3].setBottomRoom(rooms[4]);
 		rooms[4].setTopRoom(rooms[3]);
 
-		rooms[4].getEntities().add(new Enemy(250, 500, 60, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
-		rooms[4].getEntities().add(new Enemy(450, 800, 60, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
+		rooms[4].getEntities().add(new Enemy(250, 500, 60, new Dimension(128,128), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[4].getEntities().add(new Enemy(450, 800, 60, new Dimension(72,72), ImageLoader.NPCSKIN, isJar, ratio));
 
-		rooms[5] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[5] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize(), ratio);
 		rooms[4].setLeftRoom(rooms[5]);
 		rooms[5].setRightRoom(rooms[4]);
 
-		rooms[5].getEntities().add(new Enemy(250, 500, 50, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-		rooms[5].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
-		rooms[5].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		rooms[5].getEntities().add(new Enemy(250, 500, 50, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[5].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[5].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar, ratio));
 
-		//rooms[6] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
-		rooms[6] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.BOSSROOM, new ArrayList<GameObject>(), true, f.getSize());
+		//rooms[6] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio))), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
+		rooms[6] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.BOSSROOM, new ArrayList<GameObject>(), true, f.getSize(), ratio);
 		rooms[5].setBottomRoom(rooms[6]);
 		rooms[6].setTopRoom(rooms[5]);
 
-		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
-		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
+		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar, ratio));
+		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar, ratio));
 
 		addchests();
 	}
@@ -334,7 +344,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		for(Room r : rooms) {
 			if(rand.nextBoolean()) {
 				if(debug) System.out.println("Added a chest in a room.");
-				r.addProp(new Chest(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40 , ImageLoader.CHEST));
+				r.addProp(new Chest(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40 , ImageLoader.CHEST, ratio));
 			}
 		}
 	}

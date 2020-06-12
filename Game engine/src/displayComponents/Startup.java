@@ -71,18 +71,20 @@ public class Startup extends JPanel implements ActionListener{
 	private ImageIcon currentIcon;
 	private StatusBar loadingBar;
 	private long startTime;
+	private double ratio;
 	
 	//========Constructors========//
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
 		//Load images before ImageLoader
+		ratio = bounds.height/(double)800;
 		try {
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
-			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * 0.346), (int) (MarineSplash.getHeight(null) * 0.346), Image.SCALE_SMOOTH);
+			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * (0.346 * ratio)), (int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
-			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * 0.28), (int) (WSBSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
+			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * (0.28 * ratio)), (int) (WSBSplash.getHeight(null) * (0.28 * ratio)), Image.SCALE_SMOOTH);
 			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/secret_splash.png")));
-			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * 0.28), (int) (SecretSplash.getHeight(null) * 0.28), Image.SCALE_SMOOTH);
+			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * (ratio*0.425)), (int) (SecretSplash.getHeight(null) *(0.425 * ratio)), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
 			readUnlock(new File(path + "unlocks.txt"));
@@ -121,7 +123,7 @@ public class Startup extends JPanel implements ActionListener{
 
 		//====Component setup====//
 		f.setResizable(false);
-		f.setSize(800, 800);
+		f.setSize(bounds);
 
 		start.setActionCommand("l");
 		start.addActionListener(this);
@@ -151,7 +153,7 @@ public class Startup extends JPanel implements ActionListener{
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
 
-		loadingBar = new StatusBar(0, 0, new Dimension(800, 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+		loadingBar = new StatusBar(0, 0, new Dimension(f.getWidth(), 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
 		
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
@@ -241,7 +243,7 @@ public class Startup extends JPanel implements ActionListener{
 		}
 
 		if(doneLoading) {
-			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame()));
+			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame().getScaledInstance((int)(sprite.getCurrentFrame().getHeight(null)*ratio),(int)(sprite.getCurrentFrame().getHeight(null)*ratio) , Image.SCALE_SMOOTH)));
 			sprite.advanceCurrentFrame();
 		}
 		repaint();

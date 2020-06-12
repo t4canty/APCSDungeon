@@ -47,7 +47,7 @@ public class Gun extends Loot {
 	 * @param Name
 	 * Name of the gun.
 	 */
-	public Gun(int Damage, int cooldown, int maxAmmoInMag, int bulletVelocity, int bulletSize, int id, String Name, boolean IsJar) {
+	public Gun(int Damage, int cooldown, int maxAmmoInMag, int bulletVelocity, int bulletSize, int id, String Name, boolean IsJar, double ratio) {
 		damage = Damage;
 		this.cooldown = cooldown;
 		this.id = id;
@@ -55,8 +55,8 @@ public class Gun extends Loot {
 		this.isJar = IsJar;
 		this.maxAmmoInMag = maxAmmoInMag;
 		this.ammoInMag = maxAmmoInMag;
-		this.bulletVelocity = bulletVelocity;
-		this.bulletSize = bulletSize;
+		this.bulletVelocity = (int) (bulletVelocity * ratio);
+		this.bulletSize = (int) (bulletSize * ratio);
 		Sprite = getSpriteFromId();
 		getSounds();
 
