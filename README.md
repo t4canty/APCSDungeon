@@ -11,12 +11,9 @@ A game in the style of Enter the Gungeon and Binding of Issac, using swing.
  https://trello.com/b/HhVPI8UP/apcs-game
  
  ## In Progress:
-  - Sprites
-  - Splash screen
-  - Enemy system
-  - Room System
-  - Audio
-  - A lot more
+  - Bossfight
+  - Multiple resolution support
+  - And more
 
 See Trello for more in-depth progress.
   
