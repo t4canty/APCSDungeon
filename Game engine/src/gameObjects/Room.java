@@ -115,7 +115,7 @@ public class Room {
 							if(temp2 instanceof Enemy) {
 							((Enemy)temp2).damage(((Projectile)temp).getDamage());
 								if(temp2.hp <= 0) {
-									entities.add(new DroppedItem(temp2.getCenterX(), temp2.getCenterY(), ((Enemy)temp2).getDrop(), 25));
+									entities.add(new DroppedItem((Enemy) temp2));
 									entities.remove(j);
 									if(j < i) {
 										i--;

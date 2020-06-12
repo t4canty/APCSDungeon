@@ -42,7 +42,7 @@ public class ImageLoader implements Runnable{
 	public static BufferedImage CHEST;
 	
 	//========Variables========//
-	public static int totalNumberToLoad = 78;
+	public static int totalNumberToLoad = 89;
 	public static int totalNumberLoaded = 0;
 	private static boolean debug;
 	private boolean isJar;	

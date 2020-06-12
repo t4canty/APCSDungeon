@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import displayComponents.AnimatedImage;
@@ -31,6 +32,7 @@ public class Enemy extends GameObject{
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
 	private AnimatedImage[] skin = new AnimatedImage[9];
+	private AnimatedImage[] death = new AnimatedImage[3];
 	Random r = new Random();
 	double r1 = Math.random() + 1;
 	//========Constructor========//
@@ -290,9 +292,9 @@ public class Enemy extends GameObject{
 		//update angle of held gun
 		gunAngle = Math.atan2(player.getCenterY() - rBox.getCenterY(), player.getCenterX() - rBox.getCenterX());
 	}
-
-
+	
 	//========Getters/Setters========//
 	public boolean isShooting() { return isShooting; }
-	public Loot getDrop() { return drop; } 
+	public Loot getDrop() { return drop; }
+	public int getDir() { return graphicsDir; }
 }

@@ -32,9 +32,9 @@ public class Player extends GameObject{
 	private int maxX;													
 	private int maxY;
 	private int graphicsDir;		//direction that a player is holding their gun
+	private int velocity = 10;
 	private AnimatedImage[] skin = new AnimatedImage[9];
 	private AnimatedImage[] death = new AnimatedImage[3];
-	private AnimatedImage currentDeath;
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
@@ -69,6 +69,7 @@ public class Player extends GameObject{
 		getPlayerSkin(pid);
 		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar);
 		inventory.add(activeGun);
+		if(pid == SECRET) velocity = 15;
 	}
 	/**
 	 * Bare Player constructor
@@ -136,7 +137,6 @@ public class Player extends GameObject{
 		}else {
 			graphicsDir = UP;
 		}
-
 
 		if(isAlive) {
 			if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
@@ -268,32 +268,32 @@ public class Player extends GameObject{
 		lastWalk = System.currentTimeMillis();
 		switch(dir) {
 		case UP:
-			y -= 10;
+			y -= velocity;
 			break;
 		case RIGHT:
-			x += 10;
+			x += velocity;
 			break;
 		case DOWN:
-			y += 10;
+			y += velocity;
 			break;
 		case LEFT:
-			x -= 10;
+			x -= velocity;
 			break;
 		case UPRIGHT:
-			y -= 5;
-			x += 5;
+			y -= velocity/2;
+			x += velocity/2;
 			break;
 		case UPLEFT:
-			y -= 5;
-			x -= 5;
+			y -= velocity/2;
+			x -= velocity/2;
 			break;
 		case DOWNRIGHT:
-			y += 5;
-			x += 5;
+			y += velocity/2;
+			x += velocity/2;
 			break;
 		case DOWNLEFT:
-			y += 5;
-			x -= 5;
+			y += velocity/2;
+			x -= velocity/2;
 			break;
 
 		}
