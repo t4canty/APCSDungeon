@@ -84,9 +84,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
-		System.out.println("Bounds:" + bounds.height);
+		if(debug)System.out.println("Bounds:" + bounds.height);
 		ratio = ( bounds.height / (double) 1000 );
-		System.out.println("ratio: " + ratio);
+		if(debug)System.out.println("ratio: " + ratio);
 
 		//===========Temporary player initialization for testing===========//
 		try {

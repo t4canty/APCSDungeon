@@ -158,7 +158,7 @@ public class Gun extends Loot {
 
 	@Override
 	public BufferedImage getSprite(int n) {
-		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot > cooldown) {
+		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot + 1 > cooldown) {
 			shootSound.stop();
 		}
 		return Sprite[n];
@@ -190,4 +190,5 @@ public class Gun extends Loot {
 	//========Getters/Setters========//
 	public int getAmmoInMag() { return ammoInMag; }
 	public int getMaxAmmoInMag() { return maxAmmoInMag; }
+	public SoundEffect getSound() { return shootSound;}
 }

@@ -253,6 +253,7 @@ public class Startup extends JPanel implements ActionListener{
 			switch(e.getActionCommand()) {
 			case "l":
 				if(debug) System.out.println("Creating Driver");
+				i.unloadImages(id);
 				new Driver(d, t, debug, id, isJar);
 				f.dispose();
 				break;

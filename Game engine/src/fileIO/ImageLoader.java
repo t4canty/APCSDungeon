@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import gameObjects.Player;
+
 /**
  * Loads images into a static reference so they are kept in memory
  * Created May 28, 2020
@@ -304,7 +306,149 @@ public class ImageLoader implements Runnable{
 			t = new Thread(this, "ImageLoader");
 		t.start();
 	}
-	
+	public void unloadImages(int id) {
+		MARINE_STARTUP = null;
+		WSB_STARTUP = null;
+		NPC_STARTUP = null;
+		SECRET_STARTUP = null;
+		switch(id) {
+		case Player.MARINE:
+			if(debug) System.out.println("Unloading WSB and Secret Skins.");
+			WSB_FRONTIDLE = null;
+			WSBSKIN[0] = null;
+			WSB_SIDEIDLE = null;
+			WSBSKIN[1] = null;
+			WSB_BACKIDLE = null;
+			WSBSKIN[2] = null;
+			WSB_FRONTMOVE = null;
+			WSBSKIN[3] = null;
+			WSB_SIDEMOVE = null;
+			WSBSKIN[4] = null;
+			WSB_BACKMOVE = null;
+			WSBSKIN[5] = null;
+			WSB_FRONTHURT = null;
+			WSBSKIN[6] = null;
+			WSB_SIDEHURT = null;
+			WSBSKIN[7] = null;
+			WSB_BACKHURT = null;
+			WSBSKIN[8] = null;
+			
+			WSB_BACKDEATH = null;
+			WSB_SIDEDEATH = null;
+			WSB_FRONTDEATH = null;
+			
+			SECRET_FRONTIDLE = null;
+			SECRETSKIN[0] = null;
+			SECRET_SIDEIDLE = null;
+			SECRETSKIN[1] = null;
+			SECRET_BACKIDLE = null;
+			SECRETSKIN[2] = null;
+			SECRET_FRONTMOVE = null;
+			SECRETSKIN[3] = null;
+			SECRET_SIDEMOVE = null;
+			SECRETSKIN[4] = null;
+			SECRET_BACKMOVE = null;
+			SECRETSKIN[5] = null;
+			SECRET_FRONTHURT = null;
+			SECRETSKIN[6] = null;
+			SECRET_SIDEHURT = null;
+			SECRETSKIN[7] =null;
+			SECRET_BACKHURT = null;
+			SECRETSKIN[8] = null;
+			break;
+		case Player.SECRET:
+			if(debug) System.out.println("Unloading WSB and Marine skins.");
+			MARINE_FRONTIDLE = null;
+			MARINESKIN[0] = null;
+			MARINE_SIDEIDLE = null;
+			MARINESKIN[1] = null;
+			MARINE_BACKIDLE = null;
+			MARINESKIN[2] = null;
+			MARINE_FRONTMOVE = null;
+			MARINESKIN[3] = null;
+			MARINE_SIDEMOVE = null;
+			MARINESKIN[4] = null;
+			MARINE_BACKMOVE = null;
+			MARINESKIN[5] = null;
+			MARINE_FRONTHURT = null;
+			MARINESKIN[6] = null;
+			MARINE_SIDEHURT = null;
+			MARINESKIN[7] = null;
+			MARINE_BACKHURT = null;
+			MARINESKIN[8] = null;
+			
+			MARINE_BACKDEATH = null;
+			MARINE_SIDEDEATH = null;
+			MARINE_FRONTDEATH = null;
+			
+			WSB_FRONTIDLE = null;
+			WSBSKIN[0] = null;
+			WSB_SIDEIDLE = null;
+			WSBSKIN[1] = null;
+			WSB_BACKIDLE = null;
+			WSBSKIN[2] = null;
+			WSB_FRONTMOVE = null;
+			WSBSKIN[3] = null;
+			WSB_SIDEMOVE = null;
+			WSBSKIN[4] = null;
+			WSB_BACKMOVE = null;
+			WSBSKIN[5] = null;
+			WSB_FRONTHURT = null;
+			WSBSKIN[6] = null;
+			WSB_SIDEHURT = null;
+			WSBSKIN[7] = null;
+			WSB_BACKHURT = null;
+			WSBSKIN[8] = null;
+			
+			WSB_BACKDEATH = null;
+			WSB_SIDEDEATH = null;
+			WSB_FRONTDEATH = null;
+			break;
+		case Player.WSB:
+			if(debug) System.out.println("Unloading Secret and Marine Skins.");
+			MARINE_FRONTIDLE = null;
+			MARINESKIN[0] = null;
+			MARINE_SIDEIDLE = null;
+			MARINESKIN[1] = null;
+			MARINE_BACKIDLE = null;
+			MARINESKIN[2] = null;
+			MARINE_FRONTMOVE = null;
+			MARINESKIN[3] = null;
+			MARINE_SIDEMOVE = null;
+			MARINESKIN[4] = null;
+			MARINE_BACKMOVE = null;
+			MARINESKIN[5] = null;
+			MARINE_FRONTHURT = null;
+			MARINESKIN[6] = null;
+			MARINE_SIDEHURT = null;
+			MARINESKIN[7] = null;
+			MARINE_BACKHURT = null;
+			MARINESKIN[8] = null;
+			
+			MARINE_BACKDEATH = null;
+			MARINE_SIDEDEATH = null;
+			MARINE_FRONTDEATH = null;
+			SECRET_FRONTIDLE = null;
+			SECRETSKIN[0] = null;
+			SECRET_SIDEIDLE = null;
+			SECRETSKIN[1] = null;
+			SECRET_BACKIDLE = null;
+			SECRETSKIN[2] = null;
+			SECRET_FRONTMOVE = null;
+			SECRETSKIN[3] = null;
+			SECRET_SIDEMOVE = null;
+			SECRETSKIN[4] = null;
+			SECRET_BACKMOVE = null;
+			SECRETSKIN[5] = null;
+			SECRET_FRONTHURT = null;
+			SECRETSKIN[6] = null;
+			SECRET_SIDEHURT = null;
+			SECRETSKIN[7] =null;
+			SECRET_BACKHURT = null;
+			SECRETSKIN[8] = null;
+			break;
+		}
+	}
 	//========Getter========//
 	public boolean isAlive() {return t.isAlive();}
 }

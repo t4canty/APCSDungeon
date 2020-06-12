@@ -190,6 +190,7 @@ public class Enemy extends GameObject{
 			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar, sFactor);
 		}
+		
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
 
@@ -297,6 +298,7 @@ public class Enemy extends GameObject{
 	
 	//========Getters/Setters========//
 	public boolean isShooting() { return isShooting; }
+	public void stopSound() {activeGun.getSound().stop();}
 	public Loot getDrop() { return drop; }
 	public int getDir() { return graphicsDir; }
 }
