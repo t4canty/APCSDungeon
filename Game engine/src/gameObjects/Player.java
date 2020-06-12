@@ -24,7 +24,7 @@ public class Player extends GameObject{
 	final public static int MARINE = 0;
 	final public static int WSB = 1;
 	final public static int SECRET = 2;
-	
+
 	//========Variables========//
 	private Gun activeGun;																		//Currently held gun.
 	private int minX = 0;	//bounds of room
@@ -32,7 +32,9 @@ public class Player extends GameObject{
 	private int maxX;													
 	private int maxY;
 	private int graphicsDir;		//direction that a player is holding their gun
-	private AnimatedImage[] skin = new AnimatedImage[10];
+	private AnimatedImage[] skin = new AnimatedImage[9];
+	private AnimatedImage[] death = new AnimatedImage[3];
+	private AnimatedImage currentDeath;
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; 		//last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
@@ -78,8 +80,8 @@ public class Player extends GameObject{
 	public Player(Dimension size, int pid, boolean isJar) throws IOException {
 		this(0, 0, size, pid, isJar);
 	}
-		/**
-		 * 
+	/**
+	 * 
 	 * Player constructor with x and y inputs, debug option
 	 * @param x
 	 * Starting X position for the player on the jframe
@@ -116,7 +118,7 @@ public class Player extends GameObject{
 		if(debug)
 			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, "EZ Death Lazer", super.isJar));
 	}
-	
+
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
@@ -124,7 +126,7 @@ public class Player extends GameObject{
 		rBox.y = y;																					//Set hitbox to current x
 		Graphics2D g2d = (Graphics2D) g; 															//neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
-		
+
 		if(Math.abs(gunAngle) > 2.35) {
 			graphicsDir = LEFT;
 		}else if(Math.abs(gunAngle) < .79) {
@@ -134,11 +136,11 @@ public class Player extends GameObject{
 		}else {
 			graphicsDir = UP;
 		}
-		
-		
+
+
 		if(isAlive) {
 			if(System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
-				
+
 				//moving sprites
 				switch(graphicsDir) {
 				case LEFT:
@@ -173,7 +175,7 @@ public class Player extends GameObject{
 					g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 				}
 				//System.out.println("hurt");
-				
+
 				//idle sprites
 			} else {
 				switch(graphicsDir) {
@@ -194,32 +196,46 @@ public class Player extends GameObject{
 				//System.out.println("idle");
 			}
 		}else {
-			g2d.drawImage(skin[DEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			switch (graphicsDir) {
+			case LEFT:
+				g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case RIGHT:
+				g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
+				break;
+			case UP:
+				g2d.drawImage(death[BACKDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+				break;
+			case DOWN:
+				g2d.drawImage(death[FRONTDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
+			}
 		}
-		
+
 		if(graphicsDir != UP) {
 			drawGun(g2d);
 		}
-		
+
 		if(debug) g2d.draw(rBox);
-		
+
 	}
-	
-	
+
+
 	//Used to draw the gun onto the screen
 	private void drawGun(Graphics2D g2d) {
-		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
-		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, 50, -50, null);
-		}else {
-			g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, 50, 50, null);
+		if(isAlive) {
+			g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
+			if(Math.abs(gunAngle) > 1.07) {
+				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, 50, -50, null);
+			}else {
+				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, 50, 50, null);
+			}
+
+			//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
+			g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		}
-		
-		//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
-		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
-	
-	
+
+
 	@Override
 	public void advanceAnimationFrame() {
 		for(AnimatedImage i : skin) {
@@ -227,9 +243,14 @@ public class Player extends GameObject{
 				i.advanceCurrentFrame();
 			}
 		}
-		
+
 	}
-	
+	public void advanceDeathAnimationFrame() {
+		for(AnimatedImage i : death) {
+			i.advanceCurrentFrame();
+		}
+	}
+
 	/**
 	 * Method to determine if cooldown is over
 	 * @return
@@ -274,7 +295,7 @@ public class Player extends GameObject{
 			y += 5;
 			x -= 5;
 			break;
-			
+
 		}
 		if(y < minY) y = minY;																			//Collision on the bounds of the room
 		if(y > maxY) y = maxY;
@@ -319,14 +340,14 @@ public class Player extends GameObject{
 				}
 			}
 		}
-		
-		
+
+
 		if(hp <= 0) {
 			isAlive = false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return projectile entity shot from gun
 	 */
@@ -334,15 +355,15 @@ public class Player extends GameObject{
 	public Projectile getNewBullet() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, false);
 	}
-	
+
 	public void reload() {
 		if(activeGun.id == 0)
 			activeGun.reload();
 		else 
 			ammo = activeGun.reload(ammo);
 	}
-	
-	
+
+
 	/**
 	 * Sets collision bounds for the JFrame.
 	 * @param bounds
@@ -360,20 +381,26 @@ public class Player extends GameObject{
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
 			}
-			this.skin[DEATH] = new AnimatedImage(ImageLoader.MARINESKIN[DEATH], true);
+			this.death[BACKDEATH] = new AnimatedImage(ImageLoader.MARINE_BACKDEATH, true);
+			this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.MARINE_SIDEDEATH, true);
+			this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.MARINE_FRONTDEATH, true);
 			hp += hp/2;
 			break;
 		case WSB:
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.WSBSKIN[i]);
 			}
-			this.skin[DEATH] = new AnimatedImage(ImageLoader.WSBSKIN[DEATH], true);
+			this.death[BACKDEATH] = new AnimatedImage(ImageLoader.WSB_BACKDEATH, true);
+			this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.WSB_SIDEDEATH, true);
+			this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.WSB_FRONTDEATH, true);
 			break;
 		case SECRET:
 			for(int i = 0; i < skin.length; i++) {
 				this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
 			}
-			this.skin[DEATH] = new AnimatedImage(ImageLoader.SECRETSKIN[DEATH], true);
+			this.death[BACKDEATH] = new AnimatedImage(ImageLoader.SECRET_BACKDEATH, true);
+			this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.SECRET_SIDEDEATH, true);
+			this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.SECRET_FRONTDEATH, true);
 		}
 	}
 

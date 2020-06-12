@@ -56,10 +56,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean gamePaused = false;		//track if the game is paused with escape
 	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
-	
+
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
-	
+
 	//========Constructors========//
 	/**
 	 * Driver object allows for a set size to be passed in, allowing for a method to create the jframe and resize it in a settings method.
@@ -83,8 +83,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
-		
-		
+
+
 		//===========Temporary player initialization for testing===========//
 		try {
 			player = new Player(100, 100, new Dimension(128,128), pid, isJar, debug);
@@ -99,24 +99,23 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		healthBar = new StatusBar(10, 10, new Dimension(200, 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
 		backgroundMusic.loop();
-		
+
 		//Adding ticking timer
 		t = new Timer(17,this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-		
+
 	}
-	
+
 	//================== Update Function =================//
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
-		
 		if(doTick) {
 			if(player.isAlive()) {
 				//move player if any keyboard buttons are pressed
@@ -149,10 +148,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				if(playerReload) {
 					player.reload();
 				}
-				
+
 				//tell player where the mouse is to update the gun
 				player.updateGunAngle(mouseX, mouseY);
-				
+
 				if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
 					currentRoom = currentRoom.rightRoom();
 					player.moveTo(75, player.getY());
@@ -166,7 +165,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					currentRoom = currentRoom.bottomRoom();
 					player.moveTo(player.getX(), 80);
 				}
-				
+
 				//shoot the gun if the cooldown is ready and button is pressed
 				boolean canShoot = player.isShooting && player.canShootBullet();
 				//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
@@ -174,12 +173,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					currentRoom.getEntities().add(player.getNewBullet());	//spawn new projectile from player gun
 				}
 			}
-			
+
 			//player -> enemy projectile & player -> wall collision
 			player.checkCollision(currentRoom.getEntities());
-			
+
 			healthBar.setValue(player.getHP());
-			
+
 			//enemy shooting
 			for(int i = 0; i < currentRoom.getEntities().size(); i++) {
 				GameObject o = currentRoom.getEntities().get(i);
@@ -193,8 +192,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					}
 				}
 			}
-			
-			
+
+
 			//timed spawning of enemies (temporary for now)
 			if(System.currentTimeMillis() - lastEnemySpawn > 15000) {
 				lastEnemySpawn = System.currentTimeMillis();
@@ -205,19 +204,25 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					e.printStackTrace();
 				}
 			}
-			
-			//update all animations at 30 fps
-			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
+		}
+		
+		//update all animations at 30 fps
+		if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
+			if(doTick) {
 				for(GameObject e : currentRoom.getEntities()) {
 					e.advanceAnimationFrame();
 				}
-				player.advanceAnimationFrame();
-				lastAnimationUpdate = System.currentTimeMillis();
 			}
+			if(player.isAlive())
+				player.advanceAnimationFrame();
+			else
+				player.advanceDeathAnimationFrame();
+
+			lastAnimationUpdate = System.currentTimeMillis();
 		}
 	}
-	
-	
+
+
 	private void respawn() {
 		currentRoom = rooms[0];
 		try {
@@ -227,12 +232,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	//===================Paint function=====================//
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		
+
 		currentRoom.paint(g);			//background
 		if(doTick) currentRoom.paintEntities(g);	//all entities within the room
 		player.paint(g);
@@ -241,7 +246,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(debug) g.drawString(player.getX() + "   " + player.getY(), 150, 730);
 		if(debug) g.drawString(mouseX + "    " + mouseY, 150, 745);
 		healthBar.paint(g);
-	
+
 		if(!player.isAlive()) {
 			doTick = false;
 			g.setColor(Color.RED);
@@ -252,19 +257,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.setFont(f2);
 			g.drawString("Press Enter to Respawn", 235, 550);
 		}
-		
+
 		if(gamePaused) {
 			g.setColor(Color.BLACK);
 			Font f = new Font("Electrolize", Font.PLAIN, 72);
 			g.setFont(f);
 			g.drawString("PAUSED", 335, 450);
 		}
-		
+
 	}
-	
-	
+
+
 	//================ Room initializer (hard coded for now) ==============//
-	
+
 	//bottom : 782, right 830, left: 45, top 40
 	/*	left hitbox	 -(0, 430, 50, 128)
 	 * 	right hitbox -(950, 430, 40, 128)
@@ -277,51 +282,51 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		ArrayList<GameObject> temp = new ArrayList<GameObject>();
 		//temp.add()
 		rooms[0] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[0], new ArrayList<GameObject>(), true, f.getSize());
-		
+
 		rooms[1] = new Room(new Rectangle(48, 40, 905, 870),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[1].setLeftRoom(rooms[0]);
 		rooms[0].setRightRoom(rooms[1]);
-		
+
 		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-		
+
 		rooms[2] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[2].setLeftRoom(rooms[1]);
 		rooms[1].setRightRoom(rooms[2]);
-		
+
 		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
 		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health("", ImageLoader.NO_IMAGE)));
-		
+
 		rooms[3] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[3].setTopRoom(rooms[1]);
 		rooms[1].setBottomRoom(rooms[3]);
-		
+
 		rooms[3].getEntities().add(new Enemy(450, 500, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 		rooms[3].getEntities().add(new Enemy(450, 800, 40, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
-		
+
 		rooms[4] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[4], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[3].setBottomRoom(rooms[4]);
 		rooms[4].setTopRoom(rooms[3]);
-		
+
 		rooms[4].getEntities().add(new Enemy(250, 500, 60, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
 		rooms[4].getEntities().add(new Enemy(450, 800, 60, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
-		
+
 		rooms[5] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[5], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[4].setLeftRoom(rooms[5]);
 		rooms[5].setRightRoom(rooms[4]);
-		
+
 		rooms[5].getEntities().add(new Enemy(250, 500, 50, new Dimension(64,64), ImageLoader.NPCSKIN, isJar));
 		rooms[5].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
 		rooms[5].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
-		
+
 		//rooms[6] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.ROOMS[3], new ArrayList<GameObject>(), true, f.getSize());
 		rooms[6] = new Room(new Rectangle(48, 40, 905, 870), ImageLoader.BOSSROOM, new ArrayList<GameObject>(), true, f.getSize());
 		rooms[5].setBottomRoom(rooms[6]);
 		rooms[6].setTopRoom(rooms[5]);
-		
+
 		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar));
 		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar));
-		
+
 		addchests();
 	}
 	private void addchests() {
@@ -335,7 +340,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	//================ Mouse / Keyboard input ================//
-	
+
 	//variables for movement and interaction keys
 	private boolean playerUp = false;
 	private boolean playerRight = false;
@@ -343,11 +348,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerLeft = false;
 	private boolean playerInteract = false;
 	private boolean playerReload = false;
-	
+
 	//mouse location tracker
 	private int mouseX = 0;
 	private int mouseY = 0;
-	
+
 	/** 
 	 * Changes default key bindings to a new key
 	 * @param oldkey
@@ -363,31 +368,31 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 	}
-	
-	
+
+
 	//set designated variables to true when specific key is pressed
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
 		if(temp == keybindings[0]) {
 			playerUp = true;
-			
+
 		}else if(temp == keybindings[1]) {
 			playerRight = true;
-			
+
 		}else if(temp == keybindings[2]) {
 			playerDown = true;
-			
+
 		}else if(temp == keybindings[3]) {
 			playerLeft = true;
-			
+
 		}else if(temp == keybindings[4]) {
 			playerInteract = true;
 			playerUp = false;
 			playerRight = false;
 			playerLeft = false;
 			playerDown = false;
-			
+
 		}else if(temp == keybindings[5]) {
 			playerReload = true;
 		}else if(e.getKeyCode() == 10 && !player.isAlive()) {
@@ -403,51 +408,51 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			doTick = !doTick;
 		}
 	}
-	
+
 	//set designated variables to false when specific key is released
 	@Override
 	public void keyReleased(KeyEvent e) {
 		char temp = e.getKeyChar();
-		
+
 		if(temp == keybindings[0]) {
 			playerUp = false;
-			
+
 		}else if(temp == keybindings[1]) {
 			playerRight = false;
-			
+
 		}else if(temp == keybindings[2]) {
 			playerDown = false;
-			
+
 		}else if(temp == keybindings[3]) {
 			playerLeft = false;
-			
+
 		}else if(temp == keybindings[4]) {
 			playerInteract = false;
-			
+
 		}else if(temp == keybindings[5]) {
 			playerReload = false;
 		}
-		
+
 	}
-	
+
 	//if the left mouse button is pressed, shoot gun
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			player.isShooting = true;
 		}
-		
+
 	}
-	
+
 	//if left mouse button is released, stop shooting gun
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			player.isShooting = false;
 		}
-		
+
 	}
-	
+
 	//if left mouse is pressed & mouse is moving, keep track of location and continue shooting
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -455,9 +460,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		mouseX = e.getX();
 		mouseY = e.getY();
 		player.isShooting = true;
-		
+
 	}
-	
+
 	//keep track of mouse location when button is not pressed
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -465,19 +470,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
-	
+
 	//methods we don't care about
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {}
-	
+
 }

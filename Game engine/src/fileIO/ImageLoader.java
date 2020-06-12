@@ -17,14 +17,14 @@ public class ImageLoader implements Runnable{
 	//========Static Variables========//
 	public static BufferedImage NO_IMAGE;
 	public static BufferedImage MARINE_STARTUP, WSB_STARTUP, SECRET_STARTUP, NPC_STARTUP;
-	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_DEATH;
-	public static BufferedImage[] MARINESKIN = new BufferedImage[10];
-	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT, WSB_DEATH;
-	public static BufferedImage[] WSBSKIN = new BufferedImage[10];
-	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH;
-	public static BufferedImage[] NPCSKIN = new BufferedImage[10];
-	public static BufferedImage  SECRET_FRONTIDLE, SECRET_SIDEIDLE, SECRET_BACKIDLE, SECRET_FRONTMOVE, SECRET_SIDEMOVE, SECRET_BACKMOVE, SECRET_FRONTHURT, SECRET_SIDEHURT, SECRET_BACKHURT, SECRET_DEATH;
-	public static BufferedImage[] SECRETSKIN = new BufferedImage[10];
+	public static BufferedImage MARINE_FRONTIDLE, MARINE_SIDEIDLE, MARINE_BACKIDLE, MARINE_FRONTMOVE, MARINE_SIDEMOVE, MARINE_BACKMOVE, MARINE_FRONTHURT, MARINE_SIDEHURT, MARINE_BACKHURT, MARINE_BACKDEATH, MARINE_SIDEDEATH, MARINE_FRONTDEATH;
+	public static BufferedImage[] MARINESKIN = new BufferedImage[9];
+	public static BufferedImage  WSB_FRONTIDLE, WSB_SIDEIDLE, WSB_BACKIDLE, WSB_FRONTMOVE, WSB_SIDEMOVE, WSB_BACKMOVE, WSB_FRONTHURT, WSB_SIDEHURT, WSB_BACKHURT, WSB_DEATH, WSB_BACKDEATH, WSB_SIDEDEATH, WSB_FRONTDEATH;
+	public static BufferedImage[] WSBSKIN = new BufferedImage[9];
+	public static BufferedImage  NPC_FRONTIDLE, NPC_SIDEIDLE, NPC_BACKIDLE, NPC_FRONTMOVE, NPC_SIDEMOVE, NPC_BACKMOVE, NPC_FRONTHURT, NPC_SIDEHURT, NPC_BACKHURT, NPC_DEATH, NPC_BACKDEATH, NPC_SIDEDEATH, NPC_FRONTDEATH;
+	public static BufferedImage[] NPCSKIN = new BufferedImage[9];
+	public static BufferedImage  SECRET_FRONTIDLE, SECRET_SIDEIDLE, SECRET_BACKIDLE, SECRET_FRONTMOVE, SECRET_SIDEMOVE, SECRET_BACKMOVE, SECRET_FRONTHURT, SECRET_SIDEHURT, SECRET_BACKHURT, SECRET_DEATH, SECRET_BACKDEATH, SECRET_SIDEDEATH, SECRET_FRONTDEATH;
+	public static BufferedImage[] SECRETSKIN = new BufferedImage[9];
 	public static BufferedImage BADGUN[] = new BufferedImage[4];
 	public static BufferedImage PISTOLMAG;
 	public static BufferedImage ROOMS[] = new BufferedImage[6];
@@ -80,8 +80,10 @@ public class ImageLoader implements Runnable{
 				MARINESKIN[7] = MARINE_SIDEHURT;
 				MARINE_BACKHURT = getImageFromJar("/img/spritesheets/Marine/Marine_backHurt.png");
 				MARINESKIN[8] = MARINE_BACKHURT;
-				MARINESKIN[9] = null;
-
+				
+				MARINE_BACKDEATH = getImageFromJar("/img/spritesheets/Marine/Marine_backDeath.png");
+				MARINE_SIDEDEATH = getImageFromJar("/img/spritesheets/Marine/Marine_sideDeath.png");
+				MARINE_FRONTDEATH = getImageFromJar("/img/spritesheets/Marine/Marine_frontDeath.png");
 
 				WSB_FRONTIDLE = getImageFromJar("/img/spritesheets/WSB/WSB_frontIdle.png");
 				WSBSKIN[0] = WSB_FRONTIDLE;
@@ -101,7 +103,10 @@ public class ImageLoader implements Runnable{
 				WSBSKIN[7] = WSB_SIDEHURT;
 				WSB_BACKHURT = getImageFromJar("/img/spritesheets/WSB/WSB_backHurt.png");
 				WSBSKIN[8] = WSB_BACKHURT;
-				WSBSKIN[9] = null;
+				
+				WSB_BACKDEATH = getImageFromJar("/img/spritesheets/WSB/WSB_backDeath.png");
+				WSB_SIDEDEATH = getImageFromJar("/img/spritesheets/WSB/WSB_sideDeath.png");
+				WSB_FRONTDEATH = getImageFromJar("/img/spritesheets/WSB/WSB_frontDeath.png");
 
 				NPC_FRONTIDLE = getImageFromJar("/img/spritesheets/NPC/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
@@ -119,9 +124,12 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[6] = NPC_FRONTHURT;
 				NPC_SIDEHURT = getImageFromJar("/img/spritesheets/NPC/NPC_sideHurt.png");;
 				NPCSKIN[7] = NPC_SIDEHURT;
-				NPC_BACKHURT = getImageFromJar("/img/spritesheets/NPC/NPC_BackHurt.png");
+				NPC_BACKHURT = getImageFromJar("/img/spritesheets/NPC/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
-				NPCSKIN[9] = null;
+				
+				NPC_BACKDEATH = getImageFromJar("/img/spritesheets/NPC/NPC_backDeath.png");
+				NPC_SIDEDEATH = getImageFromJar("/img/spritesheets/NPC/NPC_sideDeath.png");
+				NPC_FRONTDEATH = getImageFromJar("/img/spritesheets/NPC/NPC_frontDeath.png");
 				
 				SECRET_FRONTIDLE = getImageFromJar("/img/spritesheets/Secret/Secret_frontIdle.png");
 				SECRETSKIN[0] = SECRET_FRONTIDLE;
@@ -139,9 +147,12 @@ public class ImageLoader implements Runnable{
 				SECRETSKIN[6] = SECRET_FRONTHURT;
 				SECRET_SIDEHURT = getImageFromJar("/img/spritesheets/Secret/Secret_sideHurt.png");;
 				SECRETSKIN[7] = SECRET_SIDEHURT;
-				SECRET_BACKHURT = getImageFromJar("/img/spritesheets/Secret/Secret_BackHurt.png");
+				SECRET_BACKHURT = getImageFromJar("/img/spritesheets/Secret/Secret_backHurt.png");
 				SECRETSKIN[8] = SECRET_BACKHURT;
-				SECRETSKIN[9] = null;
+				
+				SECRET_BACKDEATH = getImageFromJar("/img/spritesheets/Secret/Secret_backDeath.png");
+				SECRET_SIDEDEATH = getImageFromJar("/img/spritesheets/Secret/Secret_sideDeath.png");
+				SECRET_FRONTDEATH = getImageFromJar("/img/spritesheets/Secret/Secret_frontDeath.png");
 
 				BADGUN[0] = getImageFromJar("/img/guns/badGun.png");		//Gun sprites with no hand
 				FEDRESERVE[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
@@ -184,6 +195,7 @@ public class ImageLoader implements Runnable{
 				ROOMS[4] = getImageFromJar("/img/rooms/room5.png");
 				ROOMS[5] = getImageFromJar("/img/rooms/room6.png");
 				BOSSROOM = getImageFromJar("/img/rooms/bossroom.png");
+				if(debug) System.out.println("Loaded " + totalNumberLoaded + " images.");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -211,7 +223,6 @@ public class ImageLoader implements Runnable{
 				MARINESKIN[7] = MARINE_SIDEHURT;
 				MARINE_BACKHURT = getImageFromFolder("src/img/Marine_backHurt.png");
 				MARINESKIN[8] = MARINE_BACKHURT;
-				MARINESKIN[9] = null;
 
 
 				WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
@@ -232,7 +243,6 @@ public class ImageLoader implements Runnable{
 				WSBSKIN[7] = WSB_SIDEHURT;
 				WSB_BACKHURT = getImageFromFolder("src/img/WSB_backHurt.png");
 				WSBSKIN[8] = WSB_BACKHURT;
-				WSBSKIN[9] = null;
 
 				NPC_FRONTIDLE = getImageFromFolder("src/img/NPC_frontIdle.png");
 				NPCSKIN[0] = NPC_FRONTIDLE;
@@ -252,7 +262,7 @@ public class ImageLoader implements Runnable{
 				NPCSKIN[7] = NPC_SIDEHURT;
 				NPC_BACKHURT = getImageFromFolder("src/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
-				NPCSKIN[9] = null;
+				if(debug) System.out.println("Loaded " + totalNumberLoaded + " images.");
 			}catch(IOException e) {
 				e.printStackTrace();
 			}
