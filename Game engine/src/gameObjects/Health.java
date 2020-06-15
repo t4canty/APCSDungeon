@@ -34,4 +34,9 @@ public class Health extends Loot {
 		if(p.getId() == Player.MARINE) p.hp = 150;
 		else p.hp = 100;
 	}
+
+	@Override
+	public BufferedImage getSprite(int n, int hp) {
+		return super.getSprite(n);
+	}
 }

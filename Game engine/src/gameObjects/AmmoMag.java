@@ -23,4 +23,9 @@ public class AmmoMag extends Loot {
 	public void use(Player p) {
 		p.addAmmo(number);
 	}
+
+	@Override
+	public BufferedImage getSprite(int n, int hp) {
+		return super.getSprite(n);
+	}
 }

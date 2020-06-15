@@ -159,15 +159,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				player.updateGunAngle(mouseX, mouseY);
 
 				if(player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
+					currentRoom.removeProjectiles();
 					currentRoom = currentRoom.rightRoom();
 					player.moveTo((int)(75 * ratio), player.getY());
 				}else if(player.isColliding(currentRoom.getLeftDoor())) {
+					currentRoom.removeProjectiles();
 					currentRoom = currentRoom.leftRoom();
 					player.moveTo(bounds.width - (int)(100 *ratio) - player.getHitbox().width, player.getY());
 				}else if(player.isColliding(currentRoom.getTopDoor())){
+					currentRoom.removeProjectiles();
 					currentRoom = currentRoom.topRoom();
 					player.moveTo(player.getX(), (int)(750 * ratio));
 				}else if(player.isColliding(currentRoom.getBottomDoor())) {
+					currentRoom.removeProjectiles();
 					currentRoom = currentRoom.bottomRoom();
 					player.moveTo(player.getX(), (int)(80 * ratio));
 				}
@@ -207,6 +211,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64 , 64), ImageLoader.NPCSKIN, isJar, ratio));
 			}
 
+		}
 			//update all animations at 30 fps
 			if(System.currentTimeMillis() - lastAnimationUpdate > 33) {
 				if(doTick) {
@@ -221,7 +226,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 				lastAnimationUpdate = System.currentTimeMillis();
 			}
-		}
 	}
 
 

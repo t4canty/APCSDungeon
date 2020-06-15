@@ -43,6 +43,7 @@ public abstract class Loot {
 		else {
 			return Sprite[n];
 		}}
+	public abstract BufferedImage getSprite(int n, int hp);
 	public String getName() {return Name;}
 	public int getNum() {return number;}
 	public int getCooldown() {return cooldown;}

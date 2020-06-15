@@ -150,12 +150,13 @@ public class SoundEffect implements LineListener{
    	
    	public void stop() {
    		if(clips.size() != 0) {
-   			clips.get(0).stop();
+   			if(clips.get(clips.size()-1).isActive()) clips.get(clips.size()-1).stop();
    		}
    	}
    	
    	public void setVolume(double volume) {
    		gain = 20f * (float) Math.log10(volume);
+   		
    	}
 
 	@Override
@@ -164,6 +165,9 @@ public class SoundEffect implements LineListener{
 			((Clip)event.getSource()).close();
 			clips.remove((Clip)event.getSource());
 		}
-		
+	}
+	public boolean isActive() {
+		if(clips.size() == 0) return false;
+		return clips.get(clips.size()-1).isActive();
 	}
 }

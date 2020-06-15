@@ -148,9 +148,9 @@ public class Enemy extends GameObject{
 	private void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)((25*r1) * sFactor), (int)((-25 * r1) * sFactor), null);
+			g2d.drawImage(activeGun.getSprite(3, hp), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)((25*r1) * sFactor), (int)((-25 * r1) * sFactor), null);
 		}else {
-			g2d.drawImage(activeGun.getSprite(3), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, (int)((25 * r1) * sFactor), (int)((25 * r1) * sFactor), null);
+			g2d.drawImage(activeGun.getSprite(3, hp), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) - 20, (int)((25 * r1) * sFactor), (int)((25 * r1) * sFactor), null);
 		}
 		if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -166,7 +166,8 @@ public class Enemy extends GameObject{
 
 	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
-		int rand = new Random().nextInt(100);
+		//int rand = new Random().nextInt(100);
+		int rand = 44;
 		if(rand < 15) {															//BadGun
 			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
@@ -298,7 +299,7 @@ public class Enemy extends GameObject{
 	
 	//========Getters/Setters========//
 	public boolean isShooting() { return isShooting; }
-	public void stopSound() {activeGun.getSound().stop();}
+//	public void stopSound() {if(activeGun.getSound().isActive()) activeGun.getSound().stop();}
 	public Loot getDrop() { return drop; }
 	public int getDir() { return graphicsDir; }
 }

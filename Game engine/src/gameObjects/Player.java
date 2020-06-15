@@ -228,9 +228,9 @@ public class Player extends GameObject{
 		if(isAlive) {
 			g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 			if(Math.abs(gunAngle) > 1.07) {
-				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, (int) (50 * scaleFactor), (int)(-50 * scaleFactor), null);
+				g2d.drawImage(activeGun.getSprite(id+1, hp), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) + 20, (int) (50 * scaleFactor), (int)(-50 * scaleFactor), null);
 			}else {
-				g2d.drawImage(activeGun.getSprite(id+1), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor), null);
+				g2d.drawImage(activeGun.getSprite(id+1, hp), (int)(rBox.getCenterX()) + 13, (int)(rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor), null);
 			}
 
 			//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));

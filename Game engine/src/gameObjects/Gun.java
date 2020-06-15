@@ -131,7 +131,11 @@ public class Gun extends Loot {
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
 			ammoInMag--;
-			shootSound.play();
+			if(id == FEDRESERVE || id == LASERBEAM) {
+				if(!shootSound.isActive()) shootSound.play();
+			}else {
+				shootSound.play();
+			}
 			return new Projectile(damage, isEnemy, x, y, bulletVelocity, angle, new Dimension(bulletSize, bulletSize), bulletSprite, id, isJar );
 		}
 
@@ -155,10 +159,12 @@ public class Gun extends Loot {
 
 		return totalAmmo;
 	}
-
+	
 	@Override
-	public BufferedImage getSprite(int n) {
-		if((id == 2 || id == -1) && System.currentTimeMillis() - lastShot + 1 > cooldown) {
+	public BufferedImage getSprite(int n, int hp) {
+		if(lastShot == 0) lastShot = System.currentTimeMillis();
+		if( (id == 2 || id == -1) && ( ( (System.currentTimeMillis() - lastShot)  >= cooldown ) || (hp == 0) )  && shootSound.isActive() ) {
+			System.out.println("stopped sound after" + (System.currentTimeMillis() - lastShot) + "ms");
 			shootSound.stop();
 		}
 		return Sprite[n];
