@@ -147,8 +147,8 @@ public class StatusBar {
 			}
 		}
 		
-		g2d.setColor(Color.black);
-		g2d.draw(outline);
+		//g2d.setColor(Color.black);
+		//g2d.draw(outline);
 	}
 	
 	//========Getters/Setters========//

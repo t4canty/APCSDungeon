@@ -69,7 +69,7 @@ public class Player extends GameObject{
 		this.id = pid;
 		scaleFactor = ratio;
 		getPlayerSkin(pid);
-		activeGun = new Gun(10, 300, 10, 10, 10, 0, "Bad Gun", super.isJar, scaleFactor);
+		activeGun = new Gun(10, 300, 10, 10, 10, 0, 5, "Bad Gun", super.isJar, scaleFactor);
 		inventory.add(activeGun);
 		if(pid == SECRET) velocity = 15;
 		velocity = (int) (velocity * scaleFactor);
@@ -103,8 +103,8 @@ public class Player extends GameObject{
 		this(x, y, size, pid, isJar, ratio);
 		this.debug = debug;
 		if(debug) {
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, "EZ Death Lazer", super.isJar, scaleFactor));
-			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, "Yaris", super.isJar, scaleFactor));
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, 40, "Yaris", super.isJar, scaleFactor));
 		}
 	}
 	/**
@@ -120,7 +120,7 @@ public class Player extends GameObject{
 		this(size, pid, isJar, ratio);
 		this.debug = debug;
 		if(debug)
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, 0, "EZ Death Lazer", super.isJar, scaleFactor));
 	}
 
 	//========Methods========//
@@ -356,7 +356,7 @@ public class Player extends GameObject{
 	 */
 	//TODO: make this responsive to different types of guns
 	public Projectile getNewBullet() {
-		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, false);
+		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, this);
 	}
 
 	public void reload() {
@@ -408,6 +408,14 @@ public class Player extends GameObject{
 	}
 
 	//========Getters/Setters========//
+	public boolean xRecoil(int recoil) {
+		if(x - recoil < minX || x + recoil > maxX) return false;
+		return true;
+	}
+	public boolean yRecoil(int recoil) {
+		if(y - recoil < minY || y + recoil  > maxY) return false;
+		return true;
+	}
 	public void add(Gun l) {inventory.add(l);}
 	public Gun get(int i) {return inventory.get(i);}
 	public ArrayList<Gun> getInventory(){return inventory;}
@@ -421,4 +429,6 @@ public class Player extends GameObject{
 	public void ownGun(boolean b, int n ) { CollectedGuns[n] = b; }
 	public int getId() { return id; }
 	public boolean isAlive() { return isAlive; }
+	public int getDir() { return graphicsDir; }
+	
 }

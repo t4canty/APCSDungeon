@@ -59,8 +59,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private double ratio;
 	private Font font;
 
-	private int debugFrames = 0;
-
 	//keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
 
@@ -106,7 +104,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			e.printStackTrace();
 		}
 
-		healthBar = new StatusBar(10, 10, new Dimension((int)((player.getHP() * 2) * ratio), 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, 100, 100);
+		healthBar = new StatusBar(10, 10, new Dimension((int)((player.getHP() * 2) * ratio), 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, player.getHP(), player.getHP());
 		backgroundMusic.loop();
 
 		//Adding ticking timer
@@ -148,8 +146,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 				if(playerInteract) {
 					doTick = false;
-					new Inventory(player.getInventory(), player, font);	//open inventory when key is pressed 
 					playerInteract = false;
+					new Inventory(player.getInventory(), player, font);	//open inventory when key is pressed 
 				}
 				if(playerReload) {
 					player.reload();
@@ -242,14 +240,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	//===================Paint function=====================//
 	public void paint(Graphics g) {
-		debugFrames++;
-
 		super.paintComponent(g);
 
 		currentRoom.paint(g);			//background
 
-		g.setColor(Color.red);
-		g.drawString("F" + debugFrames, f.getWidth()-100, 0);
 		g.setColor(Color.black);
 
 		if(debug) {

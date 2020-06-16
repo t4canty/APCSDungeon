@@ -35,6 +35,7 @@ public class Enemy extends GameObject{
 	Random r = new Random();
 	double r1 = Math.random() + 1;
 	private double sFactor;
+	private Room cRoom;
 	//========Constructor========//
 	/**
 	 * Enemy constructor with x and y inputs;
@@ -166,30 +167,30 @@ public class Enemy extends GameObject{
 
 	//computes a random item to drop when the enemy is killed
 	private void computeDrop() {
-		//int rand = new Random().nextInt(100);
-		int rand = 44;
+		int rand = new Random().nextInt(100);
+		//int rand = 44;
 		if(rand < 15) {															//BadGun
-			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar, sFactor);
+			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, 5, "Bad Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 40) {//BetterGun
-			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, "Better Gun", isJar, sFactor);
+			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 45) {												//FederalReserve
-			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, "Federal Reserve", isJar, sFactor);
+			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 55) {										//ElPresidente
-			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, "El Presidente", isJar, sFactor);
+			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, 9, "El Presidente", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 60) {										//ToiletPaper
-			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, "Toilet Paper", isJar, sFactor);
+			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, 2, "Toilet Paper", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 75) {										//Health Item
 			drop = new Health("Small Heath Potion", ImageLoader.NO_IMAGE);
-			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar, sFactor);											//TODO Fix later to include actual sprite
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, 5, "Bad Gun", isJar, sFactor);											//TODO Fix later to include actual sprite
 		}else {
 			rand = new Random().nextInt(100);
 			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
-			activeGun = new Gun(5, 700, 10, 10, 10, 0, "Bad Gun", isJar, sFactor);
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, 5, "Bad Gun", isJar, sFactor);
 		}
 		
 		if(debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
@@ -197,7 +198,7 @@ public class Enemy extends GameObject{
 
 	//get a new projectile from the gun
 	public Projectile getGunshot() {
-		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, true);
+		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, this);
 	}
 
 	//damage this enemy
@@ -229,7 +230,7 @@ public class Enemy extends GameObject{
 	 */
 
 	public void runAI(Player player, Room room) {
-
+		cRoom = room;
 		if(activeGun.getAmmoInMag() == 0) activeGun.reload();
 
 		//first determine which state the AI will operate within
@@ -298,6 +299,18 @@ public class Enemy extends GameObject{
 	}
 	
 	//========Getters/Setters========//
+	public boolean xRecoil(int recoil) {
+		if(cRoom == null) return false;
+		if(x - recoil < cRoom.leftBound || x + recoil > cRoom.rightBound) return false;
+		return true;
+	}
+	public boolean yRecoil(int recoil) {
+		if(cRoom == null) return false;
+		if(y - recoil < cRoom.topBound || y + recoil  > cRoom.bottomBound) return false;
+		return true;
+	}
+	
+	
 	public boolean isShooting() { return isShooting; }
 //	public void stopSound() {if(activeGun.getSound().isActive()) activeGun.getSound().stop();}
 	public Loot getDrop() { return drop; }

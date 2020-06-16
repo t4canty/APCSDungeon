@@ -34,6 +34,7 @@ import gameObjects.Player;
 @SuppressWarnings("serial")
 public class Inventory extends JFrame implements ActionListener, KeyListener {
 	private Timer t;
+	private long startTime;
 	/**
 	 * Spawns a new JFrame object to manage inventory, which self destructs when finished. 
 	 * @param items
@@ -85,12 +86,14 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		this.setVisible(true);
 		requestFocusInWindow();															//Set focus so keyListener works
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		startTime = System.currentTimeMillis();
 		t.start();																		//Start ticking timer
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(!this.isFocused()) {															//Disposes of the JFrame when focus is lost
+		if(!this.isFocused() && System.currentTimeMillis() - startTime > 120) {															//Disposes of the JFrame when focus is lost
+			System.out.println("Lost focus after" +(System.currentTimeMillis() - startTime) + "ms." );
 			Driver.doTick = true;
 			dispose();
 			t.stop();

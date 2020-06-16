@@ -14,30 +14,30 @@ import java.awt.Rectangle;
  */
 public abstract class GameObject {
 	//========Final Variables========//
-	final public int NORTH = 0;
-	final public int SOUTH = 2;
-	final public int EAST = 3;
-	final public int WEST = 1;
-	final public int UP = 0;
-	final public int DOWN = 2;
-	final public int LEFT = 3;
-	final public int RIGHT = 1;
-	final public int UPRIGHT = 4;
-	final public int DOWNRIGHT = 5;
-	final public int DOWNLEFT = 6;
-	final public int UPLEFT = 7;
-	final public int FRONTIDLE = 0;
-	final public int SIDEIDLE = 1;
-	final public int BACKIDLE = 2;
-	final public int FRONTMOVE = 3;
-	final public int SIDEMOVE = 4;
-	final public int BACKMOVE = 5;
-	final public int FRONTHURT = 6;
-	final public int SIDEHURT = 7;
-	final public int BACKHURT = 8;
-	final public int FRONTDEATH = 0;
-	final public int SIDEDEATH = 1;
-	final public int BACKDEATH = 2;
+	final static public int NORTH = 0;
+	final static public int SOUTH = 2;
+	final static public int EAST = 3;
+	final static public int WEST = 1;
+	final static public int UP = 0;
+	final static public int DOWN = 2;
+	final static public int LEFT = 3;
+	final static public int RIGHT = 1;
+	final static public int UPRIGHT = 4;
+	final static public int DOWNRIGHT = 5;
+	final static public int DOWNLEFT = 6;
+	final static public int UPLEFT = 7;
+	final static public int FRONTIDLE = 0;
+	final static public int SIDEIDLE = 1;
+	final static public int BACKIDLE = 2;
+	final static public int FRONTMOVE = 3;
+	final static public int SIDEMOVE = 4;
+	final static public int BACKMOVE = 5;
+	final static public int FRONTHURT = 6;
+	final static public int SIDEHURT = 7;
+	final static public int BACKHURT = 8;
+	final static public int FRONTDEATH = 0;
+	final static public int SIDEDEATH = 1;
+	final static public int BACKDEATH = 2;
 	//========Variables========//
 	protected Rectangle rBox;
 	protected int x, y;
@@ -67,6 +67,8 @@ public abstract class GameObject {
 	public Rectangle getHitbox() {return rBox;}
 	public int getX() { return x; }
 	public int getY() { return y; }
+	public void setX(int x) { this.x = x;}
+	public void setY(int y) { this.y = y;}
 	public int getCenterX() { return x + rBox.width/2;}
 	public int getCenterY() { return y + rBox.height/2;};
 	public boolean hasAI() { return hasAI; }

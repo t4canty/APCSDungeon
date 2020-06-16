@@ -50,22 +50,22 @@ public class Chest extends Prop {
 		int rand = new Random().nextInt(7);
 		switch (rand) {
 		case 0:																//BadGun
-			item = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, "Bad Gun", isJar, sFactor);
+			item = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, 5, "Bad Gun", isJar, sFactor);
 			break;
 		case 1:																//BetterGun
-			item = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, "Better Gun", isJar, sFactor);
+			item = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			
 			break;
 		case 2:																//FederalReserve
-			item = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, "Federal Reserve", isJar, sFactor);
+			item = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
 			
 			break;
 		case 3:																//ElPresidente
-			item = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, "El Presidente", isJar, sFactor);
+			item = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, 9, "El Presidente", isJar, sFactor);
 			
 			break;
 		case 4:																//ToiletPaper
-			item = new Gun(100, 10000, 3, 7, 50, Gun.TP, "Toilet Paper", isJar, sFactor);
+			item = new Gun(100, 10000, 3, 7, 50, Gun.TP, 2, "Toilet Paper", isJar, sFactor);
 			
 			break;
 		case 5:																//Health Item

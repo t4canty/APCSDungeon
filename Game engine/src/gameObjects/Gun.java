@@ -15,8 +15,8 @@ import fileIO.SoundLoader;
  */
 public class Gun extends Loot {
 	//========Final Variables========//
-	
-	
+
+
 	//========Variables========//
 	private BufferedImage bulletSprite;
 	private SoundEffect shootSound;
@@ -27,6 +27,7 @@ public class Gun extends Loot {
 	private int bulletSize = 10;
 	private int ammoInMag = 10;
 	private int maxAmmoInMag = 10;
+	private int recoil = 5;
 	private boolean isJar;
 
 	//========Constructor========//
@@ -47,7 +48,7 @@ public class Gun extends Loot {
 	 * @param Name
 	 * Name of the gun.
 	 */
-	public Gun(int Damage, int cooldown, int maxAmmoInMag, int bulletVelocity, int bulletSize, int id, String Name, boolean IsJar, double ratio) {
+	public Gun(int Damage, int cooldown, int maxAmmoInMag, int bulletVelocity, int bulletSize, int id, int recoil, String Name, boolean IsJar, double ratio) {
 		damage = Damage;
 		this.cooldown = cooldown;
 		this.id = id;
@@ -57,6 +58,7 @@ public class Gun extends Loot {
 		this.ammoInMag = maxAmmoInMag;
 		this.bulletVelocity = (int) (bulletVelocity * ratio);
 		this.bulletSize = (int) (bulletSize * ratio);
+		this.recoil = recoil;
 		Sprite = getSpriteFromId();
 		getSounds();
 
@@ -127,9 +129,53 @@ public class Gun extends Loot {
 	}
 
 	//returns a Projectile from the gun if the gun is able to fire- otherwise returns null
-	public Projectile getGunshot(int x, int y, double angle, boolean isEnemy) {
+	public Projectile getGunshot(int x, int y, double angle, GameObject origin) {
+		boolean isEnemy = origin instanceof Enemy;
 		if(canShoot()) {
 			lastShot = System.currentTimeMillis();
+			int dir;
+			boolean yRecoil, xRecoil;
+			if(origin instanceof Enemy) {  
+				dir = ((Enemy) origin).getDir();
+				yRecoil = ((Enemy) origin).yRecoil(recoil);
+				xRecoil = ((Enemy) origin).xRecoil(recoil);
+			}
+			else {
+				dir = ((Player)origin).getDir();
+				yRecoil = ((Player) origin).yRecoil(recoil);
+				xRecoil = ((Player) origin).xRecoil(recoil);
+			}
+
+			switch(dir) {
+			case GameObject.UP:
+				if(yRecoil)origin.setY(origin.getY()+recoil);
+				break;
+			case GameObject.DOWN:
+				if(yRecoil)origin.setY(origin.getY()-recoil);
+				break;
+			case GameObject.LEFT:
+				if(xRecoil)origin.setX(origin.getX()+recoil);
+				break;
+			case GameObject.RIGHT:
+				if(xRecoil)origin.setX(origin.getX()-recoil);
+				break;
+			case GameObject.DOWNLEFT:
+				if(yRecoil)origin.setY(origin.getY()-recoil/2);
+				if(xRecoil)origin.setX(origin.getX()+recoil/2);
+				break;
+			case GameObject.DOWNRIGHT:
+				if(yRecoil)origin.setY(origin.getY()-recoil/2);
+				if(xRecoil)origin.setX(origin.getX()+recoil/2);
+				break;
+			case GameObject.UPLEFT:
+				if(yRecoil)origin.setY(origin.getY()+recoil/2);
+				if(xRecoil)origin.setX(origin.getX()+recoil/2);
+				break;
+			case GameObject.UPRIGHT:
+				if(yRecoil)origin.setY(origin.getY()+recoil/2);
+				if(xRecoil)origin.setX(origin.getX()-recoil/2);
+				break;
+			}
 			ammoInMag--;
 			if(id == FEDRESERVE || id == LASERBEAM) {
 				if(!shootSound.isActive()) shootSound.play();
@@ -159,12 +205,11 @@ public class Gun extends Loot {
 
 		return totalAmmo;
 	}
-	
+
 	@Override
 	public BufferedImage getSprite(int n, int hp) {
 		if(lastShot == 0) lastShot = System.currentTimeMillis();
 		if( (id == 2 || id == -1) && ( ( (System.currentTimeMillis() - lastShot)  >= cooldown ) || (hp == 0) )  && shootSound.isActive() ) {
-			System.out.println("stopped sound after" + (System.currentTimeMillis() - lastShot) + "ms");
 			shootSound.stop();
 		}
 		return Sprite[n];
@@ -192,7 +237,7 @@ public class Gun extends Loot {
 			p.addAmmo(ammoInMag);
 		}
 	}
-	
+
 	//========Getters/Setters========//
 	public int getAmmoInMag() { return ammoInMag; }
 	public int getMaxAmmoInMag() { return maxAmmoInMag; }
