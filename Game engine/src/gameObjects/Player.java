@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import displayComponents.AnimatedImage;
 import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
@@ -103,9 +104,10 @@ public class Player extends GameObject{
 		this(x, y, size, pid, isJar, ratio);
 		this.debug = debug;
 		if(debug) {
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(10, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
 			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, 40, "Yaris", super.isJar, scaleFactor));
 		}
+		if(debug) { hp = 9999;}
 	}
 	/**
 	 * Player constructor with debug option
@@ -236,6 +238,7 @@ public class Player extends GameObject{
 			//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 			g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		}
+		
 	}
 
 

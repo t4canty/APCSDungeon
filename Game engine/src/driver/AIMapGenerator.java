@@ -3,7 +3,11 @@ package driver;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import gameObjects.*;
+import gameObjects.Enemy;
+import gameObjects.GameObject;
+import gameObjects.Player;
+import gameObjects.Projectile;
+import gameObjects.Room;
 
 /**
  * Class for AI maps.

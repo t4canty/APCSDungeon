@@ -10,6 +10,7 @@ import displayComponents.Startup;
 
 public class GameInit{
 	private static int os;
+	private static String env;
 	//========Constructor========//
 	public GameInit(Path filePath, String title, boolean debug, Dimension bounds, boolean isJar, String path){
 		if(debug) System.out.println("Path:" + path);
@@ -31,7 +32,6 @@ public class GameInit{
 		}
 		else {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			String env;
 			if(System.getProperty("os.name").toLowerCase().indexOf("win") != -1) {
 				env = System.getenv("APPDATA") + "\\";
 				os = 0;

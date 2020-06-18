@@ -3,6 +3,7 @@ package displayComponents;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
+
 import fileIO.ImageLoader;
 
 /**

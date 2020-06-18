@@ -3,6 +3,7 @@ package fileIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 import gameObjects.Player;
@@ -270,7 +271,26 @@ public class ImageLoader implements Runnable{
 			}
 		}
 	}
-
+	public void unloadWSB() {
+		WSB_FRONTIDLE = null;
+		WSBSKIN[0] = null;
+		WSB_SIDEIDLE = null;
+		WSBSKIN[1] = null;
+		WSB_BACKIDLE = null;
+		WSBSKIN[2] = null;
+		WSB_FRONTMOVE = null;
+		WSBSKIN[3] = null;
+		WSB_SIDEMOVE = null;
+		WSBSKIN[4] = null;
+		WSB_BACKMOVE = null;
+		WSBSKIN[5] = null;
+		WSB_FRONTHURT = null;
+		WSBSKIN[6] = null;
+		WSB_SIDEHURT = null;
+		WSBSKIN[7] = null;
+		WSB_BACKHURT = null;
+		WSBSKIN[8] = null;
+	}
 	//gets an image from the filesystem
 	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
 		totalNumberLoaded++;
@@ -313,29 +333,7 @@ public class ImageLoader implements Runnable{
 		SECRET_STARTUP = null;
 		switch(id) {
 		case Player.MARINE:
-			if(debug) System.out.println("Unloading WSB and Secret Skins.");
-			WSB_FRONTIDLE = null;
-			WSBSKIN[0] = null;
-			WSB_SIDEIDLE = null;
-			WSBSKIN[1] = null;
-			WSB_BACKIDLE = null;
-			WSBSKIN[2] = null;
-			WSB_FRONTMOVE = null;
-			WSBSKIN[3] = null;
-			WSB_SIDEMOVE = null;
-			WSBSKIN[4] = null;
-			WSB_BACKMOVE = null;
-			WSBSKIN[5] = null;
-			WSB_FRONTHURT = null;
-			WSBSKIN[6] = null;
-			WSB_SIDEHURT = null;
-			WSBSKIN[7] = null;
-			WSB_BACKHURT = null;
-			WSBSKIN[8] = null;
-			
-			WSB_BACKDEATH = null;
-			WSB_SIDEDEATH = null;
-			WSB_FRONTDEATH = null;
+			if(debug) System.out.println("Unloading Secret Skins.");
 			
 			SECRET_FRONTIDLE = null;
 			SECRETSKIN[0] = null;
@@ -357,7 +355,7 @@ public class ImageLoader implements Runnable{
 			SECRETSKIN[8] = null;
 			break;
 		case Player.SECRET:
-			if(debug) System.out.println("Unloading WSB and Marine skins.");
+			if(debug) System.out.println("Unloading Marine skins.");
 			MARINE_FRONTIDLE = null;
 			MARINESKIN[0] = null;
 			MARINE_SIDEIDLE = null;
@@ -380,29 +378,6 @@ public class ImageLoader implements Runnable{
 			MARINE_BACKDEATH = null;
 			MARINE_SIDEDEATH = null;
 			MARINE_FRONTDEATH = null;
-			
-			WSB_FRONTIDLE = null;
-			WSBSKIN[0] = null;
-			WSB_SIDEIDLE = null;
-			WSBSKIN[1] = null;
-			WSB_BACKIDLE = null;
-			WSBSKIN[2] = null;
-			WSB_FRONTMOVE = null;
-			WSBSKIN[3] = null;
-			WSB_SIDEMOVE = null;
-			WSBSKIN[4] = null;
-			WSB_BACKMOVE = null;
-			WSBSKIN[5] = null;
-			WSB_FRONTHURT = null;
-			WSBSKIN[6] = null;
-			WSB_SIDEHURT = null;
-			WSBSKIN[7] = null;
-			WSB_BACKHURT = null;
-			WSBSKIN[8] = null;
-			
-			WSB_BACKDEATH = null;
-			WSB_SIDEDEATH = null;
-			WSB_FRONTDEATH = null;
 			break;
 		case Player.WSB:
 			if(debug) System.out.println("Unloading Secret and Marine Skins.");

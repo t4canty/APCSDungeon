@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -27,6 +28,7 @@ import javax.swing.JRadioButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import driver.Driver;
 import fileIO.ImageLoader;
 import fileIO.SoundLoader;
@@ -77,6 +79,8 @@ public class Startup extends JPanel implements ActionListener{
 	private double ratio;
 	private Font font;
 	
+	public static String UnlockPath;
+	
 	//========Constructors========//
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
@@ -95,6 +99,7 @@ public class Startup extends JPanel implements ActionListener{
 			InputStream is = Startup.class.getResourceAsStream("/fonts/ARCADECLASSIC.TTF");
 			font = Font.createFont(Font.TRUETYPE_FONT,is);
 			readUnlock(new File(path + "unlocks.txt"));
+			UnlockPath = path + "unlocks.txt";
 		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
 			f.dispose();

@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import driver.Driver;
 
 /**
@@ -117,6 +118,7 @@ public class Room {
 							if(temp2 instanceof Enemy) {
 							((Enemy)temp2).damage(((Projectile)temp).getDamage());
 								if(temp2.hp <= 0) {
+									if(temp2 instanceof Boss) ((Boss) temp2).onDeath();
 									entities.add(new DroppedItem((Enemy) temp2));
 									entities.remove(j);
 									if(j < i) {

@@ -2,6 +2,7 @@ package gameObjects;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+
 import displayComponents.SoundEffect;
 import fileIO.ImageLoader;
 import fileIO.SoundLoader;
@@ -227,9 +228,9 @@ public class Gun extends Loot {
 	public void use(Player p) {
 		boolean[] bArr = p.getOwnedGuns();
 		if(bArr[id] == false) {
-			if(p.getId() == Player.WSB && id == FEDRESERVE) {
+			if(p.getId() == Player.WSB) {
+				cooldown /= 2; 
 				bulletVelocity += 5;
-				damage += 20;
 			}
 			p.getInventory().add(this);
 			p.ownGun(true, id);

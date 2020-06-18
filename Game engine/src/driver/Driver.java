@@ -15,14 +15,17 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 import displayComponents.Inventory;
 import displayComponents.SoundEffect;
 import displayComponents.StatusBar;
 import fileIO.ImageLoader;
 import fileIO.SoundLoader;
+import gameObjects.Boss;
 import gameObjects.Chest;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -300,10 +303,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[1] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)),  ImageLoader.ROOMS[1], new ArrayList<GameObject>(), true, f.getSize() , ratio);
 		rooms[1].setLeftRoom(rooms[0]);
 		rooms[0].setRightRoom(rooms[1]);
-
+		
 		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
 		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64,64), ImageLoader.NPCSKIN, isJar, ratio));
-
+		
+		
 		rooms[2] = new Room(new Rectangle((int) (48 *ratio),(int)( 40 * ratio) ,(int)( 905 * ratio),(int) (870 * ratio)), ImageLoader.ROOMS[2], new ArrayList<GameObject>(), true, f.getSize() , ratio);
 		rooms[2].setLeftRoom(rooms[1]);
 		rooms[1].setRightRoom(rooms[2]);
@@ -340,7 +344,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72,72), ImageLoader.NPCSKIN, isJar, ratio));
 		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128,128), ImageLoader.NPCSKIN, isJar, ratio));
-
+		rooms[6].getEntities().add(new Boss(450, 600, isJar, ratio));
+		
 		addchests();
 	}
 	private void addchests() {

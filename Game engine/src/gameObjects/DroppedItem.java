@@ -47,9 +47,15 @@ public class DroppedItem extends GameObject {
 		this.item = e.getDrop();
 		this.rBox = e.getHitbox();
 		gDir = e.getDir();
-		death[BACKDEATH] = new AnimatedImage(ImageLoader.NPC_BACKDEATH, true);
-		death[FRONTDEATH] = new AnimatedImage(ImageLoader.NPC_FRONTDEATH, true);
-		death[SIDEDEATH] = new AnimatedImage(ImageLoader.NPC_SIDEDEATH, true);
+		if(e instanceof Boss) {
+			death[BACKDEATH] = new AnimatedImage(ImageLoader.WSB_BACKDEATH, true);
+			death[FRONTDEATH] = new AnimatedImage(ImageLoader.WSB_FRONTDEATH, true);
+			death[SIDEDEATH] = new AnimatedImage(ImageLoader.WSB_SIDEDEATH, true);
+		}else {
+			death[BACKDEATH] = new AnimatedImage(ImageLoader.NPC_BACKDEATH, true);
+			death[FRONTDEATH] = new AnimatedImage(ImageLoader.NPC_FRONTDEATH, true);
+			death[SIDEDEATH] = new AnimatedImage(ImageLoader.NPC_SIDEDEATH, true);
+		}
 		isEnemy = true;
 	}
 

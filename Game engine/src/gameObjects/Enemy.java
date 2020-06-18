@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import displayComponents.AnimatedImage;
@@ -24,17 +22,17 @@ import fileIO.ImageLoader;
 public class Enemy extends GameObject{
 	//========Variables========//
 	private Loot drop;
-	private Gun activeGun;
-	private int movementSpeed = 4;
+	protected Gun activeGun;
+	protected int movementSpeed = 4;
 	private boolean isShooting = false;
-	private double gunAngle;
+	protected double gunAngle;
 	private int graphicsDir;
 	private long lastDamageTaken = 0;
 	private long lastWalk = 0;
 	protected AnimatedImage[] skin = new AnimatedImage[9];
 	Random r = new Random();
 	double r1 = Math.random() + 1;
-	private double sFactor;
+	protected double sFactor;
 	private Room cRoom;
 	//========Constructor========//
 	/**
@@ -65,7 +63,13 @@ public class Enemy extends GameObject{
 		}
 		computeDrop();
 	}
-
+	
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio, Gun ActiveGun) {
+	this(x, y, hp, size, skin, isJar, ratio);
+	this.rBox = new Rectangle((int)(size.width * ratio), (int)(size.height * ratio));
+	this.activeGun = ActiveGun;
+	drop = activeGun;
+	}
 
 	//========Methods========//
 	@Override
@@ -146,7 +150,7 @@ public class Enemy extends GameObject{
 	}
 
 	//draw gun on the screen dependent on the angle it's aiming
-	private void drawGun(Graphics2D g2d) {
+	protected void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if(Math.abs(gunAngle) > 1.07) {
 			g2d.drawImage(activeGun.getSprite(3, hp), (int)(rBox.getCenterX()) + 10, (int)(rBox.getCenterY()) + 20, (int)((25*r1) * sFactor), (int)((-25 * r1) * sFactor), null);
@@ -176,13 +180,14 @@ public class Enemy extends GameObject{
 			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 45) {												//FederalReserve
-			drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
+			//drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
+			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 55) {										//ElPresidente
 			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, 9, "El Presidente", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 60) {										//ToiletPaper
-			drop = new Gun(100, 10000, 3, 7, 50, Gun.TP, 2, "Toilet Paper", isJar, sFactor);
+			drop = new Gun(100, 1000, 3, 7, 50, Gun.TP, 2, "Toilet Paper", isJar, sFactor);
 			activeGun = (Gun) drop;
 		}else if(rand < 75) {										//Health Item
 			drop = new Health("Small Heath Potion", ImageLoader.NO_IMAGE);
