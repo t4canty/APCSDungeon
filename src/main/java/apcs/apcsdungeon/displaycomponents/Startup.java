@@ -42,7 +42,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Startup extends JPanel implements ActionListener {
 	public static String UnlockPath;
-	//========Varibles========//
+	//========Variables========//
 	private boolean debug;
 	private boolean maxed = false;
 	private boolean animationFinished = false;
@@ -80,7 +80,7 @@ public class Startup extends JPanel implements ActionListener {
 	//========Constructors========//
 	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
 		//====Pre-Setup====//
-		//Load images before ImageLoader
+		// Load images before ImageLoader
 		f = new JFrame("Startup");
 		ratio = bounds.height / (double) 800;
 		try {
@@ -155,7 +155,6 @@ public class Startup extends JPanel implements ActionListener {
 		wsb.setEnabled(false);
 		marine.setEnabled(false);
 
-
 		bg.add(marine);
 		bg.add(wsb);
 		bg.add(secret);
@@ -170,13 +169,11 @@ public class Startup extends JPanel implements ActionListener {
 		selectPanel.add(spriteLabel, BorderLayout.LINE_END);
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
-
 		loadingBar = new apcs.apcsdungeon.displaycomponents.StatusBar(0, 0, new Dimension(f.getWidth(), 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
 
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
 		this.add(start, BorderLayout.PAGE_END);
-
 
 		f.add(this);
 		f.setBackground(Color.green);
