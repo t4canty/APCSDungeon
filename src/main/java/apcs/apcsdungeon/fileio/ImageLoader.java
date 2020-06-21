@@ -157,34 +157,34 @@ public class ImageLoader implements Runnable {
 				SECRET_SIDEDEATH = getImageFromJar("/img/spritesheets/Secret/Secret_sideDeath.png");
 				SECRET_FRONTDEATH = getImageFromJar("/img/spritesheets/Secret/Secret_frontDeath.png");
 
-				BADGUN[0] = getImageFromJar("/img/guns/badGun.png");        //Gun sprites with no hand
+				BADGUN[0] = getImageFromJar("/img/guns/badGun.png"); // Gun sprites with no hand
 				FEDRESERVE[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
 				TOILETPAPER[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
 				BETTERGUN[0] = getImageFromJar("/img/guns/BetterGun.png");
 				ELPRESIDENTE[0] = getImageFromJar("/img/guns/ElPresidente.png");
-				LASERBEAM[0] = getImageFromJar("/img/guns/badGun.png");    //Change later
+				LASERBEAM[0] = getImageFromJar("/img/guns/badGun.png"); // Change later
 
 
-				BADGUN[1] = getImageFromJar("/img/guns/badGun_marineHand.png");        //Gun sprites with no hand
+				BADGUN[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Gun sprites with no hand
 				FEDRESERVE[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Change later
 				TOILETPAPER[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Change later
 				BETTERGUN[1] = getImageFromJar("/img/guns/BetterGun_marineHand.png");
 				ELPRESIDENTE[1] = getImageFromJar("/img/guns/ElPresidente_marineHand.png");
-				LASERBEAM[1] = getImageFromJar("/img/guns/badGun_marineHand.png");    //Change later
+				LASERBEAM[1] = getImageFromJar("/img/guns/badGun_marineHand.png"); // Change later
 
-				BADGUN[2] = getImageFromJar("/img/guns/badGun_wsb.png");        //Gun sprites with no hand
+				BADGUN[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Gun sprites with no hand
 				FEDRESERVE[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Change later
 				TOILETPAPER[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Change later
 				BETTERGUN[2] = getImageFromJar("/img/guns/BetterGun_wsb.png");
 				ELPRESIDENTE[2] = getImageFromJar("/img/guns/ElPresidente_wsb.png");
-				LASERBEAM[2] = getImageFromJar("/img/guns/badGun_wsb.png");    //Change later
+				LASERBEAM[2] = getImageFromJar("/img/guns/badGun_wsb.png"); // Change later
 
-				BADGUN[3] = getImageFromJar("/img/guns/badGun_npc.png");        //Gun sprites with no hand
+				BADGUN[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Gun sprites with no hand
 				FEDRESERVE[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Change later
 				TOILETPAPER[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Change later
 				BETTERGUN[3] = getImageFromJar("/img/guns/BetterGun_npc.png");
 				ELPRESIDENTE[3] = getImageFromJar("/img/guns/ElPresidente_npc.png");
-				LASERBEAM[3] = getImageFromJar("/img/guns/badGun_npc.png");    //Change later
+				LASERBEAM[3] = getImageFromJar("/img/guns/badGun_npc.png"); // Change later
 
 				YARIS = getImageFromJar("/img/guns/yaris.png");
 				PISTOLMAG = getImageFromJar("/img/guns/pistolMag.png");

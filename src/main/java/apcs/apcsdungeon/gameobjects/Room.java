@@ -17,22 +17,22 @@ import java.util.ArrayList;
  * @author t4canty
  */
 public class Room {
-	public boolean isJar = false;                //change image loading if image is a jar file
+	public boolean isJar = false; // change image loading if image is a jar file
 	protected int leftBound;
 	protected int topBound;
-	protected int bottomBound;            //boundaries for all entities
+	protected int bottomBound; // boundaries for all entities
 	protected int rightBound;
-	protected Image backgroundSprite;            //image for background
-	protected Room rightRoom;                    //linked room to the right
-	protected Room leftRoom;                    //linked room to the left
+	protected Image backgroundSprite; // image for background
+	protected Room rightRoom; // linked room to the right
+	protected Room leftRoom; // linked room to the left
 	protected Room topRoom;
 	protected Room bottomRoom;
-	protected Rectangle leftDoor;                //hitboxes for room portals (doors)
+	protected Rectangle leftDoor; // hitboxes for room portals (doors)
 	protected Rectangle rightDoor;
 	protected Rectangle topDoor;
 	protected Rectangle bottomDoor;
-	protected boolean doorOpen;            //if the door to the next room can be walked through
-	protected ArrayList<GameObject> entities;    //list of entities within the room
+	protected boolean doorOpen; // if the door to the next room can be walked through
+	protected ArrayList<GameObject> entities; // list of entities within the room
 	private Dimension screenSize;
 	private double ratio;
 

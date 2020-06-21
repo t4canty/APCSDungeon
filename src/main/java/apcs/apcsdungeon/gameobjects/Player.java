@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -24,19 +23,19 @@ public class Player extends GameObject {
 	final public static int WSB = 1;
 	final public static int SECRET = 2;
 	public boolean isShooting;
-	ArrayList<Gun> inventory = new ArrayList<>();                                            //List of guns currently in the player's inventory
+	ArrayList<Gun> inventory = new ArrayList<>(); // List of guns currently in the player's inventory
 	//========Variables========//
-	private Gun activeGun;                                                                        //Currently held gun.
-	private int minX = 0;    //bounds of room
+	private Gun activeGun; // Currently held gun.
+	private int minX = 0; // bounds of room
 	private int minY = 0;
 	private int maxX;
 	private int maxY;
-	private int graphicsDir;        //direction that a player is holding their gun
+	private int graphicsDir; // direction that a player is holding their gun
 	private int velocity = 10;
 	private AnimatedImage[] skin = new AnimatedImage[9];
 	private AnimatedImage[] death = new AnimatedImage[3];
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
-	private long lastWalk = 0;        //last time player moved - used for idle vs moving animation
+	private long lastWalk = 0; // last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
 	private double gunAngle;
 	private double scaleFactor;
@@ -74,7 +73,7 @@ public class Player extends GameObject {
 	 *
 	 * @param size Size of the hitbox for the player
 	 */
-	public Player(Dimension size, int pid, boolean isJar, double ratio) throws IOException {
+	public Player(Dimension size, int pid, boolean isJar, double ratio) {
 		this(0, 0, size, pid, isJar, ratio);
 	}
 
@@ -87,7 +86,7 @@ public class Player extends GameObject {
 	 * @param pid   Id of the char to use
 	 * @param debug Sets debug flag
 	 */
-	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio, boolean debug) throws IOException {
+	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio, boolean debug) {
 		this(x, y, size, pid, isJar, ratio);
 		this.debug = debug;
 		if (debug) {
@@ -105,7 +104,7 @@ public class Player extends GameObject {
 	 * @param size  Size of the player object
 	 * @param debug Sets debug flag
 	 */
-	public Player(Dimension size, int pid, boolean isJar, double ratio, boolean debug) throws IOException {
+	public Player(Dimension size, int pid, boolean isJar, double ratio, boolean debug) {
 		this(size, pid, isJar, ratio);
 		this.debug = debug;
 		if (debug)
@@ -115,9 +114,9 @@ public class Player extends GameObject {
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-		rBox.x = x;                                                                                    //set hitbox to curremnt y
-		rBox.y = y;                                                                                    //Set hitbox to current x
-		Graphics2D g2d = (Graphics2D) g;                                                            //neccessary for drawing gifs
+		rBox.x = x; // set hitbox to curremnt y
+		rBox.y = y; // Set hitbox to current x
+		Graphics2D g2d = (Graphics2D) g; // neccessary for drawing gifs
 		g2d.setColor(Color.BLACK);
 
 		if (Math.abs(gunAngle) > 2.35) {
@@ -293,7 +292,7 @@ public class Player extends GameObject {
 
 		}
 		if (y < minY)
-			y = minY;                                                                            //Collision on the bounds of the room
+			y = minY; // Collision on the bounds of the room
 		if (y > maxY) y = maxY;
 		if (x < minX) x = minX;
 		if (x > maxX) x = maxX;

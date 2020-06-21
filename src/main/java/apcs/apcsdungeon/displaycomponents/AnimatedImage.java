@@ -20,7 +20,7 @@ public class AnimatedImage {
 	private int currentFrameY = 0;
 	private boolean isStatic = false;
 	private boolean oneTimeAnimation = false;
-	private boolean isFinished = false;    //used only with one time animation
+	private boolean isFinished = false; // used only with one time animation
 
 	//========Constructors========//
 

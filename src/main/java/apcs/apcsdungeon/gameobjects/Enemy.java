@@ -170,25 +170,25 @@ public class Enemy extends GameObject {
 	private void computeDrop() {
 		int rand = new Random().nextInt(100);
 		//int rand = 44;
-		if (rand < 15) {                                                            //BadGun
+		if (rand < 15) { // BadGun
 			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, 5, "Bad Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		} else if (rand < 40) {//BetterGun
 			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
-		} else if (rand < 45) {                                                //FederalReserve
+		} else if (rand < 45) { // FederalReserve
 			//drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
 			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
-		} else if (rand < 55) {                                        //ElPresidente
+		} else if (rand < 55) { // ElPresidente
 			drop = new Gun(40, 600, 8, 15, 20, Gun.PRESIDENTE, 9, "El Presidente", isJar, sFactor);
 			activeGun = (Gun) drop;
-		} else if (rand < 60) {                                        //ToiletPaper
+		} else if (rand < 60) { // ToiletPaper
 			drop = new Gun(100, 1000, 3, 7, 50, Gun.TP, 2, "Toilet Paper", isJar, sFactor);
 			activeGun = (Gun) drop;
-		} else if (rand < 75) {                                        //Health Item
+		} else if (rand < 75) { // Health Item
 			drop = new Health("Small Heath Potion", ImageLoader.NO_IMAGE);
-			activeGun = new Gun(5, 700, 10, 10, 10, 0, 5, "Bad Gun", isJar, sFactor);                                            //TODO Fix later to include actual sprite
+			activeGun = new Gun(5, 700, 10, 10, 10, 0, 5, "Bad Gun", isJar, sFactor); // TODO Fix later to include actual sprite
 		} else {
 			rand = new Random().nextInt(100);
 			drop = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
@@ -206,7 +206,7 @@ public class Enemy extends GameObject {
 	//damage this enemy
 	public void damage(int hp) {
 		this.hp -= hp;
-		lastDamageTaken = System.currentTimeMillis(); //keep track of when damage is taken to show hurt animation
+		lastDamageTaken = System.currentTimeMillis(); // keep track of when damage is taken to show hurt animation
 	}
 
 	/*

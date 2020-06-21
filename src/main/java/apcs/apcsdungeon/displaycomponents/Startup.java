@@ -41,7 +41,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 
 public class Startup extends JPanel implements ActionListener {
-	public static String UnlockPath;
+	public static String unlockPath;
 	//========Variables========//
 	private boolean debug;
 	private boolean maxed = false;
@@ -85,27 +85,33 @@ public class Startup extends JPanel implements ActionListener {
 		ratio = bounds.height / (double) 800;
 		try {
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
-			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * (0.346 * ratio)), (int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
+			MarineSplash = MarineSplash.getScaledInstance(
+					(int) (MarineSplash.getWidth(null) * (0.346 * ratio)),
+					(int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
-			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * (0.28 * ratio)), (int) (WSBSplash.getHeight(null) * (0.28 * ratio)), Image.SCALE_SMOOTH);
+			WSBSplash = WSBSplash.getScaledInstance(
+					(int) (WSBSplash.getWidth(null) * (0.28 * ratio)),
+					(int) (WSBSplash.getHeight(null) * (0.28 * ratio)), Image.SCALE_SMOOTH);
 			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/secret_splash.png")));
-			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * (ratio * 0.425)), (int) (SecretSplash.getHeight(null) * (0.425 * ratio)), Image.SCALE_SMOOTH);
+			SecretSplash = SecretSplash.getScaledInstance(
+					(int) (SecretSplash.getWidth(null) * (ratio * 0.425)),
+					(int) (SecretSplash.getHeight(null) * (0.425 * ratio)), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
 			InputStream is = Startup.class.getResourceAsStream("/fonts/ARCADECLASSIC.TTF");
 			font = Font.createFont(Font.TRUETYPE_FONT, is);
 			readUnlock(new File(path + "unlocks.txt"));
-			UnlockPath = path + "unlocks.txt";
+			unlockPath = path + "unlocks.txt";
 		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
 			f.dispose();
 		}
 		startTime = System.currentTimeMillis();
 
-		s = new SoundLoader();                                                            //Start SoundLoader thread
+		s = new SoundLoader(); // Start SoundLoader thread
 		s.start(isJar, debug);
 
-		i = new ImageLoader();                                                            //Start ImageLoader thread
+		i = new ImageLoader(); // Start ImageLoader thread
 		i.start(isJar, debug);
 
 		currentIcon = new ImageIcon(MarineSplash);
@@ -127,7 +133,7 @@ public class Startup extends JPanel implements ActionListener {
 		ButtonGroup bg = new ButtonGroup();
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}         //Replace later with custom buttons - but for now better than the ugly default
+		} // Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 			f.dispose();
@@ -169,7 +175,10 @@ public class Startup extends JPanel implements ActionListener {
 		selectPanel.add(spriteLabel, BorderLayout.LINE_END);
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
-		loadingBar = new apcs.apcsdungeon.displaycomponents.StatusBar(0, 0, new Dimension(f.getWidth(), 20), Color.GRAY, false, false, 0, "", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+		loadingBar = new apcs.apcsdungeon.displaycomponents.StatusBar(0, 0,
+				new Dimension(f.getWidth(), 20), Color.GRAY, false, false, 0,
+				"", false, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad,
+				0);
 
 		this.setLayout(new BorderLayout());
 		this.add(selectPanel);
@@ -201,7 +210,7 @@ public class Startup extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		paintComponents(g);
 		g.setColor(new Color(0, 0, 0, alpha));
-		g.fillRect(0, 0, f.getWidth(), f.getHeight());                                //Animated black screen
+		g.fillRect(0, 0, f.getWidth(), f.getHeight()); // Animated black screen
 
 		if (i.isAlive() || s.isAlive()) {
 			loadingBar.paint(g);
@@ -210,7 +219,8 @@ public class Startup extends JPanel implements ActionListener {
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
-		g2d.drawImage(logo, f.getWidth() / 2 - logo.getWidth(null) / 2, f.getHeight() / 2 - logo.getHeight(null) / 2, null);
+		g2d.drawImage(logo, f.getWidth() / 2 - logo.getWidth(null) / 2,
+				f.getHeight() / 2 - logo.getHeight(null) / 2, null);
 
 		if (!(i.isAlive() || s.isAlive()) && !animationFinished) {
 			loadingBar.setColor(new Color(0, 150, 0));
@@ -222,7 +232,7 @@ public class Startup extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		boolean doneLoading = !i.isAlive() && !s.isAlive();
-		if (!animationFinished) {                                                    //Function to fade out logo
+		if (!animationFinished) { // Function to fade out logo
 			if (a2 < 1 && !maxed)
 				a2 += 0.01f;
 			else if (a2 >= 1) {
@@ -243,9 +253,9 @@ public class Startup extends JPanel implements ActionListener {
 		}
 		if (a2 > 1) {
 			a2 = (float) 1;
-		}                                                //Error correction
+		} // Error correction
 
-		if (animationFinished && alpha == 0) {                                        //Re-enable buttons after the animation completes
+		if (animationFinished && alpha == 0) { // Re-enable buttons after the animation completes
 			secret.setEnabled(true);
 			wsb.setEnabled(true);
 			marine.setEnabled(true);
@@ -262,7 +272,9 @@ public class Startup extends JPanel implements ActionListener {
 		}
 
 		if (doneLoading) {
-			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame().getScaledInstance((int) (sprite.getCurrentFrame().getHeight(null) * ratio), (int) (sprite.getCurrentFrame().getHeight(null) * ratio), Image.SCALE_SMOOTH)));
+			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame().getScaledInstance(
+					(int) (sprite.getCurrentFrame().getHeight(null) * ratio),
+					(int) (sprite.getCurrentFrame().getHeight(null) * ratio), Image.SCALE_SMOOTH)));
 			sprite.advanceCurrentFrame();
 		}
 		repaint();
@@ -320,7 +332,7 @@ public class Startup extends JPanel implements ActionListener {
 		}
 	}
 
-	private void readUnlock(File f) throws IOException {                                    //Private method to read the unlock file.
+	private void readUnlock(File f) throws IOException { // Private method to read the unlock file.
 		if (f.exists()) {
 			Scanner s = new Scanner(f);
 			String u = s.nextLine();

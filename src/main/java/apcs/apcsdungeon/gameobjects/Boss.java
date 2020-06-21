@@ -18,7 +18,7 @@ public class Boss extends Enemy {
 	public void onDeath() {
 		new ImageLoader().unloadWSB();
 		try {
-			File f = new File(Startup.UnlockPath);
+			File f = new File(Startup.unlockPath);
 			if (!f.exists()) {
 				FileWriter fw = new FileWriter(f);
 				fw.write("1");

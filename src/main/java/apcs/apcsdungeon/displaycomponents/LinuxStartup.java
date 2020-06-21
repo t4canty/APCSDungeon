@@ -85,7 +85,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		System.setProperty("sun.java2d.opengl", "true");
 		setDoubleBuffered(false);
 		ratio = bounds.height / (double) 800;
-		try {                                                                            //Load images before ImageLoader
+		try { // Load images before ImageLoader
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
 			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * (0.346 * ratio)), (int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
@@ -103,10 +103,10 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		}
 		startTime = System.currentTimeMillis();
 
-		s = new SoundLoader();                                                            //Start SoundLoader thread
+		s = new SoundLoader(); // Start SoundLoader thread
 		s.start(isJar, debug);
 
-		i = new ImageLoader();                                                            //Start ImageLoader thread
+		i = new ImageLoader(); // Start ImageLoader thread
 		i.start(isJar, debug);
 
 		currentIcon = new ImageIcon(MarineSplash);
@@ -128,7 +128,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		ButtonGroup bg = new ButtonGroup();
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}         //Replace later with custom buttons - but for now better than the ugly default
+		} // Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 			f.dispose();
@@ -207,7 +207,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		paintComponents(g);
 		g.setColor(new Color(0, 0, 0, alpha));
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());                                //Animated black screen
+		g.fillRect(0, 0, this.getWidth(), this.getHeight()); // Animated black screen
 
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
 		Graphics2D g2d = (Graphics2D) g;
@@ -230,7 +230,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 		boolean doneLoading = !i.isAlive() && !s.isAlive();
-		if (!animationFinished) {                                                    //Function to fade out logo
+		if (!animationFinished) { // Function to fade out logo
 			if (a2 < 1 && !maxed)
 				a2 += 0.01f;
 			else if (a2 >= 1) {
@@ -251,9 +251,9 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		}
 		if (a2 > 1) {
 			a2 = (float) 1;
-		}                                                //Error correction
+		} // Error correction
 
-		if (animationFinished && alpha == 0) {                                        //Re-enable buttons after the animation completes
+		if (animationFinished && alpha == 0) { // Re-enable buttons after the animation completes
 			secret.setEnabled(true);
 			wsb.setEnabled(true);
 			marine.setEnabled(true);
@@ -325,7 +325,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		}
 	}
 
-	private void readUnlock(File f) throws IOException {                                    //Private method to read the unlock file.
+	private void readUnlock(File f) throws IOException { // Private method to read the unlock file.
 		if (f.exists()) {
 			Scanner s = new Scanner(f);
 			String u = s.nextLine();

@@ -23,7 +23,7 @@ public class Health extends Loot {
 		this.number = HEALTHPACK;
 		this.Name = name;
 		this.Sprite = new BufferedImage[]{Sprite};
-		this.id = Loot.HEALTHPACK; //Special ID reserved for health potions
+		this.id = Loot.HEALTHPACK; // Special ID reserved for health potions
 	}
 
 	@Override

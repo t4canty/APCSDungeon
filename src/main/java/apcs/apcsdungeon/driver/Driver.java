@@ -25,7 +25,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JFrame;
@@ -40,7 +39,7 @@ import javax.swing.Timer;
  */
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 	public static boolean debug;
-	public static boolean doTick = true;    //track if the game should update variables & run the game
+	public static boolean doTick = true; // track if the game should update variables & run the game
 	//========Variables========//
 	private Dimension bounds;
 	private JFrame f;
@@ -52,8 +51,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private SoundEffect backgroundMusic;
 	private boolean isJar;
 	private int pid;
-	private boolean gamePaused = false;        //track if the game is paused with escape
-	private long lastEnemySpawn = System.currentTimeMillis(); //temp timer to spawn multiple enemies
+	private boolean gamePaused = false; // track if the game is paused with escape
+	private long lastEnemySpawn = System.currentTimeMillis(); // temp timer to spawn multiple enemies
 	private long lastAnimationUpdate = 0;
 	private double ratio;
 	private Font font;
@@ -113,19 +112,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if (debug) System.out.println("ratio: " + ratio);
 		this.font = font;
 		//===========Temporary player initialization for testing===========//
-		try {
-			player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
-			initializeRooms();
-			currentRoom = rooms[0];
-			player.updateBounds(currentRoom.getBounds());
-			backgroundMusic = SoundLoader.ACTIONMUSIC;
-			backgroundMusic.setVolume(0.1);
-			//player.setActiveGun(new Gun(10, 300, 0, "badgun", false));
-			//currentRoom.getEntities().add(new Enemy(200, 200, 200, new Dimension(64,64), ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE, ImageLoader.NPC_FRONTIDLE));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
+		initializeRooms();
+		currentRoom = rooms[0];
+		player.updateBounds(currentRoom.getBounds());
+		backgroundMusic = SoundLoader.ACTIONMUSIC;
+		backgroundMusic.setVolume(0.1);
 
 		healthBar = new StatusBar(10, 10, new Dimension((int) ((player.getHP() * 2) * ratio), 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, player.getHP(), player.getHP());
 		backgroundMusic.loop();
@@ -168,7 +160,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				if (playerInteract) {
 					doTick = false;
 					playerInteract = false;
-					new Inventory(player.getInventory(), player, font);    //open inventory when key is pressed
+					new Inventory(player.getInventory(), player, font); // open inventory when key is pressed
 				}
 				if (playerReload) {
 					player.reload();
@@ -199,7 +191,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				boolean canShoot = player.isShooting && player.canShootBullet();
 				//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
 				if (canShoot) {
-					currentRoom.getEntities().add(player.getNewBullet());    //spawn new projectile from player gun
+					currentRoom.getEntities().add(player.getNewBullet()); // spawn new projectile from player gun
 				}
 			}
 
@@ -249,19 +241,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	private void respawn() {
 		currentRoom = rooms[0];
-		try {
-			player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
-			player.updateBounds(currentRoom.getBounds());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
+		player.updateBounds(currentRoom.getBounds());
 	}
 
 	//===================Paint function=====================//
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 
-		currentRoom.paint(g);            //background
+		currentRoom.paint(g); // background
 
 		g.setColor(Color.black);
 
@@ -271,7 +259,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.setColor(Color.black);
 		}
 
-		if (doTick) currentRoom.paintEntities(g);    //all entities within the room
+		if (doTick) currentRoom.paintEntities(g); // all entities within the room
 		player.paint(g);
 		g.setFont(font.deriveFont((float) (20 * ratio)));
 		g.drawString(player.getAmmoInMag() + " / " + player.getTotalAmmo(), (int) (140 * ratio), (int) (ratio * 700));

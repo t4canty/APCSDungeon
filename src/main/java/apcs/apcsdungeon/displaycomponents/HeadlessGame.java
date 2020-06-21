@@ -66,7 +66,6 @@ public class HeadlessGame implements Runnable {
 	 * Code from https://www.darkcoding.net/software/non-blocking-console-io-is-not-possible/
 	 */
 	private void setTerminalToCBreak() throws IOException, InterruptedException {
-
 		ttyConfig = stty("-g");
 
 		// set the console to be character-buffered instead of line-buffered

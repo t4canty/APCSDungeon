@@ -63,26 +63,26 @@ public class Gun extends Loot {
 	//========Methods========//
 	private BufferedImage[] getSpriteFromId() {
 		try {
-			switch (id) {                                                                //Uses the id to read the sprite from the jar.
+			switch (id) { // Uses the id to read the sprite from the jar.
 				case -2:
 					bulletSprite = ImageLoader.YARIS;
 					return ImageLoader.BADGUN;
 				case -1:
 					bulletSprite = ImageLoader.BASICBULLET;
 					return ImageLoader.LASERBEAM;
-				case 0: //badGun
+				case 0: // badGun
 					bulletSprite = ImageLoader.BASICBULLET;
 					return ImageLoader.BADGUN;
-				case 1: //betterGun
+				case 1: // betterGun
 					bulletSprite = ImageLoader.BASICBULLET;
 					return ImageLoader.BETTERGUN;
-				case 2: //federalReserve
+				case 2: // federalReserve
 					bulletSprite = ImageLoader.BASICBULLET;
 					return ImageLoader.FEDRESERVE;
-				case 3: //ElPresidente
+				case 3: // ElPresidente
 					bulletSprite = ImageLoader.GOLDBULLET;
 					return ImageLoader.ELPRESIDENTE;
-				case 4: //ToiletPaper
+				case 4: // ToiletPaper
 					bulletSprite = ImageLoader.BASICBULLET;
 					return ImageLoader.TOILETPAPER;
 			}

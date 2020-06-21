@@ -130,10 +130,10 @@ public class SoundEffect implements LineListener {
 	 * plays the clip on a loop.
 	 */
 	public void loop() {
-		if (clips.size() == 0) { //Load the sound effect if it isn't already loaded.
+		if (clips.size() == 0) { // Load the sound effect if it isn't already loaded.
 			play();
 		}
-		clips.get(0).loop(Clip.LOOP_CONTINUOUSLY); //Play the clip.
+		clips.get(0).loop(Clip.LOOP_CONTINUOUSLY); // Play the clip.
 	}
 
 	public void stopLoop() {
@@ -157,7 +157,7 @@ public class SoundEffect implements LineListener {
 	public void update(LineEvent event) {
 		if (event.getType() == Type.STOP) {
 			((Clip) event.getSource()).close();
-			clips.remove((event.getSource());
+			clips.remove(event.getSource());
 		}
 	}
 

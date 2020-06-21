@@ -54,24 +54,24 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		//========Setup========//
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}         //Replace later with custom buttons - but for now better than the ugly default
+		} // Replace later with custom buttons - but for now better than the ugly default
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
 
-		for (Gun l : items) {                                                             //Loop through the inventory and create a JRadioButton for each
+		for (Gun l : items) { // Loop through the inventory and create a JRadioButton for each
 			JRadioButton tmp = new JRadioButton(l.getName());
 			//Each button sets the active weapon to their corresponding weapon
 			tmp.addActionListener(arg0 -> {
 				player.setActiveGun(l);
-				requestFocusInWindow();                                                //set focus back to jFrame so keyListener can work
+				requestFocusInWindow(); // set focus back to jFrame so keyListener can work
 			});
 			tmp.setFont(font.deriveFont(30f));
 			i.add(tmp);
 			inventoryB.add(tmp);
 		}
 
-		i.setLayout(new GridLayout(items.size(), 0));                                    //Set the nested JPanel to a gridLayout
+		i.setLayout(new GridLayout(items.size(), 0)); // Set the nested JPanel to a gridLayout
 
 		this.setLayout(new BorderLayout());
 		this.setTitle("Inventory");
@@ -81,20 +81,20 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 		this.addKeyListener(this);
 
 		//========Adding Components========//
-		this.add(Title, BorderLayout.PAGE_START);                                        //Adds the title to the center top of the page
-		this.add(scrollBar);                                                            //Adds the scrollPane of the nested JPanel
+		this.add(Title, BorderLayout.PAGE_START); // Adds the title to the center top of the page
+		this.add(scrollBar); // Adds the scrollPane of the nested JPanel
 
 		//========Finalization========//
 		this.setVisible(true);
-		requestFocusInWindow();                                                            //Set focus so keyListener works
+		requestFocusInWindow(); // Set focus so keyListener works
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		startTime = System.currentTimeMillis();
-		t.start();                                                                        //Start ticking timer
+		t.start(); // Start ticking timer
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (!this.isFocused() && System.currentTimeMillis() - startTime > 120) {                                                            //Disposes of the JFrame when focus is lost
+		if (!this.isFocused() && System.currentTimeMillis() - startTime > 120) { // Disposes of the JFrame when focus is lost
 			System.out.println("Lost focus after" + (System.currentTimeMillis() - startTime) + "ms.");
 			Driver.doTick = true;
 			dispose();

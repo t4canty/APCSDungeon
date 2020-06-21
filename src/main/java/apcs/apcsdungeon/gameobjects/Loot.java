@@ -22,10 +22,10 @@ public abstract class Loot {
 	public static int PISTOLMAG = 1;
 	public static int GUN = 2;
 	//========Variables========//
-	protected int id;        //id of loot.
+	protected int id; // id of loot.
 	protected BufferedImage[] Sprite;
 	protected String Name;
-	protected int number;    //number of hp, ammo, etc
+	protected int number; // number of hp, ammo, etc
 	protected int cooldown;
 
 	/**
