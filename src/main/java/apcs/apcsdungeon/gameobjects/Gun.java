@@ -118,12 +118,12 @@ public class Gun extends Loot {
 		}
 	}
 
-	//returns true if the gun is ready to fire
+	// returns true if the gun is ready to fire
 	public boolean canShoot() {
 		return System.currentTimeMillis() - lastShot > cooldown && ammoInMag > 0;
 	}
 
-	//returns a Projectile from the gun if the gun is able to fire- otherwise returns null
+	// returns a Projectile from the gun if the gun is able to fire- otherwise returns null
 	public apcs.apcsdungeon.gameobjects.Projectile getGunshot(int x, int y, double angle, apcs.apcsdungeon.gameobjects.GameObject origin) {
 		boolean isEnemy = origin instanceof apcs.apcsdungeon.gameobjects.Enemy;
 		if (canShoot()) {
@@ -182,7 +182,7 @@ public class Gun extends Loot {
 		return null;
 	}
 
-	//reloads ammo given a stash to take from- returns the leftover amount of ammo
+	// reloads ammo given a stash to take from- returns the leftover amount of ammo
 	public int reload(int totalAmmo) {
 		int ammoNeeded = maxAmmoInMag - ammoInMag;
 		int temp = totalAmmo;
@@ -209,7 +209,7 @@ public class Gun extends Loot {
 		return Sprite[n];
 	}
 
-	//reloads the gun with magic ammo that appears from nowhere
+	// reloads the gun with magic ammo that appears from nowhere
 	public void reload() {
 		if (ammoInMag != maxAmmoInMag) {
 			ammoInMag = maxAmmoInMag;

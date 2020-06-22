@@ -10,6 +10,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created May 26, 2020
@@ -18,6 +20,8 @@ import java.util.ArrayList;
  * @author TJ178
  */
 public class Player extends GameObject {
+	private static final Logger logger = LoggerFactory.getLogger(Player.class);
+
 	//========Final Variables========//
 	final public static int MARINE = 0;
 	final public static int WSB = 1;
@@ -36,7 +40,7 @@ public class Player extends GameObject {
 	private AnimatedImage[] death = new AnimatedImage[3];
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; // last time player moved - used for idle vs moving animation
-	private long lastDamageTaken = 0;//last time the player took damage - used for hurt animation
+	private long lastDamageTaken = 0; // last time the player took damage - used for hurt animation
 	private double gunAngle;
 	private double scaleFactor;
 	private boolean isAlive = true;
@@ -66,6 +70,14 @@ public class Player extends GameObject {
 		inventory.add(activeGun);
 		if (pid == SECRET) velocity = 15;
 		velocity = (int) (velocity * scaleFactor);
+
+		if (logger.isDebugEnabled()) {
+			inventory.add(new Gun(10, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, 40, "Yaris", super.isJar, scaleFactor));
+		}
+		if (logger.isDebugEnabled()) {
+			hp = 9999;
+		}
 	}
 
 	/**
@@ -75,40 +87,10 @@ public class Player extends GameObject {
 	 */
 	public Player(Dimension size, int pid, boolean isJar, double ratio) {
 		this(0, 0, size, pid, isJar, ratio);
-	}
-
-	/**
-	 * Player constructor with x and y inputs, debug option
-	 *
-	 * @param x     Starting X position for the player on the jframe
-	 * @param y     Starting Y position for the player on the jframe
-	 * @param size  Size of the player object
-	 * @param pid   Id of the char to use
-	 * @param debug Sets debug flag
-	 */
-	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio, boolean debug) {
-		this(x, y, size, pid, isJar, ratio);
-		this.debug = debug;
-		if (debug) {
-			inventory.add(new Gun(10, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
-			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, 40, "Yaris", super.isJar, scaleFactor));
+		if (logger.isDebugEnabled()) {
+			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0,
+					0, "EZ Death Lazer", super.isJar, scaleFactor));
 		}
-		if (debug) {
-			hp = 9999;
-		}
-	}
-
-	/**
-	 * Player constructor with debug option
-	 *
-	 * @param size  Size of the player object
-	 * @param debug Sets debug flag
-	 */
-	public Player(Dimension size, int pid, boolean isJar, double ratio, boolean debug) {
-		this(size, pid, isJar, ratio);
-		this.debug = debug;
-		if (debug)
-			inventory.add(new Gun(9999, 50, 99999, 10, 10, 0, 0, "EZ Death Lazer", super.isJar, scaleFactor));
 	}
 
 	//========Methods========//
@@ -132,7 +114,7 @@ public class Player extends GameObject {
 		if (isAlive) {
 			if (System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
 
-				//moving sprites
+				// moving sprites
 				switch (graphicsDir) {
 					case LEFT:
 						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
@@ -148,8 +130,8 @@ public class Player extends GameObject {
 						g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 				}
 				footsteps.loop();
-				//System.out.println("moving");
-				///hurt sprites
+				// System.out.println("moving");
+				// /hurt sprites
 			} else if (System.currentTimeMillis() - lastDamageTaken < 500) {
 				switch (graphicsDir) {
 					case LEFT:
@@ -165,9 +147,9 @@ public class Player extends GameObject {
 					case DOWN:
 						g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 				}
-				//System.out.println("hurt");
+				// System.out.println("hurt");
 
-				//idle sprites
+				// idle sprites
 			} else {
 				switch (graphicsDir) {
 					case LEFT:
@@ -184,7 +166,7 @@ public class Player extends GameObject {
 						g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 				}
 				footsteps.stop();
-				//System.out.println("idle");
+				// System.out.println("idle");
 			}
 		} else {
 			switch (graphicsDir) {
@@ -206,12 +188,11 @@ public class Player extends GameObject {
 			drawGun(g2d);
 		}
 
-		if (debug) g2d.draw(rBox);
-
+		if (logger.isDebugEnabled()) g2d.draw(rBox);
 	}
 
 
-	//Used to draw the gun onto the screen
+	// Used to draw the gun onto the screen
 	private void drawGun(Graphics2D g2d) {
 		if (isAlive) {
 			g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -221,7 +202,6 @@ public class Player extends GameObject {
 				g2d.drawImage(activeGun.getSprite(id + 1, hp), (int) (rBox.getCenterX()) + 13, (int) (rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor), null);
 			}
 
-			//if(debug) g2d.drawLine((int)(rBox.getCenterX()), (int)(rBox.getCenterY()), (int)(rBox.getCenterX() + 100), (int)(rBox.getCenterY()));
 			g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		}
 
@@ -352,7 +332,7 @@ public class Player extends GameObject {
 	/**
 	 * Return projectile entity shot from gun
 	 */
-	//TODO: make this responsive to different types of guns
+	// TODO: make this responsive to different types of guns
 	public Projectile getNewBullet() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, this);
 	}

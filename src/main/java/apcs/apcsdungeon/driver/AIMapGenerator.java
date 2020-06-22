@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class AIMapGenerator {
 	/*
 	 * Map codes
-	 * n -> null	//this shouldn't exist in finished map
-	 * p -> player	//should only exist in one square
+	 * n -> null	// this shouldn't exist in finished map
+	 * p -> player	// should only exist in one square
 	 * x -> wall
-	 * e -> enemy	//should only be as many as there are total enemies
+	 * e -> enemy	// should only be as many as there are total enemies
 	 * o -> player projectile
 	 * . -> empty
 	 */

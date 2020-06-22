@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic chest entity, drops loot when hit.
@@ -14,6 +16,8 @@ import java.util.Random;
  * @author t4canty
  */
 public class Chest extends Prop {
+	private static final Logger logger = LoggerFactory.getLogger(Chest.class);
+
 	//========Variables========//
 	private Loot item;
 	private boolean isOpen;
@@ -49,7 +53,7 @@ public class Chest extends Prop {
 	}
 
 	//========Methods========//
-	//private method to fill a chest with a random item.
+	// private method to fill a chest with a random item.
 	private void computeDrop() {
 		int rand = new Random().nextInt(7);
 		switch (rand) {
@@ -79,7 +83,7 @@ public class Chest extends Prop {
 				rand = new Random().nextInt(100);
 				item = new AmmoMag(10 + rand, ImageLoader.PISTOLMAG);
 		}
-		if (debug) System.out.println("Random number in chest ComputeDrop():" + rand + " Drop:" + item.getName());
+		logger.debug("Random number in chest ComputeDrop():" + rand + " Drop:" + item.getName());
 	}
 
 	@Override
@@ -90,7 +94,7 @@ public class Chest extends Prop {
 		g.drawImage(Sprite, x, y, rBox.width, rBox.height, null);
 	}
 
-	//we don't care about this.
+	// we don't care about this.
 	@Override
 	public void advanceAnimationFrame() {
 	}

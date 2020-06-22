@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for different types of projectiles available - determined by id.
@@ -14,6 +16,8 @@ import java.awt.image.BufferedImage;
  * @author TJ178
  */
 public class Projectile extends GameObject {
+	private static final Logger logger = LoggerFactory.getLogger(Projectile.class);
+
 	//========Variables========//
 	private int velocityX;
 	private int velocityY;
@@ -64,7 +68,7 @@ public class Projectile extends GameObject {
 	private void rotateBullet(Graphics2D g2d) {
 		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
 		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
-		if (debug) g2d.draw(rBox);
+		if (logger.isDebugEnabled()) g2d.draw(rBox);
 		g2d.rotate(-angle, rBox.getCenterX(), rBox.getCenterY());
 	}
 
@@ -81,7 +85,7 @@ public class Projectile extends GameObject {
 		return damage;
 	}
 
-	//Methods we don't care about.
+	// Methods we don't care about.
 	@Override
 	public void advanceAnimationFrame() {
 	}

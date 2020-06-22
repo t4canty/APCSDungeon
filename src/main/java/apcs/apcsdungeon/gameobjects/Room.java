@@ -1,6 +1,5 @@
 package apcs.apcsdungeon.gameobjects;
 
-import apcs.apcsdungeon.driver.Driver;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Container for all entities and map properties.
@@ -17,6 +18,8 @@ import java.util.ArrayList;
  * @author t4canty
  */
 public class Room {
+	private static final Logger logger = LoggerFactory.getLogger(Room.class);
+
 	public boolean isJar = false; // change image loading if image is a jar file
 	protected int leftBound;
 	protected int topBound;
@@ -61,7 +64,7 @@ public class Room {
 	public void paint(Graphics g) {
 		g.drawImage(backgroundSprite, 0, 0, screenSize.width, screenSize.height, null);
 
-		if (Driver.debug) {
+		if (logger.isDebugEnabled()) {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.BLACK);
 			if (leftDoor != null) g2d.draw(leftDoor);
@@ -71,7 +74,7 @@ public class Room {
 		}
 	}
 
-	//Method for paiting all the enetities in the room.
+	// Method for paiting all the enetities in the room.
 	public void paintEntities(Graphics g) {
 		collision();
 		for (GameObject o : entities) {
@@ -79,13 +82,13 @@ public class Room {
 		}
 	}
 
-	///check if any objects are colliding with each other on the map
+	// /check if any objects are colliding with each other on the map
 	private void collision() {
 		for (int i = 0; i < entities.size(); i++) {
 			GameObject temp = entities.get(i);
 			for (int j = 0; j < entities.size(); j++) {
 
-				//check if projectiles hit the wall
+				// check if projectiles hit the wall
 				if (temp instanceof Projectile) {
 					if (temp.getHitbox().getX() > rightBound || temp.getHitbox().getX() < leftBound || temp.getHitbox().getY() > bottomBound || temp.getHitbox().getY() < topBound) {
 						entities.remove(i);
@@ -96,8 +99,8 @@ public class Room {
 
 				if (j != i) {
 					GameObject temp2 = entities.get(j);
-					//check if a projectile that was shot by the player hit an enemy
-					//kill the projectile if so, kill the enemy if it has no health left and spawn its drop
+					// check if a projectile that was shot by the player hit an enemy
+					// kill the projectile if so, kill the enemy if it has no health left and spawn its drop
 					if (temp instanceof Projectile && !((Projectile) temp).isEnemyFire() && (temp2 instanceof Enemy || temp2 instanceof Chest)) {
 						if (temp.getHitbox().intersects(temp2.getHitbox())) {
 							if (temp2 instanceof Enemy) {
@@ -146,12 +149,12 @@ public class Room {
 	}
 
 	//============Getters/Setters=============//
-	//get the bounds as an array
+	// get the bounds as an array
 	public int[] getBounds() {
 		return new int[]{topBound, rightBound, bottomBound, leftBound};
 	}
 
-	//get the bounds as a rectangle
+	// get the bounds as a rectangle
 	public Rectangle getRectBounds() {
 		return new Rectangle(leftBound, topBound, bottomBound - topBound, rightBound - leftBound);
 	}
@@ -209,7 +212,7 @@ public class Room {
 
 	public void setTopRoom(Room r) {
 		topRoom = r;
-		//topDoor = new Rectangle((int)(440 * ratio), (int)(10 * ratio), (int)(128 * ratio), (int)(40 * ratio));
+		// topDoor = new Rectangle((int)(440 * ratio), (int)(10 * ratio), (int)(128 * ratio), (int)(40 * ratio));
 		topDoor = new Rectangle((int) (440 * ratio), (int) (10 * ratio), (int) (128 * ratio), (int) (40 * ratio));
 	}
 

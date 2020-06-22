@@ -16,6 +16,8 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Comments added Jun 10, 2020
@@ -25,6 +27,8 @@ import org.apache.commons.io.IOUtils;
  * Sound handler class.
  */
 public class SoundEffect implements LineListener {
+	private static final Logger logger = LoggerFactory.getLogger(SoundEffect.class);
+
 	//========Variables========//
 	private ArrayList<Clip> clips = new ArrayList<>();
 	private byte[] clipData;
@@ -38,11 +42,10 @@ public class SoundEffect implements LineListener {
 	 *
 	 * @param filepath path to the sound file.
 	 * @param isJar    set to true when compiling.
-	 * @param debug    debug param.
 	 */
-	public SoundEffect(String filepath, boolean isJar, boolean debug) {
+	public SoundEffect(String filepath, boolean isJar) {
 		SoundLoader.totalNumberLoaded++;
-		if (debug) System.out.println(filepath);
+		logger.debug(filepath);
 		try {
 			if (isJar)
 				clipData = getClipFromJar(filepath);
@@ -58,11 +61,10 @@ public class SoundEffect implements LineListener {
 	 *
 	 * @param filepath path to the sound file.
 	 * @param isJar    set to true when compiling.
-	 * @param debug    debug param.
 	 * @param volume   volume level of the clip.
 	 */
-	public SoundEffect(String filepath, boolean isJar, boolean debug, double volume) {
-		this(filepath, isJar, debug);
+	public SoundEffect(String filepath, boolean isJar, double volume) {
+		this(filepath, isJar);
 		setVolume(volume);
 	}
 
@@ -71,12 +73,11 @@ public class SoundEffect implements LineListener {
 	 *
 	 * @param filepath path to the sound file.
 	 * @param isJar    set to true when compiling.
-	 * @param debug    debug param.
 	 * @param volume   volume level of the clip.
 	 * @param isLoop   Loops the clip if true.
 	 */
-	public SoundEffect(String filepath, boolean isJar, boolean debug, double volume, boolean isLoop) {
-		this(filepath, isJar, debug, volume);
+	public SoundEffect(String filepath, boolean isJar, double volume, boolean isLoop) {
+		this(filepath, isJar, volume);
 		isContinuousEffect = isLoop;
 	}
 
@@ -85,11 +86,10 @@ public class SoundEffect implements LineListener {
 	 *
 	 * @param filepath path to the sound file.
 	 * @param isJar    set to true when compiling.
-	 * @param debug    debug param.
 	 * @param isLoop   Loops the clip if true.
 	 */
-	public SoundEffect(String filepath, boolean isJar, boolean debug, boolean isLoop) {
-		this(filepath, isJar, debug);
+	public SoundEffect(String filepath, boolean isJar, boolean isLoop) {
+		this(filepath, isJar);
 		isContinuousEffect = isLoop;
 	}
 

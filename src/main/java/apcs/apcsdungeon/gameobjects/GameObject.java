@@ -44,7 +44,6 @@ public abstract class GameObject {
 	protected Rectangle rBox;
 	protected int x, y;
 	protected int hp;
-	protected boolean debug = false;
 	protected boolean hasAI = false;
 
 	//========Abstract methods========//
@@ -57,7 +56,7 @@ public abstract class GameObject {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
 	}
 
-	//check if this GameObject's hitbox is colliding with another
+	// check if this GameObject's hitbox is colliding with another
 	public boolean isColliding(Rectangle r) {
 		if (r != null) {
 			return rBox.intersects(r);

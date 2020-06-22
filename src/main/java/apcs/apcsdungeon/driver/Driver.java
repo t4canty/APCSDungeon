@@ -30,6 +30,8 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created May 26, 2020
@@ -38,7 +40,7 @@ import javax.swing.Timer;
  * @author TJ178
  */
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-	public static boolean debug;
+	private static final Logger logger = LoggerFactory.getLogger(Driver.class);
 	public static boolean doTick = true; // track if the game should update variables & run the game
 	//========Variables========//
 	private Dimension bounds;
@@ -57,11 +59,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private double ratio;
 	private Font font;
 
-	//keybindings - {up, right, down, left, interact, reload}
+	// keybindings - {up, right, down, left, interact, reload}
 	private char[] keybindings = {'w', 'd', 's', 'a', 'e', 'r'};
 
 	//========Constructors========//
-	//variables for movement and interaction keys
+	// variables for movement and interaction keys
 	private boolean playerUp = false;
 
 	//================== Update Function =================//
@@ -72,7 +74,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	//================ Room initializer (hard coded for now) ==============//
 
-	//bottom : 782, right 830, left: 45, top 40
+	// bottom : 782, right 830, left: 45, top 40
 	/*	left hitbox	 -(0, 430, 50, 128)
 	 * 	right hitbox -(950, 430, 40, 128)
 	 * 	bottom hitbox-(440, 900, 128, 40)
@@ -83,7 +85,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean playerReload = false;
 
 	//================ Mouse / Keyboard input ================//
-	//mouse location tracker
+	// mouse location tracker
 	private int mouseX = 0;
 	private int mouseY = 0;
 
@@ -92,11 +94,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 *
 	 * @param bounds Size of the JFrame
 	 * @param title  Title of the window
-	 * @param debug  Enable debug console printouts
 	 */
-	public Driver(Dimension bounds, String title, boolean debug, int pid, boolean isJar, Font font) {
+	public Driver(Dimension bounds, String title, int pid, boolean isJar, Font font) {
 		this.bounds = bounds;
-		Driver.debug = debug;
 		this.pid = pid;
 		f = new JFrame();
 		f.setTitle(title);
@@ -107,12 +107,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.addKeyListener(this);
 		f.addMouseListener(this);
 		f.addMouseMotionListener(this);
-		if (debug) System.out.println("Bounds:" + bounds.height);
+		logger.debug("Bounds:" + bounds.height);
 		ratio = (bounds.height / (double) 1000);
-		if (debug) System.out.println("ratio: " + ratio);
+		logger.debug("ratio: " + ratio);
 		this.font = font;
 		//===========Temporary player initialization for testing===========//
-		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
+		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio);
 		initializeRooms();
 		currentRoom = rooms[0];
 		player.updateBounds(currentRoom.getBounds());
@@ -122,7 +122,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		healthBar = new StatusBar(10, 10, new Dimension((int) ((player.getHP() * 2) * ratio), 25), Color.MAGENTA, false, false, StatusBar.MIDDLE, "Health", false, 0, player.getHP(), player.getHP());
 		backgroundMusic.loop();
 
-		//Adding ticking timer
+		// Adding ticking timer
 		t = new Timer(17, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,7 +135,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		repaint();
 		if (doTick) {
 			if (player.isAlive()) {
-				//move player if any keyboard buttons are pressed
+				// move player if any keyboard buttons are pressed
 				if (playerUp) {
 					if (playerRight) {
 						player.move(GameObject.UPRIGHT);
@@ -166,7 +166,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					player.reload();
 				}
 
-				//tell player where the mouse is to update the gun
+				// tell player where the mouse is to update the gun
 				player.updateGunAngle(mouseX, mouseY);
 
 				if (player.isColliding(currentRoom.getRightDoor()) && currentRoom.isDoorOpen()) {
@@ -187,20 +187,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					player.moveTo(player.getX(), (int) (80 * ratio));
 				}
 
-				//shoot the gun if the cooldown is ready and button is pressed
+				// shoot the gun if the cooldown is ready and button is pressed
 				boolean canShoot = player.isShooting && player.canShootBullet();
-				//if(debug) System.out.println("In Driver: CanShoot:" + canShoot);
 				if (canShoot) {
 					currentRoom.getEntities().add(player.getNewBullet()); // spawn new projectile from player gun
 				}
 			}
 
-			//player -> enemy projectile & player -> wall collision
+			// player -> enemy projectile & player -> wall collision
 			player.checkCollision(currentRoom.getEntities());
 
 			healthBar.setValue(player.getHP());
 
-			//enemy shooting
+			// enemy shooting
 			for (int i = 0; i < currentRoom.getEntities().size(); i++) {
 				GameObject o = currentRoom.getEntities().get(i);
 				if (o instanceof Enemy) {
@@ -215,7 +214,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 
 
-			//timed spawning of enemies (temporary for now)
+			// timed spawning of enemies (temporary for now)
 			if (System.currentTimeMillis() - lastEnemySpawn > 15000) {
 				lastEnemySpawn = System.currentTimeMillis();
 				Random rand = new Random();
@@ -223,7 +222,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 
 		}
-		//update all animations at 30 fps
+		// update all animations at 30 fps
 		if (System.currentTimeMillis() - lastAnimationUpdate > 33) {
 			if (doTick) {
 				for (GameObject e : currentRoom.getEntities()) {
@@ -241,7 +240,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	private void respawn() {
 		currentRoom = rooms[0];
-		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio, debug);
+		player = new Player(100, 100, new Dimension((int) (128 * ratio), (int) (128 * ratio)), pid, isJar, ratio);
 		player.updateBounds(currentRoom.getBounds());
 	}
 
@@ -253,7 +252,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		g.setColor(Color.black);
 
-		if (debug) {
+		if (logger.isDebugEnabled()) {
 			g.setColor(new Color(0, 255, 0, 100));
 			g.fillRect(currentRoom.getRectBounds().x, currentRoom.getRectBounds().y, currentRoom.getRectBounds().width, currentRoom.getRectBounds().height);
 			g.setColor(Color.black);
@@ -264,8 +263,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.setFont(font.deriveFont((float) (20 * ratio)));
 		g.drawString(player.getAmmoInMag() + " / " + player.getTotalAmmo(), (int) (140 * ratio), (int) (ratio * 700));
 		g.drawString("health | " + player.getHP(), (int) (140 * ratio), (int) (715 * ratio));
-		if (debug) g.drawString(player.getX() + "   " + player.getY(), (int) (150 * ratio), (int) (730 * ratio));
-		if (debug) g.drawString(mouseX + "    " + mouseY, (int) (150 * ratio), (int) (745 * ratio));
+		if (logger.isDebugEnabled()) g.drawString(player.getX() + "   " + player.getY(), (int) (150 * ratio), (int) (730 * ratio));
+		if (logger.isDebugEnabled()) g.drawString(mouseX + "    " + mouseY, (int) (150 * ratio), (int) (745 * ratio));
 		healthBar.paint(g);
 
 		if (!player.isAlive()) {
@@ -343,29 +342,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		Random rand = new Random();
 		for (Room r : rooms) {
 			if (rand.nextBoolean()) {
-				if (debug) System.out.println("Added a chest in a room.");
+				logger.debug("Added a chest in a room.");
 				r.addProp(new Chest(rand.nextInt(905 - 48 + 1) + 48, rand.nextInt(870 - 40 + 1) + 40, ImageLoader.CHEST, ratio));
 			}
 		}
 	}
 
-	/**
-	 * Changes default key bindings to a new key
-	 *
-	 * @param oldkey Key that action was previously set to
-	 * @param newkey New key that action will now set to
-	 */
-	private void changeKeyBinding(char oldkey, char newkey) {
-		for (int i = 0; i < keybindings.length; i++) {
-			if (keybindings[i] == oldkey) {
-				keybindings[i] = newkey;
-				break;
-			}
-		}
-	}
-
-
-	//set designated variables to true when specific key is pressed
+	// set designated variables to true when specific key is pressed
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -404,7 +387,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 	}
 
-	//set designated variables to false when specific key is released
+	// set designated variables to false when specific key is released
 	@Override
 	public void keyReleased(KeyEvent e) {
 		char temp = e.getKeyChar();
@@ -430,7 +413,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	}
 
-	//if the left mouse button is pressed, shoot gun
+	// if the left mouse button is pressed, shoot gun
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
@@ -439,7 +422,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	}
 
-	//if left mouse button is released, stop shooting gun
+	// if left mouse button is released, stop shooting gun
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
@@ -448,25 +431,25 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	}
 
-	//if left mouse is pressed & mouse is moving, keep track of location and continue shooting
+	// if left mouse is pressed & mouse is moving, keep track of location and continue shooting
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		//change where player weapon is aiming & shooting
+		// change where player weapon is aiming & shooting
 		mouseX = e.getX();
 		mouseY = e.getY();
 		player.isShooting = true;
 
 	}
 
-	//keep track of mouse location when button is not pressed
+	// keep track of mouse location when button is not pressed
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		//change where player weapon is aiming
+		// change where player weapon is aiming
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
 
-	//methods we don't care about
+	// methods we don't care about
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

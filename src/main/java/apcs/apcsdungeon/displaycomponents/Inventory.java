@@ -61,7 +61,7 @@ public class Inventory extends JFrame implements ActionListener, KeyListener {
 
 		for (Gun l : items) { // Loop through the inventory and create a JRadioButton for each
 			JRadioButton tmp = new JRadioButton(l.getName());
-			//Each button sets the active weapon to their corresponding weapon
+			// Each button sets the active weapon to their corresponding weapon
 			tmp.addActionListener(arg0 -> {
 				player.setActiveGun(l);
 				requestFocusInWindow(); // set focus back to jFrame so keyListener can work

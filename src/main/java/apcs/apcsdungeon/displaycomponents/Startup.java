@@ -31,6 +31,8 @@ import javax.swing.JRadioButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created May 30, 2020
@@ -41,9 +43,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 
 public class Startup extends JPanel implements ActionListener {
+	private static final Logger logger = LoggerFactory.getLogger(Startup.class);
 	public static String unlockPath;
 	//========Variables========//
-	private boolean debug;
 	private boolean maxed = false;
 	private boolean animationFinished = false;
 	private boolean isJar;
@@ -78,7 +80,7 @@ public class Startup extends JPanel implements ActionListener {
 	private Font font;
 
 	//========Constructors========//
-	public Startup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
+	public Startup(Dimension bounds, String title, boolean isJar, String path) {
 		//====Pre-Setup====//
 		// Load images before ImageLoader
 		f = new JFrame("Startup");
@@ -109,15 +111,14 @@ public class Startup extends JPanel implements ActionListener {
 		startTime = System.currentTimeMillis();
 
 		s = new SoundLoader(); // Start SoundLoader thread
-		s.start(isJar, debug);
+		s.start(isJar);
 
 		i = new ImageLoader(); // Start ImageLoader thread
-		i.start(isJar, debug);
+		i.start(isJar);
 
 		currentIcon = new ImageIcon(MarineSplash);
 		//====Setup====//
 
-		this.debug = debug;
 		this.setBackground(new Color(255, 255, 255, 50));
 		d = bounds;
 		t = title;
@@ -216,7 +217,7 @@ public class Startup extends JPanel implements ActionListener {
 			loadingBar.paint(g);
 		}
 
-		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2); // Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, f.getWidth() / 2 - logo.getWidth(null) / 2,
@@ -267,8 +268,7 @@ public class Startup extends JPanel implements ActionListener {
 		if (doneLoading && !start.isEnabled()) {
 			sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.MARINE_STARTUP);
 			start.setEnabled(true);
-			if (debug)
-				System.out.println("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
+			logger.debug("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 
 		if (doneLoading) {
@@ -283,13 +283,13 @@ public class Startup extends JPanel implements ActionListener {
 		if (e.getActionCommand() != null) {
 			switch (e.getActionCommand()) {
 				case "l":
-					if (debug) System.out.println("Creating Driver");
+					logger.debug("Creating Driver");
 					i.unloadImages(id);
-					new Driver(d, t, debug, id, isJar, font);
+					new Driver(d, t, id, isJar, font);
 					f.dispose();
 					break;
 				case "m":
-					if (debug) System.out.println("Selected marine");
+					logger.debug("Selected marine");
 					id = Player.MARINE;
 					pictureLabel.setText("");
 					currentIcon = new ImageIcon(MarineSplash);
@@ -298,7 +298,7 @@ public class Startup extends JPanel implements ActionListener {
 					selectPanel.revalidate();
 					break;
 				case "w":
-					if (debug) System.out.println("Selected WSB");
+					logger.debug("Selected WSB");
 					if (wsbUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(WSBSplash);
@@ -314,7 +314,7 @@ public class Startup extends JPanel implements ActionListener {
 					}
 					break;
 				case "s":
-					if (debug) System.out.println("Selected Secret");
+					logger.debug("Selected Secret");
 					if (secretUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(SecretSplash);

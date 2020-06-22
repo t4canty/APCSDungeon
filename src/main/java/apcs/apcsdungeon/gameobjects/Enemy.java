@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for Enemy Objects, including fields such as health, item drops, and position - as well as necessary paint methods and bg methods.
@@ -19,6 +21,8 @@ import java.util.Random;
  * @author TJ178
  */
 public class Enemy extends GameObject {
+	private static final Logger logger = LoggerFactory.getLogger(Enemy.class);
+
 	protected Gun activeGun;
 	protected int movementSpeed = 4;
 	protected double gunAngle;
@@ -74,7 +78,7 @@ public class Enemy extends GameObject {
 		rBox.y = y;
 
 		Graphics2D g2d = (Graphics2D) g;
-		if (debug) g2d.draw(rBox);
+		if (logger.isDebugEnabled()) g2d.draw(rBox);
 
 		if (Math.abs(gunAngle) > 2.35) {
 			graphicsDir = LEFT;
@@ -88,7 +92,7 @@ public class Enemy extends GameObject {
 
 		if (System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
 
-			//moving sprites
+			// moving sprites
 			switch (graphicsDir) {
 				case LEFT:
 					g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
@@ -104,7 +108,7 @@ public class Enemy extends GameObject {
 					g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 			}
 
-			///hurt sprites
+			// /hurt sprites
 		} else if (System.currentTimeMillis() - lastDamageTaken < 20) {
 			switch (graphicsDir) {
 				case LEFT:
@@ -121,7 +125,7 @@ public class Enemy extends GameObject {
 					g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 			}
 
-			//idle sprites
+			// idle sprites
 		} else {
 			switch (graphicsDir) {
 				case LEFT:
@@ -145,7 +149,7 @@ public class Enemy extends GameObject {
 
 	}
 
-	//draw gun on the screen dependent on the angle it's aiming
+	// draw gun on the screen dependent on the angle it's aiming
 	protected void drawGun(Graphics2D g2d) {
 		g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 		if (Math.abs(gunAngle) > 1.07) {
@@ -153,12 +157,13 @@ public class Enemy extends GameObject {
 		} else {
 			g2d.drawImage(activeGun.getSprite(3, hp), (int) (rBox.getCenterX()) + 10, (int) (rBox.getCenterY()) - 20, (int) ((25 * r1) * sFactor), (int) ((25 * r1) * sFactor), null);
 		}
-		if (debug)
+		if (logger.isDebugEnabled()) {
 			g2d.drawLine((int) (rBox.getCenterX()), (int) (rBox.getCenterY()), (int) (rBox.getCenterX() + 100), (int) (rBox.getCenterY()));
+		}
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}
 
-	//update all of the animations
+	// update all of the animations
 	@Override
 	public void advanceAnimationFrame() {
 		for (AnimatedImage i : skin) {
@@ -166,18 +171,18 @@ public class Enemy extends GameObject {
 		}
 	}
 
-	//computes a random item to drop when the enemy is killed
+	// computes a random item to drop when the enemy is killed
 	private void computeDrop() {
 		int rand = new Random().nextInt(100);
-		//int rand = 44;
+		// int rand = 44;
 		if (rand < 15) { // BadGun
 			drop = new Gun(10, 300, 5, 5, 15, Gun.BADGUN, 5, "Bad Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
-		} else if (rand < 40) {//BetterGun
+		} else if (rand < 40) { // BetterGun
 			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		} else if (rand < 45) { // FederalReserve
-			//drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
+			// drop = new Gun(10, 50, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isJar, sFactor);
 			drop = new Gun(20, 200, 15, 8, 15, Gun.BETTERGUN, 5, "Better Gun", isJar, sFactor);
 			activeGun = (Gun) drop;
 		} else if (rand < 55) { // ElPresidente
@@ -195,15 +200,15 @@ public class Enemy extends GameObject {
 			activeGun = new Gun(5, 700, 10, 10, 10, 0, 5, "Bad Gun", isJar, sFactor);
 		}
 
-		if (debug) System.out.println("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
+		logger.debug("Random number in ComputeDrop():" + rand + " Drop:" + drop.getName());
 	}
 
-	//get a new projectile from the gun
+	// get a new projectile from the gun
 	public Projectile getGunshot() {
 		return activeGun.getGunshot(getCenterX(), getCenterY(), gunAngle, this);
 	}
 
-	//damage this enemy
+	// damage this enemy
 	public void damage(int hp) {
 		this.hp -= hp;
 		lastDamageTaken = System.currentTimeMillis(); // keep track of when damage is taken to show hurt animation
@@ -235,7 +240,7 @@ public class Enemy extends GameObject {
 		cRoom = room;
 		if (activeGun.getAmmoInMag() == 0) activeGun.reload();
 
-		//first determine which state the AI will operate within
+		// first determine which state the AI will operate within
 		int currentState;
 		int distFromPlayer = (int) getDistanceFrom(player.getCenterX(), player.getCenterY());
 		if (distFromPlayer > (250 * sFactor)) {
@@ -248,7 +253,7 @@ public class Enemy extends GameObject {
 			currentState = 2;
 		}
 
-		//check if this enemy is intersecting others, if so move away from the other enemies
+		// check if this enemy is intersecting others, if so move away from the other enemies
 		int eX = 0;
 		int eY = 0;
 		for (GameObject e : room.getEntities()) {
@@ -260,43 +265,43 @@ public class Enemy extends GameObject {
 			}
 		}
 
-		//act accordingly based on that state
+		// act accordingly based on that state
 		switch (currentState) {
 			case 0:
-				//move towards player
+				// move towards player
 				x += movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 				y += movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
 				lastWalk = System.currentTimeMillis();
 				isShooting = false;
 				break;
 			case 1:
-				//move away from player
+				// move away from player
 				x -= movementSpeed * (player.getCenterX() - getCenterX()) / distFromPlayer;
 				y -= movementSpeed * (player.getCenterY() - getCenterY()) / distFromPlayer;
 				lastWalk = System.currentTimeMillis();
 				isShooting = true;
 				break;
 			case 2:
-				//shoot player
+				// shoot player
 				isShooting = true;
 				break;
 			case 3:
-				//TODO: run away from player gunshots
+				// TODO: run away from player gunshots
 				break;
 			case 4:
-				//avoid intersecting other enemies
+				// avoid intersecting other enemies
 				x -= movementSpeed * (eX - getCenterX()) / distFromPlayer;
 				y -= movementSpeed * (eY - getCenterY()) / distFromPlayer;
 				lastWalk = System.currentTimeMillis();
 		}
 
-		//make sure to stay within room bounds
+		// make sure to stay within room bounds
 		if (y < room.topBound) y = room.topBound;
 		if (y > room.bottomBound - rBox.height) y = room.bottomBound - rBox.height;
 		if (x < room.leftBound) x = room.leftBound;
 		if (x > room.rightBound - rBox.width) x = room.rightBound - rBox.width;
 
-		//update angle of held gun
+		// update angle of held gun
 		gunAngle = Math.atan2(player.getCenterY() - rBox.getCenterY(), player.getCenterX() - rBox.getCenterX());
 	}
 

@@ -8,8 +8,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Boss extends Enemy {
+	private static final Logger logger = LoggerFactory.getLogger(Boss.class);
+
 	public Boss(int x, int y, boolean isjar, double ratio) {
 		super(x, y, 1000, new Dimension(200, 200), ImageLoader.WSBSKIN, isjar, ratio, new Gun(10, 100, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isjar, ratio));
 		movementSpeed = 6;
@@ -38,7 +42,7 @@ public class Boss extends Enemy {
 		} else {
 			g2d.drawImage(activeGun.getSprite(Player.WSB + 1, hp), (int) (rBox.getCenterX()) + 10, (int) (rBox.getCenterY()) - 20, (int) (50 * sFactor), (int) (50 * sFactor), null);
 		}
-		if (debug)
+		if (logger.isDebugEnabled())
 			g2d.drawLine((int) (rBox.getCenterX()), (int) (rBox.getCenterY()), (int) (rBox.getCenterX() + 100), (int) (rBox.getCenterY()));
 		g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
 	}

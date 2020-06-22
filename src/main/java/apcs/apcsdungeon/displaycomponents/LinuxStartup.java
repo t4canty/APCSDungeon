@@ -32,6 +32,8 @@ import javax.swing.JRadioButton;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created May 30, 2020
@@ -42,8 +44,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 
 public class LinuxStartup extends JPanel implements ActionListener {
+	private static final Logger logger = LoggerFactory.getLogger(LinuxStartup.class);
 	//========Varibles========/
-	private boolean debug;
 	private boolean maxed = false;
 	private boolean animationFinished = false;
 	private boolean isJar;
@@ -78,8 +80,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	private Font font;
 
 	//========Constructors========//
-	public LinuxStartup(Dimension bounds, String title, boolean debug, boolean isJar, String path) {
-
+	public LinuxStartup(Dimension bounds, String title, boolean isJar, String path) {
 		//====Pre-Setup====//
 		f = new JFrame("Startup");
 		System.setProperty("sun.java2d.opengl", "true");
@@ -104,19 +105,18 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		startTime = System.currentTimeMillis();
 
 		s = new SoundLoader(); // Start SoundLoader thread
-		s.start(isJar, debug);
+		s.start(isJar);
 
 		i = new ImageLoader(); // Start ImageLoader thread
-		i.start(isJar, debug);
+		i.start(isJar);
 
 		currentIcon = new ImageIcon(MarineSplash);
+
 		//====Setup====//
-
-		this.debug = debug;
-
 		d = bounds;
 		t = title;
-		selectPanel = new JPanel(new BorderLayout(), false); // for fucks sake, 4 HOURS of work to find out all I needed to do was disable double buffering
+		selectPanel = new JPanel(new BorderLayout(), false); // for fucks sake, 4 HOURS of work to find
+		// out all I needed to do was disable double buffering
 		anotherFuckingPanelJustForButtons = new JPanel(false);
 		anotherFuckingPanelJustForButtons.setBackground(new Color(0, 0, 0, 0));
 		marine = new JRadioButton("Marine");
@@ -157,7 +157,6 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		wsb.setEnabled(false);
 		marine.setEnabled(false);
 
-
 		bg.add(marine);
 		bg.add(wsb);
 		bg.add(secret);
@@ -190,11 +189,6 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	}
 
 	//========Methods========//
-//	@Override
-//	public void paintComponent(Graphics g) {
-//		this.setBackground(new Color(0f, 0f, 0f, 0.2f ));
-//		g.drawImage(bgImg, 0, 0, this.getWidth(), this.getHeight(), null);
-//	}
 
 	@Override
 	public void paintComponents(Graphics g) {
@@ -209,7 +203,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		g.setColor(new Color(0, 0, 0, alpha));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight()); // Animated black screen
 
-		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2);//Animated logo
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a2); // Animated logo
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(ac);
 		g2d.drawImage(logo, this.getWidth() / 2 - logo.getWidth(null) / 2, this.getHeight() / 2 - logo.getHeight(null) / 2, null);
@@ -231,9 +225,9 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		repaint();
 		boolean doneLoading = !i.isAlive() && !s.isAlive();
 		if (!animationFinished) { // Function to fade out logo
-			if (a2 < 1 && !maxed)
+			if (a2 < 1 && !maxed) {
 				a2 += 0.01f;
-			else if (a2 >= 1) {
+			} else if (a2 >= 1) {
 				if (!doneLoading)
 					a2 = 1f;
 				else {
@@ -264,8 +258,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 
 		if (doneLoading && animationFinished && alpha == 255) {
 			sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
-			if (debug)
-				System.out.println("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
+			logger.debug("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 
 		if (alpha > 0 && animationFinished) alpha /= 1.2;
@@ -275,18 +268,17 @@ public class LinuxStartup extends JPanel implements ActionListener {
 			sprite.advanceCurrentFrame();
 		}
 
-
 		//==Buttons==//
 		if (e.getActionCommand() != null) {
 			switch (e.getActionCommand()) {
 				case "l":
-					if (debug) System.out.println("Creating Driver");
+					logger.debug("Creating Driver");
 					i.unloadImages(id);
-					new Driver(d, t, debug, id, isJar, font);
+					new Driver(d, t, id, isJar, font);
 					f.dispose();
 					break;
 				case "m":
-					if (debug) System.out.println("Selected marine");
+					logger.debug("Selected marine");
 					id = Player.MARINE;
 					pictureLabel.setText("");
 					currentIcon = new ImageIcon(MarineSplash);
@@ -294,7 +286,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 					pictureLabel.setIcon(currentIcon);
 					break;
 				case "w":
-					if (debug) System.out.println("Selected WSB");
+					logger.debug("Selected WSB");
 					if (wsbUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(WSBSplash);
@@ -308,7 +300,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 					}
 					break;
 				case "s":
-					if (debug) System.out.println("Selected Secret");
+					logger.debug("Selected Secret");
 					if (secretUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(SecretSplash);

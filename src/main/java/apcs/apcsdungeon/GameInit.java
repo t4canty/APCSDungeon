@@ -3,11 +3,16 @@ package apcs.apcsdungeon;
 import apcs.apcsdungeon.displaycomponents.HeadlessGame;
 import apcs.apcsdungeon.displaycomponents.LinuxStartup;
 import apcs.apcsdungeon.displaycomponents.Startup;
+import ch.qos.logback.classic.Level;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameInit {
+	private static final Logger logger = LoggerFactory.getLogger(GameInit.class);
+
 	private static final int OS_WINDOWS = 0;
 	private static final int OS_LINUX = 1;
 
@@ -15,20 +20,19 @@ public class GameInit {
 	 * Constructor.
 	 *
 	 * @param title  Window title
-	 * @param debug  Debug mode
 	 * @param bounds Windows bounds
 	 * @param isJar
 	 * @param path
 	 */
-	public GameInit(String title, boolean debug, Dimension bounds, boolean isJar, int os, String path) {
-		if (debug) System.out.println("Path:" + path);
+	public GameInit(String title, Dimension bounds, boolean isJar, int os, String path) {
+		logger.debug("Path:" + path);
 		if (os == OS_WINDOWS) {
-			new Startup(bounds, title, debug, isJar, path);
+			new Startup(bounds, title, isJar, path);
 		} else if (os == OS_LINUX) {
-			new LinuxStartup(bounds, title, debug, isJar, path);
+			new LinuxStartup(bounds, title, isJar, path);
 		}
 
-		if (debug) System.out.println("Created Startup.");
+		logger.debug("Created Startup.");
 	}
 
 	/**
@@ -37,17 +41,22 @@ public class GameInit {
 	 * @param args Command-line arguments.
 	 */
 	public static void main(String[] args) {
-		boolean debug = false;
+		// Root logger
+		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
+				org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 		// Argument processing
 		for (String arg : args) {
 			switch (arg.toLowerCase()) {
 				case "-debug":
-					debug = true;
+					root.setLevel(Level.DEBUG);
+					break;
+				case "-trace":
+					root.setLevel(Level.ALL);
 					break;
 			}
 		}
 
-		if (debug) System.out.println("Headless: " + GraphicsEnvironment.isHeadless());
+		logger.debug("Headless: " + GraphicsEnvironment.isHeadless());
 		if (GraphicsEnvironment.isHeadless()) {
 			new HeadlessGame();
 		} else {
@@ -64,7 +73,7 @@ public class GameInit {
 
 			// For now, the game fills up the max area of a screen, but the scale code should theoretically allow for
 			// any square resolution.
-			new GameInit("test", debug, new Dimension(screenSize.height - 50, screenSize.height - 50),
+			new GameInit("test", new Dimension(screenSize.height - 50, screenSize.height - 50),
 					true, os, env);
 		}
 	}

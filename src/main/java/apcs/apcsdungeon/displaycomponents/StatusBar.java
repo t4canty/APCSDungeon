@@ -76,7 +76,7 @@ public class StatusBar {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		//set the size of the status rectangle
+		// set the size of the status rectangle
 		int max = maxValue - minValue;
 		int current = (currentValue - minValue);
 		if (!verticalBar) {
@@ -89,7 +89,7 @@ public class StatusBar {
 			currentBar = new Rectangle(xCoord, yCoord, outline.width, (int) (currentPercent * height));
 		}
 
-		//change the color based on percentage if applicable
+		// change the color based on percentage if applicable
 		if (changeColor) {
 			if (currentPercent >= .5) {
 				g2d.setColor(Color.GREEN);
@@ -102,11 +102,11 @@ public class StatusBar {
 			g2d.setColor(barColor);
 		}
 
-		//draw the statusbar
+		// draw the statusbar
 		g2d.fill(currentBar);
 		g2d.setColor(Color.black);
 
-		//draw the label and min/max at correct position, if applicable
+		// draw the label and min/max at correct position, if applicable
 		if (labelPosition == TOP && !verticalBar) {
 			g2d.drawString(label, (xCoord + width / 2) - (label.length() * 4), yCoord - 5);
 			if (showMaxMin) {
@@ -133,8 +133,8 @@ public class StatusBar {
 			}
 		}
 
-		//g2d.setColor(Color.black);
-		//g2d.draw(outline);
+		// g2d.setColor(Color.black);
+		// g2d.draw(outline);
 	}
 
 	public double getValue() {

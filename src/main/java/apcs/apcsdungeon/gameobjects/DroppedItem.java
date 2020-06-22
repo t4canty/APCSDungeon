@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic Loot container class to represent an item on the ground
@@ -17,6 +19,8 @@ import java.awt.Rectangle;
  * @author t4canty
  */
 public class DroppedItem extends GameObject {
+	private static final Logger logger = LoggerFactory.getLogger(DroppedItem.class);
+
 	//========Variables========//
 	private Loot item;
 	private AnimatedImage[] death = new AnimatedImage[3];
@@ -65,7 +69,7 @@ public class DroppedItem extends GameObject {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		if (debug) g2d.draw(rBox);
+		if (logger.isDebugEnabled()) g2d.draw(rBox);
 
 		if (!isEnemy) g2d.drawImage(item.Sprite[0], x, y, rBox.height, rBox.width, null);
 		else {
@@ -84,7 +88,7 @@ public class DroppedItem extends GameObject {
 			}
 
 			Composite old = g2d.getComposite();
-			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);//Animated logo
+			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // Animated logo
 			g2d.setComposite(ac);
 			g2d.drawImage(item.Sprite[0], x, y, rBox.height, rBox.width, null);
 			g2d.setComposite(old);

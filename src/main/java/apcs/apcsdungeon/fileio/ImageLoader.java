@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Loads images into a static reference so they are kept in memory
@@ -15,6 +17,7 @@ import javax.imageio.ImageIO;
  */
 
 public class ImageLoader implements Runnable {
+	private static final Logger logger = LoggerFactory.getLogger(ImageLoader.class);
 	//========Static Variables========//
 	public static BufferedImage NO_IMAGE;
 	public static BufferedImage MARINE_STARTUP, WSB_STARTUP, SECRET_STARTUP, NPC_STARTUP;
@@ -45,15 +48,14 @@ public class ImageLoader implements Runnable {
 	//========Variables========//
 	public static int totalNumberToLoad = 89;
 	public static int totalNumberLoaded = 0;
-	private static boolean debug;
 	private boolean isJar;
 	private Thread t;
 
 	//========Methods========//
-	//called at beginning of program, loads all images
+	// called at beginning of program, loads all images
 	private static void loadAllImages(boolean isJar) {
 		if (isJar) {
-			if (debug) System.out.println("Loading images from Jar");
+			logger.debug("Loading images from Jar");
 			try {
 				NO_IMAGE = getImageFromJar("/img/noimage.png");
 				CHEST = getImageFromJar("/img/chest.png");
@@ -198,13 +200,13 @@ public class ImageLoader implements Runnable {
 				ROOMS[4] = getImageFromJar("/img/rooms/room5.png");
 				ROOMS[5] = getImageFromJar("/img/rooms/room6.png");
 				BOSSROOM = getImageFromJar("/img/rooms/bossroom.png");
-				if (debug) System.out.println("Loaded " + totalNumberLoaded + " images.");
+				logger.debug("Loaded " + totalNumberLoaded + " images.");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
-			if (debug) System.out.println("Loading images from Folder");
+			logger.debug("Loading images from Folder");
 			try {
 				NO_IMAGE = getImageFromFolder("src/img/noimage.png");
 
@@ -266,27 +268,27 @@ public class ImageLoader implements Runnable {
 				NPCSKIN[7] = NPC_SIDEHURT;
 				NPC_BACKHURT = getImageFromFolder("src/img/NPC_backHurt.png");
 				NPCSKIN[8] = NPC_BACKHURT;
-				if (debug) System.out.println("Loaded " + totalNumberLoaded + " images.");
+				logger.debug("Loaded " + totalNumberLoaded + " images.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	//gets an image from the filesystem
+	// gets an image from the filesystem
 	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
 		totalNumberLoaded++;
-		if (debug) System.out.println(new File(filePath).getAbsolutePath());
+		logger.debug(new File(filePath).getAbsolutePath());
 		BufferedImage temp = ImageIO.read(new File(filePath));
 		if (temp == null)
 			throw new IOException();
 		return temp;
 	}
 
-	//get Image from jar
+	// get Image from jar
 	public static BufferedImage getImageFromJar(String filePath) throws IOException {
 		totalNumberLoaded++;
-		if (debug) System.out.println(filePath);
+		logger.debug(filePath);
 		if (ImageLoader.class.getResourceAsStream(filePath) == null) {
 			System.err.println("Error, getClass is null");
 		}
@@ -314,16 +316,15 @@ public class ImageLoader implements Runnable {
 		WSBSKIN[8] = null;
 	}
 
-	//multithread stuff
+	// multithread stuff
 	@Override
 	public void run() {
-		if (debug) System.out.println("Running ImageLoad Thread");
+		logger.debug("Running ImageLoad Thread");
 		loadAllImages(isJar);
 	}
 
-	public void start(boolean isJar, boolean debug) {
-		ImageLoader.debug = debug;
-		if (debug) System.out.println("Starting ImageLoad Thread");
+	public void start(boolean isJar) {
+		logger.debug("Starting ImageLoad Thread");
 		this.isJar = isJar;
 		if (t == null)
 			t = new Thread(this, "ImageLoader");
@@ -337,7 +338,7 @@ public class ImageLoader implements Runnable {
 		SECRET_STARTUP = null;
 		switch (id) {
 			case Player.MARINE:
-				if (debug) System.out.println("Unloading Secret Skins.");
+				logger.debug("Unloading Secret Skins.");
 
 				SECRET_FRONTIDLE = null;
 				SECRETSKIN[0] = null;
@@ -359,7 +360,7 @@ public class ImageLoader implements Runnable {
 				SECRETSKIN[8] = null;
 				break;
 			case Player.SECRET:
-				if (debug) System.out.println("Unloading Marine skins.");
+				logger.debug("Unloading Marine skins.");
 				MARINE_FRONTIDLE = null;
 				MARINESKIN[0] = null;
 				MARINE_SIDEIDLE = null;
@@ -384,7 +385,7 @@ public class ImageLoader implements Runnable {
 				MARINE_FRONTDEATH = null;
 				break;
 			case Player.WSB:
-				if (debug) System.out.println("Unloading Secret and Marine Skins.");
+				logger.debug("Unloading Secret and Marine Skins.");
 				MARINE_FRONTIDLE = null;
 				MARINESKIN[0] = null;
 				MARINE_SIDEIDLE = null;
