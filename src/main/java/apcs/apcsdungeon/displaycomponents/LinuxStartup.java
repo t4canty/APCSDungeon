@@ -72,7 +72,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	private Image WSBSplash;
 	private Image SecretSplash;
 	private ImageIcon currentIcon;
-	private linuxLoadingBar loadingBar;
+	private LinuxLoadingBar loadingBar;
 	private long startTime;
 	private double ratio;
 	private Font font;
@@ -173,7 +173,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		selectPanel.add(spriteLabel, BorderLayout.LINE_END);
 		selectPanel.add(anotherFuckingPanelJustForButtons, BorderLayout.PAGE_END);
 
-		loadingBar = new linuxLoadingBar(0, 0, new Dimension(f.getWidth(), 20), Color.GRAY, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
+		loadingBar = new LinuxLoadingBar(0, 0, new Dimension(f.getWidth(), 20), Color.GRAY, 0, ImageLoader.totalNumberToLoad + SoundLoader.totalNumberToLoad, 0);
 
 		this.setBackground(new Color(0, 0, 0, 40));
 		this.setOpaque(false);
@@ -337,54 +337,53 @@ public class LinuxStartup extends JPanel implements ActionListener {
 			s.close();
 		}
 	}
-}
 
-class linuxLoadingBar {
-	public int currentValue;
-	private int maxValue;
-	private int minValue;
-	private double currentPercent;
+	private static class LinuxLoadingBar {
+		public int currentValue;
+		private int maxValue;
+		private int minValue;
+		private double currentPercent;
 
-	private Color barColor;
+		private Color barColor;
 
+		private int xCoord;
+		private int yCoord;
+		private int width;
+		private Rectangle outline;
 
-	private int xCoord;
-	private int yCoord;
-	private int width;
-	private Rectangle outline;
+		public LinuxLoadingBar(int x, int y, Dimension bounds, Color barColor, int min, int max, int value) {
+			xCoord = x;
+			yCoord = y;
+			width = bounds.width;
+			outline = new Rectangle(bounds);
+			outline.x = x;
+			outline.y = y;
 
-	public linuxLoadingBar(int x, int y, Dimension bounds, Color barColor, int min, int max, int value) {
-		xCoord = x;
-		yCoord = y;
-		width = bounds.width;
-		outline = new Rectangle(bounds);
-		outline.x = x;
-		outline.y = y;
+			this.barColor = barColor;
+			minValue = min;
+			maxValue = max;
+			currentValue = value;
+		}
 
-		this.barColor = barColor;
-		minValue = min;
-		maxValue = max;
-		currentValue = value;
-	}
+		public Rectangle paint() {
+			int max = maxValue - minValue;
+			int current = (currentValue - minValue);
+			currentPercent = current * width / max;
+			currentPercent /= width;
+			return new Rectangle(xCoord, yCoord, (int) (currentPercent * width), outline.height);
 
-	public Rectangle paint() {
-		int max = maxValue - minValue;
-		int current = (currentValue - minValue);
-		currentPercent = current * width / max;
-		currentPercent /= width;
-		return new Rectangle(xCoord, yCoord, (int) (currentPercent * width), outline.height);
+		}
 
-	}
+		public void setValue(int v) {
+			currentValue = v;
+		}
 
-	public void setValue(int v) {
-		currentValue = v;
-	}
+		public Color getColor() {
+			return barColor;
+		}
 
-	public Color getColor() {
-		return barColor;
-	}
-
-	public void setColor(Color c) {
-		barColor = c;
+		public void setColor(Color c) {
+			barColor = c;
+		}
 	}
 }
