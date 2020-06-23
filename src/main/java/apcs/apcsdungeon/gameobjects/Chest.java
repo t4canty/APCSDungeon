@@ -4,7 +4,7 @@ import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class Chest extends Prop {
 	 * @param y
 	 * @param sprite
 	 */
-	public Chest(int x, int y, Image sprite, double ratio) {
+	public Chest(int x, int y, BufferedImage sprite, double ratio) {
 		super(x, y, sprite);
 		sFactor = ratio;
 		isOpen = false;
@@ -46,7 +46,7 @@ public class Chest extends Prop {
 	 * @param y
 	 * @param sprite
 	 */
-	public Chest(int x, int y, Image sprite, Loot l, double ratio) {
+	public Chest(int x, int y, BufferedImage sprite, Loot l, double ratio) {
 		super(x, y, sprite);
 		isOpen = false;
 		item = l;
@@ -91,7 +91,7 @@ public class Chest extends Prop {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.black);
 		g2d.draw(rBox);
-		g.drawImage(Sprite, x, y, rBox.width, rBox.height, null);
+		g.drawImage(texture.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 	}
 
 	// we don't care about this.

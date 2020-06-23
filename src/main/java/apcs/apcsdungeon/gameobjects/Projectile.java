@@ -24,7 +24,6 @@ public class Projectile extends GameObject {
 	private double angle;
 	private int damage;
 	private boolean isEnemyFire;
-	private BufferedImage sprite;
 
 	//========Constructor========//
 
@@ -38,7 +37,8 @@ public class Projectile extends GameObject {
 	 * @param size      determines whether the projectile hurts enemies or the player
 	 * @param isEnemy
 	 */
-	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size, BufferedImage sprite, int id, boolean isJar) {
+	public Projectile(int damage, boolean isEnemy, int x, int y, int velocity, double angle, Dimension size,
+					  BufferedImage sprite, int id, boolean isJar) {
 		this.damage = damage;
 		this.isEnemyFire = isEnemy;
 		this.x = x;
@@ -51,7 +51,12 @@ public class Projectile extends GameObject {
 		this.rBox = new Rectangle(size);
 		rBox.x = x;
 		rBox.y = y;
-		this.sprite = sprite;
+
+		texture = new Texture();
+		String defaultAnimationName = "default";
+		texture.addAnimation(defaultAnimationName, new Animation(sprite, false,
+				true));
+		texture.setDefaultAnimation(defaultAnimationName);
 	}
 
 	//========Methods========//
@@ -67,7 +72,7 @@ public class Projectile extends GameObject {
 
 	private void rotateBullet(Graphics2D g2d) {
 		g2d.rotate(angle, rBox.getCenterX(), rBox.getCenterY());
-		g2d.drawImage(sprite, x, y, rBox.width, rBox.height, null);
+		g2d.drawImage(texture.getCurrentFrame(), x, y, rBox.width, rBox.height, null);
 		if (logger.isDebugEnabled()) g2d.draw(rBox);
 		g2d.rotate(-angle, rBox.getCenterX(), rBox.getCenterY());
 	}

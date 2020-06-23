@@ -1,6 +1,5 @@
 package apcs.apcsdungeon.gameobjects;
 
-import apcs.apcsdungeon.displaycomponents.AnimatedImage;
 import apcs.apcsdungeon.displaycomponents.SoundEffect;
 import apcs.apcsdungeon.io.ImageLoader;
 import apcs.apcsdungeon.io.SoundLoader;
@@ -9,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,6 @@ public class Player extends GameObject {
 	private int maxY;
 	private int graphicsDir; // direction that a player is holding their gun
 	private int velocity = 10;
-	private AnimatedImage[] skin = new AnimatedImage[9];
-	private AnimatedImage[] death = new AnimatedImage[3];
 	private SoundEffect footsteps = SoundLoader.FOOTSTEP;
 	private long lastWalk = 0; // last time player moved - used for idle vs moving animation
 	private long lastDamageTaken = 0; // last time the player took damage - used for hurt animation
@@ -58,6 +56,7 @@ public class Player extends GameObject {
 	 * @param size Size of the player object
 	 */
 	public Player(int x, int y, Dimension size, int pid, boolean isJar, double ratio) {
+		initializeTexture();
 		this.x = x;
 		this.y = y;
 		this.hp = 100;
@@ -66,16 +65,17 @@ public class Player extends GameObject {
 		this.id = pid;
 		scaleFactor = ratio;
 		getPlayerSkin(pid);
-		activeGun = new Gun(10, 300, 10, 10, 10, 0, 5, "Bad Gun", super.isJar, scaleFactor);
+		activeGun = new Gun(10, 300, 10, 10, 10, 0, 5,
+				"Bad Gun", super.isJar, scaleFactor);
 		inventory.add(activeGun);
 		if (pid == SECRET) velocity = 15;
 		velocity = (int) (velocity * scaleFactor);
 
 		if (logger.isDebugEnabled()) {
-			inventory.add(new Gun(10, 50, 99999, 10, 10, -1, 0, "EZ Death Lazer", super.isJar, scaleFactor));
-			inventory.add(new Gun(10000, 250, 1, 3, 256, -2, 40, "Yaris", super.isJar, scaleFactor));
-		}
-		if (logger.isDebugEnabled()) {
+			inventory.add(new Gun(10, 50, 99999, 10, 10, -1,
+					0, "EZ Death Lazer", super.isJar, scaleFactor));
+			inventory.add(new Gun(10000, 250, 1, 3, 256, -2,
+					40, "Yaris", super.isJar, scaleFactor));
 			hp = 9999;
 		}
 	}
@@ -113,75 +113,16 @@ public class Player extends GameObject {
 
 		if (isAlive) {
 			if (System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 50)) {
-
-				// moving sprites
-				switch (graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				}
+				drawSprite(g2d, SIDE_MOVE, BACK_MOVE, FRONT_MOVE);
 				footsteps.loop();
-				// System.out.println("moving");
-				// /hurt sprites
 			} else if (System.currentTimeMillis() - lastDamageTaken < 500) {
-				switch (graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				}
-				// System.out.println("hurt");
-
-				// idle sprites
+				drawSprite(g2d, SIDE_HURT, BACK_HURT, FRONT_HURT);
 			} else {
-				switch (graphicsDir) {
-					case LEFT:
-						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case RIGHT:
-						g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-						break;
-					case UP:
-						drawGun(g2d);
-						g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-						break;
-					case DOWN:
-						g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-				}
+				drawSprite(g2d, SIDE_IDLE, BACK_IDLE, FRONT_IDLE);
 				footsteps.stop();
-				// System.out.println("idle");
 			}
 		} else {
-			switch (graphicsDir) {
-				case LEFT:
-					g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case RIGHT:
-					g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-					break;
-				case UP:
-					g2d.drawImage(death[BACKDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case DOWN:
-					g2d.drawImage(death[FRONTDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
+			drawSprite(g2d, SIDE_DEATH, BACK_DEATH, FRONT_DEATH);
 		}
 
 		if (graphicsDir != UP) {
@@ -191,15 +132,41 @@ public class Player extends GameObject {
 		if (logger.isDebugEnabled()) g2d.draw(rBox);
 	}
 
+	private void drawSprite(Graphics2D g2d, String sideAnimation, String backAnimation, String frontAnimation) {
+		boolean invertHorizontal = false;
+		switch (graphicsDir) {
+			case LEFT:
+				texture.changeAnimation(sideAnimation);
+				break;
+			case RIGHT:
+				texture.changeAnimation(sideAnimation);
+				invertHorizontal = true;
+				break;
+			case UP:
+				drawGun(g2d);
+				texture.changeAnimation(backAnimation);
+				break;
+			case DOWN:
+				texture.changeAnimation(frontAnimation);
+		}
+
+		int xx = invertHorizontal ? x + rBox.width : x;
+		int width = invertHorizontal ? -rBox.width : rBox.width;
+		g2d.drawImage(texture.getCurrentFrame(), xx, y, width, rBox.height, null);
+	}
 
 	// Used to draw the gun onto the screen
 	private void drawGun(Graphics2D g2d) {
 		if (isAlive) {
 			g2d.rotate(gunAngle, rBox.getCenterX(), rBox.getCenterY());
 			if (Math.abs(gunAngle) > 1.07) {
-				g2d.drawImage(activeGun.getSprite(id + 1, hp), (int) (rBox.getCenterX()) + 13, (int) (rBox.getCenterY()) + 20, (int) (50 * scaleFactor), (int) (-50 * scaleFactor), null);
+				g2d.drawImage(activeGun.getSprite(id + 1, hp), (int) (rBox.getCenterX()) + 13,
+						(int) (rBox.getCenterY()) + 20, (int) (50 * scaleFactor), (int) (-50 * scaleFactor),
+						null);
 			} else {
-				g2d.drawImage(activeGun.getSprite(id + 1, hp), (int) (rBox.getCenterX()) + 13, (int) (rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor), null);
+				g2d.drawImage(activeGun.getSprite(id + 1, hp), (int) (rBox.getCenterX()) + 13,
+						(int) (rBox.getCenterY()) - 20, (int) (50 * scaleFactor), (int) (50 * scaleFactor),
+						null);
 			}
 
 			g2d.rotate(-gunAngle, rBox.getCenterX(), rBox.getCenterY());
@@ -207,20 +174,29 @@ public class Player extends GameObject {
 
 	}
 
-
 	@Override
 	public void advanceAnimationFrame() {
-		for (AnimatedImage i : skin) {
-			if (i != null && !i.isStatic()) {
-				i.advanceCurrentFrame();
-			}
+		for (String position : POSITIONS_SEQUENCE) {
+			texture.getAnimation(position).advanceFrame();
 		}
+	}
 
+	private void initializeTexture() {
+		texture = Texture.createTexture("player");
+
+		// Default skin is marine
+		for (int i = 0; i < POSITIONS_SEQUENCE.length; i++) {
+			texture.addAnimation(POSITIONS_SEQUENCE[i],
+					new Animation(ImageLoader.MARINESKIN[i], false));
+		}
+		texture.addAnimation(FRONT_DEATH, new Animation(ImageLoader.MARINE_FRONTDEATH, true));
+		texture.addAnimation(SIDE_DEATH, new Animation(ImageLoader.MARINE_SIDEDEATH, true));
+		texture.addAnimation(BACK_DEATH, new Animation(ImageLoader.MARINE_BACKDEATH, true));
 	}
 
 	public void advanceDeathAnimationFrame() {
-		for (AnimatedImage i : death) {
-			i.advanceCurrentFrame();
+		for (String position : DEATH_POSITIONS_SEQUENCE) {
+			texture.getAnimation(position).advanceFrame();
 		}
 	}
 
@@ -328,7 +304,6 @@ public class Player extends GameObject {
 		}
 	}
 
-
 	/**
 	 * Return projectile entity shot from gun
 	 */
@@ -358,32 +333,35 @@ public class Player extends GameObject {
 	}
 
 	private void getPlayerSkin(int id) {
+		BufferedImage[] skin = null;
+		BufferedImage frontDeath = null, sideDeath = null, backDeath = null;
 		switch (id) {
 			case MARINE:
-				for (int i = 0; i < skin.length; i++) {
-					this.skin[i] = new AnimatedImage(ImageLoader.MARINESKIN[i]);
-				}
-				this.death[BACKDEATH] = new AnimatedImage(ImageLoader.MARINE_BACKDEATH, true);
-				this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.MARINE_SIDEDEATH, true);
-				this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.MARINE_FRONTDEATH, true);
+				skin = ImageLoader.MARINESKIN;
+				frontDeath = ImageLoader.MARINE_FRONTDEATH;
+				sideDeath = ImageLoader.MARINE_SIDEDEATH;
+				backDeath = ImageLoader.MARINE_BACKDEATH;
 				hp += hp / 2;
 				break;
 			case WSB:
-				for (int i = 0; i < skin.length; i++) {
-					this.skin[i] = new AnimatedImage(ImageLoader.WSBSKIN[i]);
-				}
-				this.death[BACKDEATH] = new AnimatedImage(ImageLoader.WSB_BACKDEATH, true);
-				this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.WSB_SIDEDEATH, true);
-				this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.WSB_FRONTDEATH, true);
+				skin = ImageLoader.WSBSKIN;
+				frontDeath = ImageLoader.WSB_FRONTDEATH;
+				sideDeath = ImageLoader.WSB_SIDEDEATH;
+				backDeath = ImageLoader.WSB_BACKDEATH;
 				break;
 			case SECRET:
-				for (int i = 0; i < skin.length; i++) {
-					this.skin[i] = new AnimatedImage(ImageLoader.SECRETSKIN[i]);
-				}
-				this.death[BACKDEATH] = new AnimatedImage(ImageLoader.SECRET_BACKDEATH, true);
-				this.death[SIDEDEATH] = new AnimatedImage(ImageLoader.SECRET_SIDEDEATH, true);
-				this.death[FRONTDEATH] = new AnimatedImage(ImageLoader.SECRET_FRONTDEATH, true);
+				skin = ImageLoader.SECRETSKIN;
+				frontDeath = ImageLoader.SECRET_FRONTDEATH;
+				sideDeath = ImageLoader.SECRET_SIDEDEATH;
+				backDeath = ImageLoader.SECRET_BACKDEATH;
 		}
+		assert skin != null;
+		for (int i = 0; i < POSITIONS_SEQUENCE.length; i++) {
+			texture.getAnimation(POSITIONS_SEQUENCE[i]).recreateAnimation(skin[i]);
+		}
+		texture.getAnimation(FRONT_DEATH).recreateAnimation(frontDeath);
+		texture.getAnimation(SIDE_DEATH).recreateAnimation(sideDeath);
+		texture.getAnimation(BACK_DEATH).recreateAnimation(backDeath);
 	}
 
 	//========Getters/Setters========//

@@ -1,6 +1,7 @@
 package apcs.apcsdungeon.displaycomponents;
 
 import apcs.apcsdungeon.driver.Driver;
+import apcs.apcsdungeon.gameobjects.Animation;
 import apcs.apcsdungeon.io.ImageLoader;
 import apcs.apcsdungeon.io.SoundLoader;
 import apcs.apcsdungeon.gameobjects.Player;
@@ -61,7 +62,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 	private JButton start;
 	private JLabel pictureLabel;
 	private JLabel spriteLabel;
-	private AnimatedImage sprite;
+	private Animation sprite;
 	private JPanel selectPanel;
 	private JPanel anotherFuckingPanelJustForButtons;
 	private JRadioButton marine;
@@ -263,7 +264,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
 		if (doneLoading && animationFinished && alpha == 255) {
-			sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
+			sprite = new Animation(ImageLoader.MARINE_STARTUP);
 			logger.debug("Game finished loading. Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 
@@ -271,7 +272,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 
 		if (doneLoading && animationFinished) {
 			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame().getScaledInstance((int) (sprite.getCurrentFrame().getHeight(null) * ratio), (int) (sprite.getCurrentFrame().getHeight(null) * ratio), Image.SCALE_SMOOTH)));
-			sprite.advanceCurrentFrame();
+			sprite.advanceFrame();
 		}
 
 		//==Buttons==//
@@ -288,7 +289,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 					id = Player.MARINE;
 					pictureLabel.setText("");
 					currentIcon = new ImageIcon(MarineSplash);
-					sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
+					sprite = new Animation(ImageLoader.MARINE_STARTUP);
 					pictureLabel.setIcon(currentIcon);
 					break;
 				case "w":
@@ -296,12 +297,12 @@ public class LinuxStartup extends JPanel implements ActionListener {
 					if (wsbUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(WSBSplash);
-						sprite = new AnimatedImage(ImageLoader.WSB_STARTUP);
+						sprite = new Animation(ImageLoader.WSB_STARTUP);
 						pictureLabel.setIcon(currentIcon);
 						id = Player.WSB;
 					} else {
 						pictureLabel.setIcon(null);
-						sprite = new AnimatedImage(ImageLoader.NPC_STARTUP);
+						sprite = new Animation(ImageLoader.NPC_STARTUP);
 						pictureLabel.setText("Not unlocked");
 					}
 					break;
@@ -310,13 +311,13 @@ public class LinuxStartup extends JPanel implements ActionListener {
 					if (secretUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(SecretSplash);
-						sprite = new AnimatedImage(ImageLoader.SECRET_STARTUP);
+						sprite = new Animation(ImageLoader.SECRET_STARTUP);
 						pictureLabel.setIcon(currentIcon);
 						selectPanel.revalidate();
 						id = Player.SECRET;
 					} else {
 						pictureLabel.setIcon(null);
-						sprite = new AnimatedImage(ImageLoader.NPC_STARTUP);
+						sprite = new Animation(ImageLoader.NPC_STARTUP);
 						pictureLabel.setText("Not unlocked");
 					}
 			}

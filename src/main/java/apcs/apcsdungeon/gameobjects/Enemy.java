@@ -1,6 +1,5 @@
 package apcs.apcsdungeon.gameobjects;
 
-import apcs.apcsdungeon.displaycomponents.AnimatedImage;
 import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -26,7 +25,6 @@ public class Enemy extends GameObject {
 	protected Gun activeGun;
 	protected int movementSpeed = 4;
 	protected double gunAngle;
-	protected AnimatedImage[] skin = new AnimatedImage[9];
 	protected double sFactor;
 	Random r = new Random();
 	double r1 = Math.random() + 1;
@@ -48,7 +46,8 @@ public class Enemy extends GameObject {
 	 * @param size Size of the player object
 	 * @param skin Skin of sprites to use
 	 */
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio) {
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, String name, boolean isJar,
+				 double ratio) {
 		this.x = (int) (x * ratio);
 		this.y = (int) (y * ratio);
 		this.hp = (int) (hp * r1);
@@ -58,17 +57,26 @@ public class Enemy extends GameObject {
 		rBox.x = x;
 		rBox.y = y;
 		movementSpeed = (int) (movementSpeed * ratio);
-		for (int i = 0; i < skin.length; i++) {
-			this.skin[i] = new AnimatedImage(skin[i]);
-		}
 		computeDrop();
+		initializeTexture(skin, name);
 	}
 
-	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, boolean isJar, double ratio, Gun ActiveGun) {
-		this(x, y, hp, size, skin, isJar, ratio);
+	public Enemy(int x, int y, int hp, Dimension size, BufferedImage[] skin, String name, boolean isJar,double ratio,
+				 Gun ActiveGun) {
+		this(x, y, hp, size, skin, name, isJar, ratio);
 		this.rBox = new Rectangle((int) (size.width * ratio), (int) (size.height * ratio));
 		this.activeGun = ActiveGun;
 		drop = activeGun;
+	}
+
+	private void initializeTexture(BufferedImage[] skin, String name) {
+		texture = Texture.getTexture(name);
+		if (texture == null) {
+			texture = Texture.createTexture(name);
+			for (int i = 0; i < POSITIONS_SEQUENCE.length; i++) {
+				texture.addAnimation(POSITIONS_SEQUENCE[i], skin[i]);
+			}
+		}
 	}
 
 	//========Methods========//
@@ -91,62 +99,40 @@ public class Enemy extends GameObject {
 		}
 
 		if (System.currentTimeMillis() - lastWalk < 75 && !(System.currentTimeMillis() - lastDamageTaken < 20)) {
-
-			// moving sprites
-			switch (graphicsDir) {
-				case LEFT:
-					g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case RIGHT:
-					g2d.drawImage(skin[SIDEMOVE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-					break;
-				case UP:
-					drawGun(g2d);
-					g2d.drawImage(skin[BACKMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case DOWN:
-					g2d.drawImage(skin[FRONTMOVE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
-
-			// /hurt sprites
+			drawSprite(g2d, SIDE_MOVE, BACK_MOVE, FRONT_MOVE);
 		} else if (System.currentTimeMillis() - lastDamageTaken < 20) {
-			switch (graphicsDir) {
-				case LEFT:
-					g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case RIGHT:
-					g2d.drawImage(skin[SIDEHURT].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-					break;
-				case UP:
-					drawGun(g2d);
-					g2d.drawImage(skin[BACKHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case DOWN:
-					g2d.drawImage(skin[FRONTHURT].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
-
-			// idle sprites
+			drawSprite(g2d, SIDE_HURT, BACK_HURT, FRONT_HURT);
 		} else {
-			switch (graphicsDir) {
-				case LEFT:
-					g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case RIGHT:
-					g2d.drawImage(skin[SIDEIDLE].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-					break;
-				case UP:
-					drawGun(g2d);
-					g2d.drawImage(skin[BACKIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case DOWN:
-					g2d.drawImage(skin[FRONTIDLE].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-			}
+			drawSprite(g2d, SIDE_IDLE, BACK_IDLE, FRONT_IDLE);
 		}
 
 		if (graphicsDir != UP) {
 			drawGun(g2d);
 		}
 
+	}
+
+	private void drawSprite(Graphics2D g2d, String sideAnimation, String backAnimation, String frontAnimation) {
+		boolean invertHorizontal = false;
+		switch (graphicsDir) {
+			case LEFT:
+				texture.changeAnimation(sideAnimation);
+				break;
+			case RIGHT:
+				texture.changeAnimation(sideAnimation);
+				invertHorizontal = true;
+				break;
+			case UP:
+				drawGun(g2d);
+				texture.changeAnimation(backAnimation);
+				break;
+			case DOWN:
+				texture.changeAnimation(frontAnimation);
+		}
+
+		int xx = invertHorizontal ? x + rBox.width : x;
+		int width = invertHorizontal ? -rBox.width : rBox.width;
+		g2d.drawImage(texture.getCurrentFrame(), xx, y, width, rBox.height, null);
 	}
 
 	// draw gun on the screen dependent on the angle it's aiming
@@ -166,9 +152,7 @@ public class Enemy extends GameObject {
 	// update all of the animations
 	@Override
 	public void advanceAnimationFrame() {
-		for (AnimatedImage i : skin) {
-			i.advanceCurrentFrame();
-		}
+		texture.advanceAllFrames();
 	}
 
 	// computes a random item to drop when the enemy is killed

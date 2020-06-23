@@ -15,7 +15,8 @@ public class Boss extends Enemy {
 	private static final Logger logger = LoggerFactory.getLogger(Boss.class);
 
 	public Boss(int x, int y, boolean isjar, double ratio) {
-		super(x, y, 1000, new Dimension(200, 200), ImageLoader.WSBSKIN, isjar, ratio, new Gun(10, 100, 30, 10, 30, Gun.FEDRESERVE, 5, "Federal Reserve", isjar, ratio));
+		super(x, y, 1000, new Dimension(200, 200), ImageLoader.WSBSKIN, "wsb", isjar, ratio, new Gun(10, 100, 30, 10,
+				30, Gun.FEDRESERVE, 5, "Federal Reserve", isjar, ratio));
 		movementSpeed = 6;
 	}
 

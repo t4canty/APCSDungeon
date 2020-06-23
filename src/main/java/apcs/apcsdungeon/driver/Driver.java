@@ -223,7 +223,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				Random rand = new Random();
 				currentRoom.getEntities().add(new Enemy(rand.nextInt(905 - 48 + 1) + 48,
 						rand.nextInt(870 - 40 + 1) + 40, 30, new Dimension(64, 64),
-						ImageLoader.NPCSKIN, isJar, ratio));
+						ImageLoader.NPCSKIN, "npc", isJar, ratio));
 			}
 
 		}
@@ -306,9 +306,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[0].setRightRoom(rooms[1]);
 
 		rooms[1].getEntities().add(new Enemy(450, 450, 30, new Dimension(64, 64),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[1].getEntities().add(new Enemy(450, 600, 30, new Dimension(64, 64),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 
 
 		rooms[2] = new Room(new Rectangle((int) (48 * ratio), (int) (40 * ratio), (int) (905 * ratio),
@@ -317,7 +317,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[1].setRightRoom(rooms[2]);
 
 		rooms[2].getEntities().add(new Enemy(450, 450, 50, new Dimension(128, 128),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[2].getEntities().add(new Chest(600, 500, ImageLoader.CHEST, new Health("",
 				ImageLoader.NO_IMAGE), ratio));
 
@@ -327,9 +327,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[1].setBottomRoom(rooms[3]);
 
 		rooms[3].getEntities().add(new Enemy(450, 500, 40, new Dimension(64, 64),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[3].getEntities().add(new Enemy(450, 800, 40, new Dimension(64, 64),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 
 		rooms[4] = new Room(new Rectangle((int) (48 * ratio), (int) (40 * ratio), (int) (905 * ratio),
 				(int) (870 * ratio)), ImageLoader.ROOMS[4], new ArrayList<>(), true, f.getSize(), ratio);
@@ -337,9 +337,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[4].setTopRoom(rooms[3]);
 
 		rooms[4].getEntities().add(new Enemy(250, 500, 60, new Dimension(128, 128),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[4].getEntities().add(new Enemy(450, 800, 60, new Dimension(72, 72),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 
 		rooms[5] = new Room(new Rectangle((int) (48 * ratio), (int) (40 * ratio), (int) (905 * ratio),
 				(int) (870 * ratio)), ImageLoader.ROOMS[5], new ArrayList<>(), true, f.getSize(), ratio);
@@ -347,11 +347,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[5].setRightRoom(rooms[4]);
 
 		rooms[5].getEntities().add(new Enemy(250, 500, 50, new Dimension(64, 64),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[5].getEntities().add(new Enemy(450, 800, 50, new Dimension(72, 72),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[5].getEntities().add(new Enemy(300, 600, 75, new Dimension(128, 128),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 
 		rooms[6] = new Room(new Rectangle((int) (48 * ratio), (int) (40 * ratio), (int) (905 * ratio),
 				(int) (870 * ratio)), ImageLoader.BOSSROOM, new ArrayList<>(), true, f.getSize(), ratio);
@@ -359,9 +359,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		rooms[6].setTopRoom(rooms[5]);
 
 		rooms[6].getEntities().add(new Enemy(450, 800, 50, new Dimension(72, 72),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[6].getEntities().add(new Enemy(300, 600, 75, new Dimension(128, 128),
-				ImageLoader.NPCSKIN, isJar, ratio));
+				ImageLoader.NPCSKIN, "npc", isJar, ratio));
 		rooms[6].getEntities().add(new Boss(450, 600, isJar, ratio));
 
 		addchests();

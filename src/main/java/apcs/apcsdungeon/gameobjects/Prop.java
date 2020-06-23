@@ -1,8 +1,8 @@
 package apcs.apcsdungeon.gameobjects;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 /**
  * Class for objects that don't do anything, but have a hitbox and can collide in the world.
@@ -12,9 +12,6 @@ import java.awt.Rectangle;
  * @author TJ178
  */
 public class Prop extends GameObject {
-	//========Variables========//
-	protected Image Sprite;
-
 	//========Constructors========//
 
 	/**
@@ -24,21 +21,30 @@ public class Prop extends GameObject {
 	 * @param y
 	 * @param sprite
 	 */
-	public Prop(int x, int y, Image sprite) {
+	public Prop(int x, int y, BufferedImage sprite) {
 		this.x = x;
 		this.y = y;
-		this.Sprite = sprite;
 		this.rBox = new Rectangle(x, y, sprite.getWidth(null), sprite.getHeight(null));
 		hp = 1;
+
+		initializeTexture(sprite);
 	}
 
 	//========Methods========//
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(Sprite, x, y, null);
+		g.drawImage(texture.getCurrentFrame(), x, y, null);
 	}
 
 	@Override
 	public void advanceAnimationFrame() {
+	}
+
+	private void initializeTexture(BufferedImage sprite) {
+		texture = new Texture();
+		String defaultAnimationName = "default";
+		texture.addAnimation(defaultAnimationName, new Animation(sprite, false,
+				true));
+		texture.setDefaultAnimation(defaultAnimationName);
 	}
 }

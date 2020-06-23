@@ -15,32 +15,34 @@ import java.awt.Rectangle;
  */
 public abstract class GameObject {
 	//========Final Variables========//
-	final static public int NORTH = 0;
-	final static public int SOUTH = 2;
-	final static public int EAST = 3;
-	final static public int WEST = 1;
-	final static public int UP = 0;
-	final static public int DOWN = 2;
-	final static public int LEFT = 3;
-	final static public int RIGHT = 1;
-	final static public int UPRIGHT = 4;
-	final static public int DOWNRIGHT = 5;
-	final static public int DOWNLEFT = 6;
-	final static public int UPLEFT = 7;
-	final static public int FRONTIDLE = 0;
-	final static public int SIDEIDLE = 1;
-	final static public int BACKIDLE = 2;
-	final static public int FRONTMOVE = 3;
-	final static public int SIDEMOVE = 4;
-	final static public int BACKMOVE = 5;
-	final static public int FRONTHURT = 6;
-	final static public int SIDEHURT = 7;
-	final static public int BACKHURT = 8;
-	final static public int FRONTDEATH = 0;
-	final static public int SIDEDEATH = 1;
-	final static public int BACKDEATH = 2;
+	public static final int UP = 0;
+	public static final int DOWN = 1;
+	public static final int LEFT = 2;
+	public static final int RIGHT = 3;
+	public static final int UPRIGHT = 4;
+	public static final int DOWNRIGHT = 5;
+	public static final int DOWNLEFT = 6;
+	public static final int UPLEFT = 7;
+
+	public static final String FRONT_IDLE = "front_idle";
+	public static final String SIDE_IDLE = "side_idle";
+	public static final String BACK_IDLE = "back_idle";
+	public static final String FRONT_MOVE = "front_move";
+	public static final String SIDE_MOVE = "side_move";
+	public static final String BACK_MOVE = "back_move";
+	public static final String FRONT_HURT = "front_hurt";
+	public static final String SIDE_HURT = "side_hurt";
+	public static final String BACK_HURT = "back_hurt";
+	public static final String[] POSITIONS_SEQUENCE = new String[] {FRONT_IDLE, SIDE_IDLE, BACK_IDLE, FRONT_MOVE,
+			SIDE_MOVE, BACK_MOVE, FRONT_HURT, SIDE_HURT, BACK_HURT};
+
+	public static final String FRONT_DEATH = "front_death";
+	public static final String SIDE_DEATH = "side_death";
+	public static final String BACK_DEATH = "back_death";
+	public static final String[] DEATH_POSITIONS_SEQUENCE = new String[] {FRONT_DEATH, SIDE_DEATH, BACK_DEATH};
 	public boolean isJar = true;
 	//========Variables========//
+	protected Texture texture;
 	protected Rectangle rBox;
 	protected int x, y;
 	protected int hp;

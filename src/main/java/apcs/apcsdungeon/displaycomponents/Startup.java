@@ -1,9 +1,10 @@
 package apcs.apcsdungeon.displaycomponents;
 
 import apcs.apcsdungeon.driver.Driver;
+import apcs.apcsdungeon.gameobjects.Animation;
+import apcs.apcsdungeon.gameobjects.Player;
 import apcs.apcsdungeon.io.ImageLoader;
 import apcs.apcsdungeon.io.SoundLoader;
-import apcs.apcsdungeon.gameobjects.Player;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -61,7 +62,7 @@ public class Startup extends JPanel implements ActionListener {
 	private JButton start;
 	private JLabel pictureLabel;
 	private JLabel spriteLabel;
-	private AnimatedImage sprite;
+	private Animation sprite;
 	private JPanel selectPanel;
 	private JPanel anotherFuckingPanelJustForButtons;
 	private JRadioButton marine;
@@ -265,17 +266,17 @@ public class Startup extends JPanel implements ActionListener {
 
 		loadingBar.setValue(ImageLoader.totalNumberLoaded + SoundLoader.totalNumberLoaded);
 
-		if (doneLoading && !start.isEnabled()) {
-			sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.MARINE_STARTUP);
-			start.setEnabled(true);
-			logger.debug("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
-		}
-
 		if (doneLoading) {
+			if (!start.isEnabled()) {
+				sprite = new Animation(ImageLoader.MARINE_STARTUP);
+				start.setEnabled(true);
+				logger.debug("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
+			}
+			
 			spriteLabel.setIcon(new ImageIcon(sprite.getCurrentFrame().getScaledInstance(
 					(int) (sprite.getCurrentFrame().getHeight(null) * ratio),
 					(int) (sprite.getCurrentFrame().getHeight(null) * ratio), Image.SCALE_SMOOTH)));
-			sprite.advanceCurrentFrame();
+			sprite.advanceFrame();
 		}
 		repaint();
 
@@ -293,7 +294,7 @@ public class Startup extends JPanel implements ActionListener {
 					id = Player.MARINE;
 					pictureLabel.setText("");
 					currentIcon = new ImageIcon(MarineSplash);
-					sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.MARINE_STARTUP);
+					sprite = new Animation(ImageLoader.MARINE_STARTUP);
 					pictureLabel.setIcon(currentIcon);
 					selectPanel.revalidate();
 					break;
@@ -302,13 +303,13 @@ public class Startup extends JPanel implements ActionListener {
 					if (wsbUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(WSBSplash);
-						sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.WSB_STARTUP);
+						sprite = new Animation(ImageLoader.WSB_STARTUP);
 						pictureLabel.setIcon(currentIcon);
 						selectPanel.revalidate();
 						id = Player.WSB;
 					} else {
 						pictureLabel.setIcon(null);
-						sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.NPC_STARTUP);
+						sprite = new Animation(ImageLoader.NPC_STARTUP);
 						pictureLabel.setText("Not unlocked");
 						selectPanel.revalidate();
 					}
@@ -318,13 +319,13 @@ public class Startup extends JPanel implements ActionListener {
 					if (secretUnlock) {
 						pictureLabel.setText("");
 						currentIcon = new ImageIcon(SecretSplash);
-						sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.SECRET_STARTUP);
+						sprite = new Animation(ImageLoader.SECRET_STARTUP);
 						pictureLabel.setIcon(currentIcon);
 						selectPanel.revalidate();
 						id = Player.SECRET;
 					} else {
 						pictureLabel.setIcon(null);
-						sprite = new apcs.apcsdungeon.displaycomponents.AnimatedImage(ImageLoader.NPC_STARTUP);
+						sprite = new Animation(ImageLoader.NPC_STARTUP);
 						pictureLabel.setText("Not unlocked");
 						selectPanel.revalidate();
 					}

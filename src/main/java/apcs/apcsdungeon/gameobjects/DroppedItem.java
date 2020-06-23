@@ -1,6 +1,5 @@
 package apcs.apcsdungeon.gameobjects;
 
-import apcs.apcsdungeon.displaycomponents.AnimatedImage;
 import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -23,9 +22,8 @@ public class DroppedItem extends GameObject {
 
 	//========Variables========//
 	private Loot item;
-	private AnimatedImage[] death = new AnimatedImage[3];
 	private boolean isEnemy;
-	private int gDir;
+	private int graphicsDir;
 
 	//========Constructors========//
 
@@ -52,17 +50,31 @@ public class DroppedItem extends GameObject {
 		this.y = e.getY();
 		this.item = e.getDrop();
 		this.rBox = e.getHitbox();
-		gDir = e.getDir();
-		if (e instanceof Boss) {
-			death[BACKDEATH] = new AnimatedImage(ImageLoader.WSB_BACKDEATH, true);
-			death[FRONTDEATH] = new AnimatedImage(ImageLoader.WSB_FRONTDEATH, true);
-			death[SIDEDEATH] = new AnimatedImage(ImageLoader.WSB_SIDEDEATH, true);
-		} else {
-			death[BACKDEATH] = new AnimatedImage(ImageLoader.NPC_BACKDEATH, true);
-			death[FRONTDEATH] = new AnimatedImage(ImageLoader.NPC_FRONTDEATH, true);
-			death[SIDEDEATH] = new AnimatedImage(ImageLoader.NPC_SIDEDEATH, true);
-		}
+		graphicsDir = e.getDir();
+		initializeTexture(e);
 		isEnemy = true;
+	}
+
+	private void initializeTexture(Enemy e) {
+		if (e instanceof Boss) {
+			String wsbDeathName = "wsb_death";
+			texture = Texture.getTexture(wsbDeathName);
+			if (texture == null) {
+				texture = Texture.createTexture(wsbDeathName);
+				texture.addAnimation(FRONT_DEATH, new Animation(ImageLoader.WSB_FRONTDEATH));
+				texture.addAnimation(SIDE_DEATH, new Animation(ImageLoader.WSB_SIDEDEATH));
+				texture.addAnimation(BACK_DEATH, new Animation(ImageLoader.WSB_BACKDEATH));
+			}
+		} else {
+			String npcDeathName = "npc_death";
+			texture = Texture.getTexture(npcDeathName);
+			if (texture == null) {
+				texture = Texture.createTexture(npcDeathName);
+				texture.addAnimation(FRONT_DEATH, new Animation(ImageLoader.NPC_FRONTDEATH));
+				texture.addAnimation(SIDE_DEATH, new Animation(ImageLoader.NPC_SIDEDEATH));
+				texture.addAnimation(BACK_DEATH, new Animation(ImageLoader.NPC_BACKDEATH));
+			}
+		}
 	}
 
 	//========Methods========//
@@ -73,19 +85,7 @@ public class DroppedItem extends GameObject {
 
 		if (!isEnemy) g2d.drawImage(item.Sprite[0], x, y, rBox.height, rBox.width, null);
 		else {
-			switch (gDir) {
-				case UP:
-					g2d.drawImage(death[BACKDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case DOWN:
-					g2d.drawImage(death[FRONTDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case LEFT:
-					g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x, y, rBox.width, rBox.height, null);
-					break;
-				case RIGHT:
-					g2d.drawImage(death[SIDEDEATH].getCurrentFrame(), x + rBox.width, y, -rBox.width, rBox.height, null);
-			}
+			drawSprite(g2d);
 
 			Composite old = g2d.getComposite();
 			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // Animated logo
@@ -95,12 +95,33 @@ public class DroppedItem extends GameObject {
 		}
 	}
 
+	private void drawSprite(Graphics2D g2d) {
+		boolean invertHorizontal = false;
+		switch (graphicsDir) {
+			case LEFT:
+				texture.changeAnimation(SIDE_DEATH);
+				break;
+			case RIGHT:
+				texture.changeAnimation(SIDE_DEATH);
+				invertHorizontal = true;
+				break;
+			case UP:
+				texture.changeAnimation(BACK_DEATH);
+				break;
+			case DOWN:
+				texture.changeAnimation(FRONT_DEATH);
+		}
+
+		int xx = invertHorizontal ? x + rBox.width : x;
+		int width = invertHorizontal ? -rBox.width : rBox.width;
+		g2d.drawImage(texture.getCurrentFrame(), xx, y, width, rBox.height,
+				null);
+	}
+
 	@Override
 	public void advanceAnimationFrame() {
 		if (isEnemy) {
-			for (AnimatedImage i : death) {
-				i.advanceCurrentFrame();
-			}
+			texture.advanceAllFrames();
 		}
 	}
 
