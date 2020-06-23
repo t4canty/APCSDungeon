@@ -1,7 +1,7 @@
 package apcs.apcsdungeon.gameobjects;
 
 import apcs.apcsdungeon.displaycomponents.AnimatedImage;
-import apcs.apcsdungeon.fileio.ImageLoader;
+import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

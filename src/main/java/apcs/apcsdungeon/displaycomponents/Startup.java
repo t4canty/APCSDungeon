@@ -1,8 +1,8 @@
 package apcs.apcsdungeon.displaycomponents;
 
 import apcs.apcsdungeon.driver.Driver;
-import apcs.apcsdungeon.fileio.ImageLoader;
-import apcs.apcsdungeon.fileio.SoundLoader;
+import apcs.apcsdungeon.io.ImageLoader;
+import apcs.apcsdungeon.io.SoundLoader;
 import apcs.apcsdungeon.gameobjects.Player;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
@@ -41,7 +41,6 @@ import org.slf4j.LoggerFactory;
  * @author TJ178
  * Class for an animated startup screen that also spawns the ImageLoader Thread
  */
-
 public class Startup extends JPanel implements ActionListener {
 	private static final Logger logger = LoggerFactory.getLogger(Startup.class);
 	public static String unlockPath;
@@ -62,7 +61,7 @@ public class Startup extends JPanel implements ActionListener {
 	private JButton start;
 	private JLabel pictureLabel;
 	private JLabel spriteLabel;
-	private apcs.apcsdungeon.displaycomponents.AnimatedImage sprite;
+	private AnimatedImage sprite;
 	private JPanel selectPanel;
 	private JPanel anotherFuckingPanelJustForButtons;
 	private JRadioButton marine;
@@ -135,7 +134,8 @@ public class Startup extends JPanel implements ActionListener {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} // Replace later with custom buttons - but for now better than the ugly default
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+				UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 			f.dispose();
 		}

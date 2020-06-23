@@ -1,6 +1,6 @@
 package apcs.apcsdungeon.displaycomponents;
 
-import apcs.apcsdungeon.fileio.SoundLoader;
+import apcs.apcsdungeon.io.SoundLoader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;

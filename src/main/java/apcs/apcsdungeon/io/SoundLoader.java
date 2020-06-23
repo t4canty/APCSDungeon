@@ -1,4 +1,4 @@
-package apcs.apcsdungeon.fileio;
+package apcs.apcsdungeon.io;
 
 import apcs.apcsdungeon.displaycomponents.SoundEffect;
 import org.slf4j.Logger;

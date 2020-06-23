@@ -4,4 +4,4 @@
  * @author t4canty
  * @author TJ178
  */
-package apcs.apcsdungeon.fileio;
+package apcs.apcsdungeon.io;

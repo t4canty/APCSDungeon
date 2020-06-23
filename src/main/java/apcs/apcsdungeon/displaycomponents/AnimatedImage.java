@@ -1,6 +1,6 @@
 package apcs.apcsdungeon.displaycomponents;
 
-import apcs.apcsdungeon.fileio.ImageLoader;
+import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;

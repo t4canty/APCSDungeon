@@ -1,8 +1,8 @@
 package apcs.apcsdungeon.displaycomponents;
 
 import apcs.apcsdungeon.driver.Driver;
-import apcs.apcsdungeon.fileio.ImageLoader;
-import apcs.apcsdungeon.fileio.SoundLoader;
+import apcs.apcsdungeon.io.ImageLoader;
+import apcs.apcsdungeon.io.SoundLoader;
 import apcs.apcsdungeon.gameobjects.Player;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
  * @author TJ178
  * Class for an animated startup screen that also spawns the ImageLoader Thread
  */
-
 public class LinuxStartup extends JPanel implements ActionListener {
 	private static final Logger logger = LoggerFactory.getLogger(LinuxStartup.class);
 	//========Varibles========/
@@ -88,11 +87,17 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		ratio = bounds.height / (double) 800;
 		try { // Load images before ImageLoader
 			MarineSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/MarineSplash.png")));
-			MarineSplash = MarineSplash.getScaledInstance((int) (MarineSplash.getWidth(null) * (0.346 * ratio)), (int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
+			MarineSplash = MarineSplash.getScaledInstance(
+					(int) (MarineSplash.getWidth(null) * (0.346 * ratio)),
+					(int) (MarineSplash.getHeight(null) * (0.346 * ratio)), Image.SCALE_SMOOTH);
 			WSBSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/WSBSplash.png")));
-			WSBSplash = WSBSplash.getScaledInstance((int) (WSBSplash.getWidth(null) * (0.28 * ratio)), (int) (WSBSplash.getHeight(null) * (0.28 * ratio)), Image.SCALE_SMOOTH);
+			WSBSplash = WSBSplash.getScaledInstance(
+					(int) (WSBSplash.getWidth(null) * (0.28 * ratio)),
+					(int) (WSBSplash.getHeight(null) * (0.28 * ratio)), Image.SCALE_SMOOTH);
 			SecretSplash = ImageIO.read((Startup.class.getResourceAsStream("/img/secret_splash.png")));
-			SecretSplash = SecretSplash.getScaledInstance((int) (SecretSplash.getWidth(null) * (ratio * 0.425)), (int) (SecretSplash.getHeight(null) * (0.425 * ratio)), Image.SCALE_SMOOTH);
+			SecretSplash = SecretSplash.getScaledInstance(
+					(int) (SecretSplash.getWidth(null) * (ratio * 0.425)),
+					(int) (SecretSplash.getHeight(null) * (0.425 * ratio)), Image.SCALE_SMOOTH);
 			logo = ImageIO.read((Startup.class.getResourceAsStream("/img/gameLogo.png")));
 			bgImg = ImageIO.read((Startup.class.getResourceAsStream("/img/bg_blur.png")));
 			InputStream is = Startup.class.getResourceAsStream("/fonts/ARCADECLASSIC.TTF");
@@ -129,7 +134,8 @@ public class LinuxStartup extends JPanel implements ActionListener {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} // Replace later with custom buttons - but for now better than the ugly default
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+				UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 			f.dispose();
 		}
@@ -228,9 +234,9 @@ public class LinuxStartup extends JPanel implements ActionListener {
 			if (a2 < 1 && !maxed) {
 				a2 += 0.01f;
 			} else if (a2 >= 1) {
-				if (!doneLoading)
+				if (!doneLoading) {
 					a2 = 1f;
-				else {
+				} else {
 					maxed = true;
 					a2 -= 0.01;
 				}
@@ -258,7 +264,7 @@ public class LinuxStartup extends JPanel implements ActionListener {
 
 		if (doneLoading && animationFinished && alpha == 255) {
 			sprite = new AnimatedImage(ImageLoader.MARINE_STARTUP);
-			logger.debug("Game finished loading.Took " + (System.currentTimeMillis() - startTime) + "ms");
+			logger.debug("Game finished loading. Took " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 
 		if (alpha > 0 && animationFinished) alpha /= 1.2;

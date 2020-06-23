@@ -1,6 +1,6 @@
 package apcs.apcsdungeon.gameobjects;
 
-import apcs.apcsdungeon.fileio.ImageLoader;
+import apcs.apcsdungeon.io.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

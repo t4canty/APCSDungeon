@@ -1,8 +1,8 @@
 package apcs.apcsdungeon.gameobjects;
 
 import apcs.apcsdungeon.displaycomponents.SoundEffect;
-import apcs.apcsdungeon.fileio.ImageLoader;
-import apcs.apcsdungeon.fileio.SoundLoader;
+import apcs.apcsdungeon.io.ImageLoader;
+import apcs.apcsdungeon.io.SoundLoader;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 

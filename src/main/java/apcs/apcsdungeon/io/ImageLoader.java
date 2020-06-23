@@ -1,4 +1,4 @@
-package apcs.apcsdungeon.fileio;
+package apcs.apcsdungeon.io;
 
 import apcs.apcsdungeon.gameobjects.Player;
 import java.awt.image.BufferedImage;
@@ -229,7 +229,6 @@ public class ImageLoader implements Runnable {
 				MARINE_BACKHURT = getImageFromFolder("src/img/Marine_backHurt.png");
 				MARINESKIN[8] = MARINE_BACKHURT;
 
-
 				WSB_FRONTIDLE = getImageFromFolder("src/img/WSB_frontIdle.png");
 				WSBSKIN[0] = WSB_FRONTIDLE;
 				WSB_SIDEIDLE = getImageFromFolder("src/img/WSB_sideIdle.png");
@@ -270,28 +269,29 @@ public class ImageLoader implements Runnable {
 				NPCSKIN[8] = NPC_BACKHURT;
 				logger.debug("Loaded " + totalNumberLoaded + " images.");
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 		}
 	}
 
 	// gets an image from the filesystem
 	public static BufferedImage getImageFromFolder(String filePath) throws IOException {
-		totalNumberLoaded++;
-		logger.debug(new File(filePath).getAbsolutePath());
+		logger.trace(new File(filePath).getAbsolutePath());
 		BufferedImage temp = ImageIO.read(new File(filePath));
-		if (temp == null)
+		if (temp == null) {
 			throw new IOException();
+		}
+		totalNumberLoaded++;
 		return temp;
 	}
 
 	// get Image from jar
 	public static BufferedImage getImageFromJar(String filePath) throws IOException {
-		totalNumberLoaded++;
-		logger.debug(filePath);
+		logger.trace(filePath);
 		if (ImageLoader.class.getResourceAsStream(filePath) == null) {
-			System.err.println("Error, getClass is null");
+			logger.warn("Error, getClass is null");
 		}
+		totalNumberLoaded++;
 		return ImageIO.read((ImageLoader.class.getResourceAsStream(filePath)));
 	}
 
@@ -326,8 +326,9 @@ public class ImageLoader implements Runnable {
 	public void start(boolean isJar) {
 		logger.debug("Starting ImageLoad Thread");
 		this.isJar = isJar;
-		if (t == null)
+		if (t == null) {
 			t = new Thread(this, "ImageLoader");
+		}
 		t.start();
 	}
 
